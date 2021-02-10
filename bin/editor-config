@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+if (PHP_SAPI !== 'cli') {
+    echo 'Warning: Devv should be invoked via the CLI version of PHP, not the ' . PHP_SAPI . ' SAPI' . PHP_EOL;
+}
+$phpRequirement = '7.4.0';
+if (!version_compare(PHP_VERSION, $phpRequirement)) {
+    echo 'Your PHP version ' . PHP_VERSION . ' does not match the minimum requirement of version ' .
+         $phpRequirement . '!'. PHP_EOL;
+    exit(1);
+}
+
+require __DIR__ . '/bootstrap.php';
+
+$application = new \FGTCLB\EditorConfig\Application();
+$application->run();

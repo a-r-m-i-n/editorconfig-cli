@@ -1,0 +1,31 @@
+{
+    "name": "fgtclb/editor-config",
+    "description": "CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.",
+    "type": "library",
+    "license": "proprietary",
+    "config": {
+        "platform": {
+            "php": "7.4.12"
+        }
+    },
+    "require": {
+        "symfony/console": "^5",
+        "symfony/finder": "^5"
+    },
+    "require-dev": {
+        "seld/phar-utils": "^1.1"
+    },
+    "bin": [
+        "bin/editor-config"
+    ],
+    "autoload": {
+        "psr-4": {
+            "FGTCLB\\EditorConfig\\": "src"
+        }
+    },
+    "scripts": {
+        "compile-phar": [
+            "FGTCLB\\EditorConfig\\Compiler::compile"
+        ]
+    }
+}
