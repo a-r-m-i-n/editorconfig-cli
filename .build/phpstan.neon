@@ -1,0 +1,10 @@
+includes:
+  - ../vendor/jangregor/phpstan-prophecy/extension.neon
+
+parameters:
+    level: 8
+    paths:
+        - ../src
+    excludePaths:
+        - ../src/Compiler.php
+    checkMissingIterableValueType: false

@@ -9,11 +9,13 @@
         }
     },
     "require": {
-        "symfony/console": "^5",
-        "symfony/finder": "^5"
+        "symfony/console": "^5.2",
+        "symfony/finder": "^5.2"
     },
     "require-dev": {
-        "seld/phar-utils": "^1.1"
+        "seld/phar-utils": "^1.1",
+        "phpstan/phpstan": "^0.12.74",
+        "jangregor/phpstan-prophecy": "^0.8.1"
     },
     "bin": [
         "bin/editor-config"
@@ -24,6 +26,10 @@
         }
     },
     "scripts": {
+        "check": [
+            "@php-stan"
+        ],
+        "php-stan": "phpstan analyse -c .build/phpstan.neon",
         "compile-phar": [
             "FGTCLB\\EditorConfig\\Compiler::compile"
         ]

@@ -6,6 +6,15 @@ CLI tool to validate and auto-fix text files, based on given .editorconfig decla
 
 ## Dev notes
 
+### Code quality tools
+
+```
+$ ddev composer run check
+
+$ ddev composer run phpstan
+```
+
+
 ### Compiling phar files
 
 ```

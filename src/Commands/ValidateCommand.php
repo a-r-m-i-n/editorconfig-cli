@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ValidateCommand extends Command
 {
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('validate')
@@ -18,12 +18,15 @@ class ValidateCommand extends Command
         ;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Validating not implemented, yet.');
+        /** @var string $workingDirectory */
+        $workingDirectory = $input->getOption('working-dir');
+        $realPath = realpath($workingDirectory) ?: 'error';
         $output->writeln(
-            'I\'m currently in the directory <info>' . realpath($input->getOption('working-dir')) . '</info> ' .
-            '<comment>("' . $input->getOption('working-dir') . '")</comment>'
+            'I\'m currently in the directory <info>' . $realPath . '</info> ' .
+            '<comment>("' . $workingDirectory . '")</comment>'
         );
         return 0;
     }

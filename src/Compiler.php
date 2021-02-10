@@ -71,7 +71,7 @@ class Compiler
 
         // re-sign the phar with reproducible timestamp / signature
         $util = new Timestamps(self::PHAR_FILE);
-        $util->updateTimestamps(new \DateTime());
+        $util->updateTimestamps((new \DateTime())->getTimestamp());
         $util->save(self::PHAR_FILE, \Phar::SHA1);
     }
 
