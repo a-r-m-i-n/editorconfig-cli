@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types = 1);
+
 namespace FGTCLB\EditorConfig;
 
 use Seld\PharUtils\Timestamps;
@@ -10,11 +13,11 @@ class Compiler
     private const BINARY_NAME = 'editor-config';
 
     /**
-     * Creates phar file
+     * Creates phar file.
      *
      * @throws \Exception
      */
-    public static function compile() : void
+    public static function compile(): void
     {
         if (file_exists(self::PHAR_FILE)) {
             unlink(self::PHAR_FILE);
@@ -75,13 +78,7 @@ class Compiler
         $util->save(self::PHAR_FILE, \Phar::SHA1);
     }
 
-    /**
-     * @param \Phar $phar
-     * @param \SplFileInfo $file
-     * @param bool $strip
-     * @return void
-     */
-    private static function addFile(\Phar $phar, \SplFileInfo $file, bool $strip = true) : void
+    private static function addFile(\Phar $phar, \SplFileInfo $file, bool $strip = true): void
     {
         $path = self::getRelativeFilePath($file);
         $content = file_get_contents($file->getRealPath());
@@ -94,23 +91,22 @@ class Compiler
     }
 
     /**
-     * @param  \SplFileInfo $file
-     * @return string
+     * @param \SplFileInfo $file
      */
-    private static function getRelativeFilePath($file) : string
+    private static function getRelativeFilePath($file): string
     {
         $realPath = $file->getRealPath();
         $pathPrefix = \dirname(__DIR__) . DIRECTORY_SEPARATOR;
         $pos = strpos($realPath, $pathPrefix);
-        $relativePath = ($pos !== false) ? substr_replace($realPath, '', $pos, strlen($pathPrefix)) : $realPath;
+        $relativePath = (false !== $pos) ? substr_replace($realPath, '', $pos, strlen($pathPrefix)) : $realPath;
+
         return str_replace('\\', '/', $relativePath);
     }
 
     /**
      * @param \Phar $phar
-     * @return void
      */
-    private static function addBinary($phar) : void
+    private static function addBinary($phar): void
     {
         $content = file_get_contents(__DIR__ . '/../bin/' . self::BINARY_NAME);
         $content = preg_replace('{^#!/usr/bin/env php\s*}', '', $content);
@@ -120,34 +116,28 @@ class Compiler
         $phar->addFromString('bin/bootstrap.php', $content);
     }
 
-    /**
-     * @return string
-     */
-    private static function getStub() : string
+    private static function getStub(): string
     {
         $stub = <<<'EOF'
-#!/usr/bin/env php
-<?php
-// Avoid APC causing random fatal errors per https://github.com/composer/composer/issues/264
-if (extension_loaded('apc') && ini_get('apc.enable_cli') && ini_get('apc.cache_by_default')) {
-    if (version_compare(phpversion('apc'), '3.0.12', '>=')) {
-        ini_set('apc.cache_by_default', 0);
-    } else {
-        fwrite(STDERR, 'Warning: APC <= 3.0.12 may cause fatal errors when running commands.'.PHP_EOL);
-        fwrite(STDERR, 'Update APC, or set apc.enable_cli or apc.cache_by_default to 0 in your php.ini.'.PHP_EOL);
-    }
-}
-EOF;
+            #!/usr/bin/env php
+            <?php
+            // Avoid APC causing random fatal errors per https://github.com/composer/composer/issues/264
+            if (extension_loaded('apc') && ini_get('apc.enable_cli') && ini_get('apc.cache_by_default')) {
+                if (version_compare(phpversion('apc'), '3.0.12', '>=')) {
+                    ini_set('apc.cache_by_default', 0);
+                } else {
+                    fwrite(STDERR, 'Warning: APC <= 3.0.12 may cause fatal errors when running commands.'.PHP_EOL);
+                    fwrite(STDERR, 'Update APC, or set apc.enable_cli or apc.cache_by_default to 0 in your php.ini.'.PHP_EOL);
+                }
+            }
+            EOF;
+
         return $stub . "Phar::mapPhar('" . self::BINARY_NAME . ".phar');\n\n" .
             'require \'phar://' . self::BINARY_NAME . '.phar/bin/' . self::BINARY_NAME . '\';' . "\n" .
             '__HALT_COMPILER();';
     }
 
-    /**
-     * @param string $source
-     * @return string
-     */
-    private static function stripWhitespace(string $source) : string
+    private static function stripWhitespace(string $source): string
     {
         if (!\function_exists('token_get_all')) {
             return $source;
@@ -156,7 +146,7 @@ EOF;
         foreach (token_get_all($source) as $token) {
             if (\is_string($token)) {
                 $output .= $token;
-            } elseif (\in_array($token[0], array(T_COMMENT, T_DOC_COMMENT), true)) {
+            } elseif (\in_array($token[0], [T_COMMENT, T_DOC_COMMENT], true)) {
                 $output .= str_repeat("\n", substr_count($token[1], "\n"));
             } elseif (T_WHITESPACE === $token[0]) {
                 // reduce wide spaces
@@ -170,14 +160,11 @@ EOF;
                 $output .= $token[1];
             }
         }
+
         return $output;
     }
 
-    /**
-     * @param \Phar $phar
-     * @return void
-     */
-    private static function addComposerAutoloader(\Phar $phar) : void
+    private static function addComposerAutoloader(\Phar $phar): void
     {
         self::addFile($phar, new \SplFileInfo(__DIR__ . '/../vendor/autoload.php'));
         if (file_exists(__DIR__ . '/../vendor/composer/installed.json')) {
@@ -198,4 +185,3 @@ EOF;
         self::addFile($phar, new \SplFileInfo(__DIR__ . '/../vendor/composer/ClassLoader.php'));
     }
 }
-

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types = 1);
+
 namespace FGTCLB\EditorConfig\Commands;
 
 use Symfony\Component\Console\Command\Command;
@@ -28,6 +31,7 @@ class ValidateCommand extends Command
             'I\'m currently in the directory <info>' . $realPath . '</info> ' .
             '<comment>("' . $workingDirectory . '")</comment>'
         );
+
         return 0;
     }
 }

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types = 1);
+
 namespace FGTCLB\EditorConfig;
 
 use Symfony\Component\Console\Application as SymfonyConsoleApplication;
@@ -7,7 +10,6 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class Application extends SymfonyConsoleApplication
 {
-
     public function __construct(string $name = 'FGTCLB EditorConfig', string $version = '')
     {
         parent::__construct($name, $version);
@@ -17,9 +19,9 @@ class Application extends SymfonyConsoleApplication
 
     /**
      * Load commands dynamically from src/Commands folder.
-     * Class name must end with "Command", file name with "Command.php"
+     * Class name must end with "Command", file name with "Command.php".
      */
-    private function loadCommands() : void
+    private function loadCommands(): void
     {
         $finder = new Finder();
         $finder->in(__DIR__ . '/Commands/')->files()->name('*Command.php');

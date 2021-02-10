@@ -15,7 +15,8 @@
     "require-dev": {
         "seld/phar-utils": "^1.1",
         "phpstan/phpstan": "^0.12.74",
-        "jangregor/phpstan-prophecy": "^0.8.1"
+        "jangregor/phpstan-prophecy": "^0.8.1",
+        "friendsofphp/php-cs-fixer": "^2.18.2"
     },
     "bin": [
         "bin/editor-config"
@@ -27,9 +28,15 @@
     },
     "scripts": {
         "check": [
+            "@php-cs",
             "@php-stan"
         ],
+        "fix": [
+            "@php-fix"
+        ],
         "php-stan": "phpstan analyse -c .build/phpstan.neon",
+        "php-cs": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi --verbose --diff --dry-run",
+        "php-fix": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi",
         "compile-phar": [
             "FGTCLB\\EditorConfig\\Compiler::compile"
         ]

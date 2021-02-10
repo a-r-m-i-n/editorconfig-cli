@@ -1,3 +1,4 @@
 /.idea
 /vendor
 *.phar
+/.php_cs.cache
