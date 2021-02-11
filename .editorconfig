@@ -38,3 +38,9 @@ indent_size = 4
 [LICENSE]
 indent_style = tab
 indent_size = 4
+
+[tests/*/Data/*]
+charset=unset
+end_of_line=unset
+insert_final_newline=unset
+trim_trailing_whitespace=unset

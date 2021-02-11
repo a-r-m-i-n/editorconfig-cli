@@ -2,3 +2,4 @@
 /vendor
 *.phar
 /.php_cs.cache
+/.build/reports

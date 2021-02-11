@@ -1,0 +1,2 @@
+﻿This text is ütf-8 with bom.
+❤

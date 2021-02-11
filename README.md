@@ -16,6 +16,10 @@ $ ddev composer run check
 ```
 $ ddev composer run fix
 ```
+#### Unit Testing
+```
+$ ddev composer run test
+```
 
 ### Compiling phar files
 

@@ -20,7 +20,8 @@
         "seld/phar-utils": "^1.1",
         "phpstan/phpstan": "^0.12.74",
         "jangregor/phpstan-prophecy": "^0.8.1",
-        "friendsofphp/php-cs-fixer": "^2.18.2"
+        "friendsofphp/php-cs-fixer": "^2.18.2",
+        "phpunit/phpunit": "^7.5"
     },
     "bin": [
         "bin/editor-config"
@@ -28,6 +29,11 @@
     "autoload": {
         "psr-4": {
             "FGTCLB\\EditorConfig\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FGTCLB\\EditorConfig\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -46,10 +52,16 @@
             "@ed-fix",
             "@php-fix"
         ],
+        "test": [
+            "@composer dump -o",
+            "@test-php-unit"
+        ],
         "php-stan": "phpstan analyse -c .build/phpstan.neon",
         "php-cs": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi --verbose --diff --dry-run",
         "php-fix": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi",
-        "compile-phar": [
+        "test-php-unit": "phpunit -c .build/phpunit.xml --colors=always",
+        "compile": [
+            "@composer dump -o --no-dev",
             "FGTCLB\\EditorConfig\\Compiler::compile"
         ]
     }
