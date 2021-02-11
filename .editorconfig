@@ -34,3 +34,7 @@ indent_size = 4
 [{*.yaml,*.yml}]
 indent_style = space
 indent_size = 4
+
+[LICENSE]
+indent_style = tab
+indent_size = 4

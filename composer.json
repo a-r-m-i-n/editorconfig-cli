@@ -9,8 +9,12 @@
         }
     },
     "require": {
+        "php": "^7.4 | ^8.0",
+        "ext-iconv": "*",
         "symfony/console": "^5.2",
-        "symfony/finder": "^5.2"
+        "symfony/finder": "^5.2",
+        "idiosyncratic/editorconfig": "^0.1.0",
+        "symfony/mime": "^5.2"
     },
     "require-dev": {
         "seld/phar-utils": "^1.1",
@@ -27,11 +31,19 @@
         }
     },
     "scripts": {
+        "ed": "@editor-config",
+        "ed-fix": "@editor-config-fix",
+        "editor-config": "@php bin/editor-config -e\"vendor\" -n",
+        "editor-config-fix": "@php bin/editor-config -e\"vendor\" -n --fix",
         "check": [
+            "@composer dump -o",
+            "@ed",
             "@php-cs",
             "@php-stan"
         ],
         "fix": [
+            "@composer dump -o",
+            "@ed-fix",
             "@php-fix"
         ],
         "php-stan": "phpstan analyse -c .build/phpstan.neon",

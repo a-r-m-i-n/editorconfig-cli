@@ -1,0 +1,38 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace FGTCLB\EditorConfig\EditorConfig\Rules;
+
+class RuleError
+{
+    private string $message;
+    private ?int $line;
+
+    public function __construct(string $message, ?int $line = null)
+    {
+        $this->message = $message;
+        $this->line = $line;
+    }
+
+    public function getLine(): ?int
+    {
+        return $this->line;
+    }
+
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    public function __toString(): string
+    {
+        $errorString = '';
+        if ($this->getLine()) {
+            $errorString = 'Line ' . $this->getLine() . ': ';
+        }
+        $errorString .= $this->getMessage();
+
+        return $errorString;
+    }
+}

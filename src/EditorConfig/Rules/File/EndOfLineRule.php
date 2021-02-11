@@ -1,0 +1,53 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace FGTCLB\EditorConfig\EditorConfig\Rules\File;
+
+use FGTCLB\EditorConfig\EditorConfig\Rules\AbstractRule;
+use FGTCLB\EditorConfig\EditorConfig\Utility\LineEndingUtility;
+
+class EndOfLineRule extends AbstractRule
+{
+    private string $endOfLine;
+    private string $expectedEndOfLine;
+
+    public function __construct(string $filePath, string $fileContent, string $endOfLine)
+    {
+        $this->endOfLine = $endOfLine;
+        $this->expectedEndOfLine = LineEndingUtility::convertReadableToActualChars($endOfLine) ?? '';
+
+        parent::__construct($filePath, $fileContent);
+    }
+
+    public function getEndOfLine(): string
+    {
+        return $this->expectedEndOfLine;
+    }
+
+    protected function validate(string $content): bool
+    {
+        $whitespacesOnly = (string)preg_replace('/[^\r\n]/i', '', $content);
+
+        $actualEndOfLine = substr($whitespacesOnly, 0, 2);
+        if (!empty($actualEndOfLine) && "\r\n" !== $actualEndOfLine) {
+            $actualEndOfLine = $actualEndOfLine[0]; // first char only
+        }
+        $result = $this->expectedEndOfLine === $actualEndOfLine || empty($actualEndOfLine);
+        if (!$result) {
+            $this->addError(
+                null,
+                'Given line ending "%s" does not match with expected "%s".',
+                LineEndingUtility::convertActualCharToReadable($actualEndOfLine),
+                $this->endOfLine
+            );
+        }
+
+        return $result;
+    }
+
+    public function fixContent(string $content): string
+    {
+        return str_replace(["\r\n", "\r", "\n"], $this->expectedEndOfLine, $content);
+    }
+}
