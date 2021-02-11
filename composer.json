@@ -21,7 +21,11 @@
         "phpstan/phpstan": "^0.12.74",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "friendsofphp/php-cs-fixer": "^2.18.2",
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^7.5",
+        "cweagans/composer-patches": "^1.7"
+    },
+    "replace": {
+        "phpunit/php-token-stream": "*"
     },
     "bin": [
         "bin/editor-config"
@@ -34,6 +38,14 @@
     "autoload-dev": {
         "psr-4": {
             "FGTCLB\\EditorConfig\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "composer-exit-on-patch-failure": true,
+        "patches": {
+            "symfony/console": {
+                "Fix strlen function in Helper.php to work with PHP 8": "patches/symfony-console-helper-php8.patch"
+            }
         }
     },
     "scripts": {

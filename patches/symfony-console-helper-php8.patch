@@ -1,0 +1,10 @@
+--- a/Helper/Helper.php	(revision d206487f5d30757679a77037c96918025b59d330)
++++ b/Helper/Helper.php	(date 1613073070671)
+@@ -45,6 +45,7 @@
+      */
+     public static function strlen(?string $string)
+     {
++        $string = (string)$string;
+         if (false === $encoding = mb_detect_encoding($string, null, true)) {
+             return \strlen($string);
+         }
