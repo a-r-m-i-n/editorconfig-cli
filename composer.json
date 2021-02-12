@@ -4,6 +4,18 @@
     "type": "library",
     "version": "1.0.0-dev",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Armin Vieweg",
+            "email": "info@v.ieweg.de",
+            "homepage": "https://v.ieweg.de"
+        }
+    ],
+    "homepage": "https://github.com/a-r-m-i-n/editorconfig-cli",
+    "support": {
+        "issues": "https://github.com/a-r-m-i-n/editorconfig-cli/issues",
+        "source": "https://github.com/a-r-m-i-n/editorconfig-cli"
+    },
     "config": {
         "platform": {
             "php": "7.4.12"
