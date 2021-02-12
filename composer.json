@@ -3,7 +3,7 @@
     "description": "CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.",
     "type": "library",
     "version": "1.0.0-dev",
-    "license": "proprietary",
+    "license": "MIT",
     "config": {
         "platform": {
             "php": "7.4.12"
