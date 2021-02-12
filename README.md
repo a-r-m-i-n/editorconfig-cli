@@ -2,26 +2,88 @@
 
 CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.
 
+## Requirements
+
+- PHP 7.4 or 8.0
+- Enabled PHP extension: iconv
+
+
+## Installation
+
+To install the editor-config CLI tool you need to download a handy PHAR executable,
+or use Composer like this:
+
+```
+$ composer req armin/editorconfig-cli:"^1.0"
+```
+
+**Tip:** You can also install packages globally with Composer (using the ``-g`` option).
+
+To download the PHAR executables, checkout the releases section [here](https://github.com/a-r-m-i-n/editorconfig-cli/releases).
+
+
+## Usage
+
+Composer style:
+```
+$ vendor/bin/editor-config --help
+```
+
+PHAR style:
+```
+$ php editor-config.phar --help
+```
+
+It is required, that
+
+### Functionality
+
+- Parsing .editorconfig file
+- Validating every file against corresponding .editorconfig declarations
+- Tool to fix issues automatically
+- The following "rules" are existing:
+    - Charset
+    - EndOfLine
+    - InsertFinalNewLine
+    - TrimTrailingWhitespace
+    - Indention
+        - Style (tab/spaces)
+        - Size (width)
+- Optional strict mode to force defined indent size of spaces
+
+
+### How it works
+
+1. Counting all files in given working directory (``-d``)
+2. If amount of files is greater than 500, ask user for confirmation to continue. (``-n`` for non-interactive mode)
+3. Starting with scan (when ``--fix`` is **not** set). By default a visual activity indicator shows scanned files (and highlights errors). You can disable this, with ``--no-progress``.
+   When ``--fix`` (or ``-f``) is set, all found issues get fixed.
+4. It displays the results (to hide details of each file, you can enable the compact mode ``-c``)
+
+
+### Screenshot
+
+Here you see all arguments and options the ``editor-config`` CLI tool provides:
+
+![Screenshot](docs/images/ec.png)
+
 
 
 ## Dev notes
 
 ### Code quality tools
 
-#### Checking
 ```
 $ ddev composer run check
 ```
-#### Fixing
 ```
 $ ddev composer run fix
 ```
-#### Unit Testing
 ```
 $ ddev composer run test
 ```
 
-### Compiling phar files
+### Compiling phar binary
 
 ```
 $ ddev composer run compile
