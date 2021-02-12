@@ -2,10 +2,11 @@
 
 CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.
 
+
 ## Requirements
 
 - PHP 7.4 or 8.0
-- Enabled PHP extension: iconv
+- Enabled PHP extensions: iconv, json
 
 
 ## Installation
@@ -14,10 +15,10 @@ To install the editor-config CLI tool you need to download a handy PHAR executab
 or use Composer like this:
 
 ```
-$ composer req armin/editorconfig-cli:"^1.0"
+$ composer req --dev armin/editorconfig-cli:"^1.0"
 ```
 
-**Tip:** You can also install packages globally with Composer (using the ``-g`` option).
+**Tip:** You can also install packages globally with Composer (using the ``composer global`` command).
 
 To download the PHAR executables, checkout the releases section [here](https://github.com/a-r-m-i-n/editorconfig-cli/releases).
 
@@ -26,15 +27,14 @@ To download the PHAR executables, checkout the releases section [here](https://g
 
 Composer style:
 ```
-$ vendor/bin/editor-config --help
+$ vendor/bin/ec --help
 ```
 
 PHAR style:
 ```
-$ php editor-config.phar --help
+$ php ec-1.0.0.phar --help
 ```
 
-It is required, that
 
 ### Functionality
 
@@ -63,10 +63,9 @@ It is required, that
 
 ### Screenshot
 
-Here you see all arguments and options the ``editor-config`` CLI tool provides:
+Here you see all arguments and options the ``ec`` CLI command provides:
 
 ![Screenshot](docs/images/ec.png)
-
 
 
 ## Dev notes
@@ -90,3 +89,8 @@ $ ddev composer run compile
 ```
 
 Note: In php.ini the option ``phar.readonly`` must be set to ``0``.
+
+
+### Changelog
+
+[See here](docs/Versions.md)
