@@ -2,7 +2,7 @@
     "name": "armin/editorconfig-cli",
     "description": "CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.",
     "type": "library",
-    "version": "1.0.0-dev",
+    "version": "1.0.0",
     "license": "MIT",
     "authors": [
         {
