@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace FGTCLB\EditorConfig\EditorConfig;
+namespace Armin\EditorconfigCli\EditorConfig;
 
-use FGTCLB\EditorConfig\EditorConfig\Rules\FileResult;
-use FGTCLB\EditorConfig\EditorConfig\Rules\Validator;
+use Armin\EditorconfigCli\EditorConfig\Rules\FileResult;
+use Armin\EditorconfigCli\EditorConfig\Rules\Validator;
 use Idiosyncratic\EditorConfig\EditorConfig;
 use Symfony\Component\Finder\Finder;
 

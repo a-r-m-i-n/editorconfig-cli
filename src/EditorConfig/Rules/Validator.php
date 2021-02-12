@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace FGTCLB\EditorConfig\EditorConfig\Rules;
+namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
-use FGTCLB\EditorConfig\EditorConfig\Rules\File\CharsetRule;
-use FGTCLB\EditorConfig\EditorConfig\Rules\File\EndOfLineRule;
-use FGTCLB\EditorConfig\EditorConfig\Rules\File\InsertFinalNewLineRule;
-use FGTCLB\EditorConfig\EditorConfig\Rules\File\TrimTrailingWhitespaceRule;
-use FGTCLB\EditorConfig\EditorConfig\Rules\Line\IndentionRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\File\CharsetRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\File\EndOfLineRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\File\InsertFinalNewLineRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\File\TrimTrailingWhitespaceRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\Line\IndentionRule;
 use Idiosyncratic\EditorConfig\Declaration\Charset;
 use Idiosyncratic\EditorConfig\Declaration\EndOfLine;
 use Idiosyncratic\EditorConfig\Declaration\IndentSize;

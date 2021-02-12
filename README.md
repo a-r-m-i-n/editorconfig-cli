@@ -1,4 +1,4 @@
-# fgtclb/editor-config
+# armin/editorconfig-cli
 
 CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.
 

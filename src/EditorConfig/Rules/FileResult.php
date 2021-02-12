@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace FGTCLB\EditorConfig\EditorConfig\Rules;
+namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
 class FileResult
 {

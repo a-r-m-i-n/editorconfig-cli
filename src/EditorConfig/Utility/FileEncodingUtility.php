@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace FGTCLB\EditorConfig\EditorConfig\Utility;
+namespace Armin\EditorconfigCli\EditorConfig\Utility;
 
 class FileEncodingUtility
 {

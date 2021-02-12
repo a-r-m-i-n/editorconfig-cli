@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace FGTCLB\EditorConfig;
+namespace Armin\EditorconfigCli;
 
-use FGTCLB\EditorConfig\EditorConfig\Rules\FileResult;
-use FGTCLB\EditorConfig\EditorConfig\Scanner;
-use FGTCLB\EditorConfig\EditorConfig\Utility\FinderUtility;
+use Armin\EditorconfigCli\EditorConfig\Rules\FileResult;
+use Armin\EditorconfigCli\EditorConfig\Scanner;
+use Armin\EditorconfigCli\EditorConfig\Utility\FinderUtility;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,17 +20,18 @@ class Application extends SingleCommandApplication
 {
     private Scanner $scanner;
 
-    public function __construct(string $name = 'editor-config', ?Scanner $scanner = null)
+    public function __construct(string $name = 'ec', ?Scanner $scanner = null)
     {
         parent::__construct($name);
 
         $this->scanner = $scanner ?? new Scanner();
 
         $this
-            ->setName('editor-config')
-            ->setDescription('tbw;')
-            ->addUsage('editor-config -e"vendor"')
-            ->addUsage('editor-config -e"vendor" -n --no-progress')
+            ->setName('ec')
+            ->setDescription('CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.')
+            ->addUsage('ec -e"vendor"')
+            ->addUsage('ec -e"vendor" --fix')
+            ->addUsage('ec -e"vendor" -n --no-progress')
 
             ->addArgument('names', InputArgument::IS_ARRAY, 'Name(s) of file names to get checked. Wildcards allowed.', ['*'])
 

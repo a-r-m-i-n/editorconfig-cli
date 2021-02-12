@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace FGTCLB\EditorConfig\EditorConfig\Rules\File;
+namespace Armin\EditorconfigCli\EditorConfig\Rules\File;
 
-use FGTCLB\EditorConfig\EditorConfig\Rules\AbstractRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\AbstractRule;
 
 class InsertFinalNewLineRule extends AbstractRule
 {

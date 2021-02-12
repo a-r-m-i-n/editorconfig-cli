@@ -13,5 +13,5 @@ if (!version_compare(PHP_VERSION, $phpRequirement)) {
 
 require __DIR__ . '/bootstrap.php';
 
-$application = new \FGTCLB\EditorConfig\Application();
+$application = new \Armin\EditorconfigCli\Application();
 $application->run();

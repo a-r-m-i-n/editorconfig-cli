@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace FGTCLB\EditorConfig;
+namespace Armin\EditorconfigCli;
 
 use Seld\PharUtils\Timestamps;
 use Symfony\Component\Finder\Finder;
 
 class Compiler
 {
-    private const PHAR_FILE = 'editor-config.phar';
-    private const BINARY_NAME = 'editor-config';
+    private const PHAR_FILE = 'ec.phar';
+    private const BINARY_NAME = 'ec';
 
     /**
      * Creates phar file.

@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace FGTCLB\EditorConfig\EditorConfig\Rules\Line;
+namespace Armin\EditorconfigCli\EditorConfig\Rules\Line;
 
-use FGTCLB\EditorConfig\EditorConfig\Rules\AbstractRule;
-use FGTCLB\EditorConfig\EditorConfig\Utility\LineEndingUtility;
+use Armin\EditorconfigCli\EditorConfig\Rules\AbstractRule;
+use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class TrimTrailingWhitespaceRule extends AbstractRule
 {

@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1);
-namespace FGTCLB\EditorConfig\Tests\Unit\EditorConfig\Rules\File;
+namespace Armin\EditorconfigCli\Tests\Unit\EditorConfig\Rules\File;
 
-use FGTCLB\EditorConfig\EditorConfig\Rules\File\TrimTrailingWhitespaceRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\File\TrimTrailingWhitespaceRule;
 use PHPUnit\Framework\TestCase;
 
 class TrimTrailingWhitespaceRuleTest extends TestCase

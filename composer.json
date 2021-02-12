@@ -1,5 +1,5 @@
 {
-    "name": "fgtclb/editor-config",
+    "name": "armin/editorconfig-cli",
     "description": "CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.",
     "type": "library",
     "license": "proprietary",
@@ -28,16 +28,16 @@
         "phpunit/php-token-stream": "*"
     },
     "bin": [
-        "bin/editor-config"
+        "bin/ec"
     ],
     "autoload": {
         "psr-4": {
-            "FGTCLB\\EditorConfig\\": "src"
+            "Armin\\EditorconfigCli\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "FGTCLB\\EditorConfig\\Tests\\": "tests"
+            "Armin\\EditorconfigCli\\Tests\\": "tests"
         }
     },
     "extra": {
@@ -49,19 +49,19 @@
         }
     },
     "scripts": {
-        "ed": "@editor-config",
-        "ed-fix": "@editor-config-fix",
-        "editor-config": "@php bin/editor-config -e\"vendor\" -n",
-        "editor-config-fix": "@php bin/editor-config -e\"vendor\" -n --fix",
+        "ec": "@editor-config",
+        "ec-fix": "@editor-config-fix",
+        "editor-config": "@php bin/ec -e\"vendor\" -n",
+        "editor-config-fix": "@php bin/ec -e\"vendor\" -n --fix",
         "check": [
             "@composer dump -o",
-            "@ed",
+            "@ec",
             "@php-cs",
             "@php-stan"
         ],
         "fix": [
             "@composer dump -o",
-            "@ed-fix",
+            "@ec-fix",
             "@php-fix"
         ],
         "test": [
@@ -74,7 +74,7 @@
         "test-php-unit": "phpunit -c .build/phpunit.xml --colors=always",
         "compile": [
             "@composer dump -o --no-dev",
-            "FGTCLB\\EditorConfig\\Compiler::compile"
+            "Armin\\EditorconfigCli\\Compiler::compile"
         ]
     }
 }
