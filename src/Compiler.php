@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Armin\EditorconfigCli;
 
+use Armin\EditorconfigCli\EditorConfig\Utility\VersionUtility;
 use Seld\PharUtils\Timestamps;
 use Symfony\Component\Finder\Finder;
 
@@ -21,6 +22,12 @@ class Compiler
     {
         if (file_exists(self::PHAR_FILE)) {
             unlink(self::PHAR_FILE);
+        }
+        if (!empty(VersionUtility::getApplicationVersionFromComposerJson())) {
+            $pharPath = self::BINARY_NAME . '-' . VersionUtility::getApplicationVersionFromComposerJson() . '.phar';
+            if (file_exists($pharPath)) {
+                unlink($pharPath);
+            }
         }
 
         $phar = new \Phar(self::PHAR_FILE, 0, self::PHAR_FILE);
@@ -77,12 +84,24 @@ class Compiler
         // disabled for interoperability with systems without gzip ext
         // $phar->compressFiles(\Phar::GZ);
         self::addFile($phar, new \SplFileInfo(__DIR__ . '/../LICENSE'), false);
+        self::addFile($phar, new \SplFileInfo(__DIR__ . '/../composer.json'), false);
         unset($phar);
 
         // re-sign the phar with reproducible timestamp / signature
         $util = new Timestamps(self::PHAR_FILE);
         $util->updateTimestamps((new \DateTime())->getTimestamp());
+
         $util->save(self::PHAR_FILE, \Phar::SHA1);
+
+        $pharPath = self::PHAR_FILE;
+        if (!empty(VersionUtility::getApplicationVersionFromComposerJson())) {
+            $pharPath = self::BINARY_NAME . '-' . VersionUtility::getApplicationVersionFromComposerJson() . '.phar';
+            $r = rename(self::PHAR_FILE, $pharPath);
+            if (!$r) {
+                throw new \RuntimeException(sprintf('Unable to rename %s to %s', self::PHAR_FILE, $pharPath));
+            }
+        }
+        echo 'Saved: ' . $pharPath . PHP_EOL;
     }
 
     private static function addFile(\Phar $phar, \SplFileInfo $file, bool $strip = true): void

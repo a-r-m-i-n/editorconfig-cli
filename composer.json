@@ -2,6 +2,7 @@
     "name": "armin/editorconfig-cli",
     "description": "CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.",
     "type": "library",
+    "version": "1.0.0-dev",
     "license": "proprietary",
     "config": {
         "platform": {
@@ -10,6 +11,7 @@
     },
     "require": {
         "php": "^7.4 | ^8.0",
+        "ext-json": "*",
         "ext-iconv": "*",
         "symfony/console": "^5.2",
         "symfony/finder": "^5.2",

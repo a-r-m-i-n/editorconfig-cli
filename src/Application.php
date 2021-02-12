@@ -7,6 +7,7 @@ namespace Armin\EditorconfigCli;
 use Armin\EditorconfigCli\EditorConfig\Rules\FileResult;
 use Armin\EditorconfigCli\EditorConfig\Scanner;
 use Armin\EditorconfigCli\EditorConfig\Utility\FinderUtility;
+use Armin\EditorconfigCli\EditorConfig\Utility\VersionUtility;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,7 +29,8 @@ class Application extends SingleCommandApplication
 
         $this
             ->setName('ec')
-            ->setDescription('CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.')
+            ->setVersion(VersionUtility::getApplicationVersionFromComposerJson())
+            ->setDescription("CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.\n  Version: <comment>" . VersionUtility::getApplicationVersionFromComposerJson() . '</comment>')
             ->addUsage('ec -e"vendor"')
             ->addUsage('ec -e"vendor" --fix')
             ->addUsage('ec -e"vendor" -n --no-progress')
