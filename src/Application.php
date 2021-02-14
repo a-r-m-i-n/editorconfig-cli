@@ -41,6 +41,7 @@ class Application extends SingleCommandApplication
             ->addArgument('names', InputArgument::IS_ARRAY, 'Name(s) of file names to get checked. Wildcards allowed.', ['*'])
 
             ->addOption('dir', 'd', InputOption::VALUE_OPTIONAL, 'Working directory to scan.', getcwd())
+            ->addOption('disable-auto-exclude', 'a', InputOption::VALUE_NONE, 'When set, "vendor" and "node_modules" are not excluded by default.')
             ->addOption('exclude', 'e', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Directories to exclude.')
             ->addOption('strict', 's', InputOption::VALUE_NONE, 'When set, any difference of indention size is spotted.')
             ->addOption('fix', 'f', InputOption::VALUE_NONE, 'Fixes all found issues in files (files get overwritten).')
@@ -70,7 +71,12 @@ class Application extends SingleCommandApplication
                 $io->writeln('<debug>Excluded: ' . implode(', ', (array)$input->getOption('exclude')) . '</debug>');
             }
 
-            $finder = FinderUtility::create($realPath, (array)$input->getArgument('names'), (array)$input->getOption('exclude'));
+            $finder = FinderUtility::create(
+                $realPath,
+                (array)$input->getArgument('names'),
+                (array)$input->getOption('exclude'),
+                (bool)$input->getOption('disable-auto-exclude')
+            );
             $io->writeln(sprintf('Found <info>%d files</info> to scan.', $count = $finder->count()));
 
             if ($count > 500 && !$input->getOption('no-interaction') && !$io->confirm('Continue?', false)) {

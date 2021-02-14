@@ -11,8 +11,17 @@ class FinderUtility
     /**
      * @param mixed $names
      */
-    public static function create(string $path, $names = '*', array $excludePaths = []): Finder
-    {
+    public static function create(
+        string $path,
+        $names = '*',
+        array $excludePaths = [],
+        bool $disableAutoExclude = false
+    ): Finder {
+        if (!$disableAutoExclude) {
+            $excludePaths[] = 'vendor';
+            $excludePaths[] = 'node_modules';
+        }
+
         $finder = new Finder();
         $finder
             ->files()
