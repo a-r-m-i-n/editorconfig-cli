@@ -6,12 +6,15 @@ namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
 abstract class AbstractRule implements RuleInterface
 {
-    protected string $filePath;
+    /**
+     * @var string
+     */
+    protected $filePath;
 
     /**
      * @var array|RuleError[]
      */
-    protected array $errors = [];
+    protected $errors = [];
 
     public function __construct(string $filePath, string $fileContent = null)
     {

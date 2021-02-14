@@ -6,7 +6,10 @@ namespace Armin\EditorconfigCli\EditorConfig\Utility;
 
 class LineEndingUtility
 {
-    private static array $lineEndings = [
+    /**
+     * @var string[]
+     */
+    private static $lineEndings = [
         'crlf' => "\r\n",
         'cr' => "\r",
         'lf' => "\n",

@@ -9,7 +9,10 @@ use Armin\EditorconfigCli\EditorConfig\Utility\FileEncodingUtility;
 
 class CharsetRule extends AbstractRule
 {
-    private string $expectedEncoding;
+    /**
+     * @var string
+     */
+    private $expectedEncoding;
 
     public function __construct(string $filePath, string $fileContent, string $expectedEncoding)
     {

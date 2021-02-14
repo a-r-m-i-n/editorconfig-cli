@@ -9,9 +9,19 @@ use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class IndentionRule extends AbstractRule
 {
-    private string $style;
-    private ?int $size;
-    private bool $strict;
+    /**
+     * @var string
+     */
+    private $style;
+    /**
+     * @var int|null
+     */
+    private $size;
+
+    /**
+     * @var bool
+     */
+    private $strict;
 
     public function __construct(string $filePath, string $fileContent, string $style, ?int $size, bool $strict = false)
     {

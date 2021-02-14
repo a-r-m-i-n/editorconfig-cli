@@ -9,11 +9,6 @@ use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class TrimTrailingWhitespaceRule extends AbstractRule
 {
-    public function __construct(string $filePath, string $fileContent)
-    {
-        parent::__construct($filePath, $fileContent);
-    }
-
     protected function validate(string $content): bool
     {
         $lineEnding = LineEndingUtility::detectLineEnding($content, false);

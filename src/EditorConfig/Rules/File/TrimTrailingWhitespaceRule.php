@@ -9,7 +9,10 @@ use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class TrimTrailingWhitespaceRule extends AbstractRule
 {
-    private bool $insertFinalNewLine;
+    /**
+     * @var bool
+     */
+    private $insertFinalNewLine;
 
     public function __construct(string $filePath, string $fileContent, bool $insertFinalNewLine)
     {

@@ -19,7 +19,10 @@ use Symfony\Component\Finder\Finder;
 
 class Application extends SingleCommandApplication
 {
-    private Scanner $scanner;
+    /**
+     * @var Scanner
+     */
+    private $scanner;
 
     public function __construct(string $name = 'ec', ?Scanner $scanner = null)
     {

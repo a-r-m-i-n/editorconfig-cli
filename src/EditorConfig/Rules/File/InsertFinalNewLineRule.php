@@ -8,7 +8,10 @@ use Armin\EditorconfigCli\EditorConfig\Rules\AbstractRule;
 
 class InsertFinalNewLineRule extends AbstractRule
 {
-    private string $newLineFormat;
+    /**
+     * @var string
+     */
+    private $newLineFormat;
 
     public function __construct(string $filePath, string $fileContent, string $newLineFormat = "\n")
     {

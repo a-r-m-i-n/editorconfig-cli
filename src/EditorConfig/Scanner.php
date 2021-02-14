@@ -11,8 +11,15 @@ use Symfony\Component\Finder\Finder;
 
 class Scanner
 {
-    private EditorConfig $editorConfig;
-    private Validator $validator;
+    /**
+     * @var EditorConfig
+     */
+    private $editorConfig;
+
+    /**
+     * @var Validator
+     */
+    private $validator;
 
     public function __construct(?EditorConfig $editorConfig = null, ?Validator $validator = null)
     {

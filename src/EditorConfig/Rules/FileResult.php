@@ -6,10 +6,15 @@ namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
 class FileResult
 {
-    private string $filePath;
+    /**
+     * @var string
+     */
+    private $filePath;
 
-    /** @var array|AbstractRule[] */
-    private array $rules;
+    /**
+     * @var array|AbstractRule[]
+     */
+    private $rules;
 
     public function __construct(array $rules)
     {
