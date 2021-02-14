@@ -47,6 +47,7 @@ class Application extends SingleCommandApplication
             ->addOption('compact', 'c', InputOption::VALUE_NONE, 'When set, does only list files, no details.')
 
             ->addOption('no-progress', '', InputOption::VALUE_NONE, 'When set, no progress indicator is displayed.')
+            ->addOption('no-error-on-exit', '', InputOption::VALUE_NONE, 'When set, the CLI tool will always return code 0, also when issues have been found.')
             ->setCode([$this, 'executing'])
         ;
     }
@@ -84,6 +85,10 @@ class Application extends SingleCommandApplication
         } else {
             $io->error(sprintf('Invalid working directory "%s" given!', $workingDirectory));
             $returnValue = 1;
+        }
+
+        if ($input->getOption('no-error-on-exit')) {
+            $returnValue = 0;
         }
 
         return $returnValue;
