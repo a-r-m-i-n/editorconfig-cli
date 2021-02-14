@@ -59,6 +59,9 @@
         "patches": {
             "symfony/console": {
                 "Fix strlen function in Helper.php to work with PHP 8": "patches/symfony-console-helper-php8.patch"
+            },
+            "idiosyncratic/editorconfig": {
+                "Do not throw exception, when .editorconfig value is not lowercase": "patches/convert-editorconfig-values-to-lowercase.patch"
             }
         }
     },
