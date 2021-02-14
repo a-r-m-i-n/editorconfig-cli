@@ -109,17 +109,30 @@ class Application extends SingleCommandApplication
             $io->newLine(2);
         }
         $errorCountTotal = 0;
+        $unstagedFiles = [];
         foreach ($fileResults as $file => $fileResult) {
-            $errorCount = $fileResult->countErrors();
-            $errorCountTotal += $errorCount;
-            $io->writeln('<info>' . $file . '</info> <comment>[' . $errorCount . ']</comment>');
-            if (!$compact) {
-                $io->listing(explode(PHP_EOL, $fileResult->getErrorsAsString()));
+            if (!$fileResult->isValid()) {
+                $errorCount = $fileResult->countErrors();
+                $errorCountTotal += $errorCount;
+                $io->writeln('<info>' . $file . '</info> <comment>[' . $errorCount . ']</comment>');
+                if (!$compact) {
+                    $io->listing(explode(PHP_EOL, $fileResult->getErrorsAsString()));
+                }
+            }
+            if (!$fileResult->hasDeclarations()) {
+                $unstagedFiles[] = $fileResult;
             }
         }
 
-        if (count($fileResults) > 0) {
+        if ($errorCountTotal > 0) {
             $io->writeln('<warning>Found ' . $errorCountTotal . ' issues in ' . count($fileResults) . ' files!</warning>');
+            if ($io->isVerbose()) {
+                $io->newLine();
+                $io->writeln('<debug>' . count($unstagedFiles) . ' files are not covered by .editiorconfig declarations:</debug>');
+                foreach ($unstagedFiles as $unstagedFileResult) {
+                    $io->writeln('<debug> - ' . $unstagedFileResult->getFilePath() . '</debug>');
+                }
+            }
 
             return 2;
         }
@@ -135,9 +148,11 @@ class Application extends SingleCommandApplication
         $fileResults = $this->scanner->scan($finder, $strict);
         $errorCountTotal = 0;
         foreach ($fileResults as $file => $fileResult) {
-            $errorCountTotal += $fileResult->countErrors();
-            $fileResult->applyFixes();
-            $io->writeln(' * fixed <info>' . $fileResult->countErrors() . ' issues</info> in file <info>' . $file . '</info>.');
+            if (!$fileResult->isValid()) {
+                $errorCountTotal += $fileResult->countErrors();
+                $fileResult->applyFixes();
+                $io->writeln(' * fixed <info>' . $fileResult->countErrors() . ' issues</info> in file <info>' . $file . '</info>.');
+            }
         }
 
         $io->writeln('<info>Done. Fixed ' . $errorCountTotal . ' issues in ' . count($fileResults) . ' files!</info>');

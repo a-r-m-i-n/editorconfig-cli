@@ -39,7 +39,7 @@ class Scanner
             $config = $this->editorConfig->getConfigForPath((string)$file->getRealPath());
 
             $fileResult = $this->validator->createValidatedFileResult($file, $config, $strict);
-            if (!$fileResult->isValid()) {
+            if (!$fileResult->isBinary()) {
                 $results[$fileResult->getFilePath()] = $fileResult;
             }
             if ($tickCallback) {

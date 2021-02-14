@@ -28,7 +28,7 @@ class Validator
         $mime = new MimeTypes();
         $mimeType = (string)$mime->guessMimeType((string)$file->getRealPath());
         if (0 !== strpos($mimeType, 'text/')) {
-            return new FileResult([]); // Skip non-ascii files
+            return new FileResult((string)$file->getRealPath(), [], true); // Skip non-ascii files
         }
 
         // Line rules
@@ -70,6 +70,6 @@ class Validator
             $rules[] = new TrimTrailingWhitespaceRule((string)$file->getRealPath(), $file->getContents(), $insertFinalNewLine ?? false);
         }
 
-        return new FileResult($rules);
+        return new FileResult((string)$file->getRealPath(), $rules);
     }
 }

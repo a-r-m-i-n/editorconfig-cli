@@ -16,15 +16,31 @@ class FileResult
      */
     private $rules;
 
-    public function __construct(array $rules)
+    /**
+     * @var bool
+     */
+    private $isBinary;
+
+    public function __construct(string $filePath, array $rules, bool $isBinary = false)
     {
         $this->rules = $rules;
+        $this->filePath = $filePath;
+        $this->isBinary = $isBinary;
         foreach ($this->rules as $rule) {
-            $this->filePath = $rule->getFilePath();
             if ($rule->getFilePath() !== $this->filePath) {
                 throw new \InvalidArgumentException(sprintf('Given rules in FileResult must all be related to the same file! Rule expects file "%s" but file "%s" is given.', $this->filePath, $rule->getFilePath()));
             }
         }
+    }
+
+    public function hasDeclarations(): bool
+    {
+        return !empty($this->rules);
+    }
+
+    public function isBinary(): bool
+    {
+        return $this->isBinary;
     }
 
     public function isValid(): bool
@@ -83,6 +99,9 @@ class FileResult
 
     public function applyFixes(): void
     {
+        if (!$this->hasDeclarations()) {
+            return;
+        }
         $content = (string)file_get_contents($this->getFilePath());
         foreach ($this->rules as $rule) {
             $content = $rule->fixContent($content);
