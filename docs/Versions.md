@@ -6,6 +6,16 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+
+### 1.1.0
+
+- [FEATURE] Add "vendor" and "node_modules" as default exclude
+- [FEATURE] Add new option "no-error-on-exit"
+- [FEATURE] In verbose mode (-v) show files not covered by .editorconfig
+- [BUGFIX] Do not throw exception, when .editorconfig value is not lowercase
+- [FEATURE] PHP 7.3 support
+
+
 ### 1.0.0
 
 Very first release.

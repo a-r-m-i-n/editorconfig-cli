@@ -15,7 +15,7 @@ To install the editor-config CLI tool you need to download a handy PHAR executab
 or use Composer like this:
 
 ```
-$ composer req --dev armin/editorconfig-cli:"^1.0"
+$ composer req --dev armin/editorconfig-cli:"^1.1"
 ```
 
 **Tip:** You can also install packages globally with Composer (using the ``composer global`` command).
@@ -32,7 +32,7 @@ $ vendor/bin/ec --help
 
 PHAR style:
 ```
-$ php ec-1.0.0.phar --help
+$ php ec-1.1.0.phar --help
 ```
 
 
