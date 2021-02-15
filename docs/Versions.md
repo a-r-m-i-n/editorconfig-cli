@@ -7,6 +7,13 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 ## Versions
 
 
+### 1.1.1
+
+- [BUGFIX] Do not output uncovered file message, when amount is 0
+- [BUGFIX] Respect default excludes, in verbose output (-v)
+- [BUGFIX] Do not count all files, count only invalid ones
+
+
 ### 1.1.0
 
 - [FEATURE] Add "vendor" and "node_modules" as default exclude
