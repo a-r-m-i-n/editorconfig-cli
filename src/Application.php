@@ -119,11 +119,13 @@ class Application extends SingleCommandApplication
         if ($callback) {
             $io->newLine(2);
         }
+        $invalidFilesCount = 0;
         $errorCountTotal = 0;
         $unstagedFiles = [];
         foreach ($fileResults as $file => $fileResult) {
             if (!$fileResult->isValid()) {
                 $errorCount = $fileResult->countErrors();
+                ++$invalidFilesCount;
                 $errorCountTotal += $errorCount;
                 $io->writeln('<info>' . $file . '</info> <comment>[' . $errorCount . ']</comment>');
                 if (!$compact) {
@@ -136,7 +138,7 @@ class Application extends SingleCommandApplication
         }
 
         if ($errorCountTotal > 0) {
-            $io->writeln('<warning>Found ' . $errorCountTotal . ' issues in ' . count($fileResults) . ' files!</warning>');
+            $io->writeln('<warning>Found ' . $errorCountTotal . ' issues in ' . $invalidFilesCount . ' files!</warning>');
             if ($io->isVerbose()) {
                 $io->newLine();
                 $io->writeln('<debug>' . count($unstagedFiles) . ' files are not covered by .editiorconfig declarations:</debug>');
@@ -157,16 +159,22 @@ class Application extends SingleCommandApplication
         $io->writeln('<comment>Starting to fix issues...</comment>');
 
         $fileResults = $this->scanner->scan($finder, $strict);
+        $invalidFilesCount = 0;
         $errorCountTotal = 0;
         foreach ($fileResults as $file => $fileResult) {
             if (!$fileResult->isValid()) {
+                ++$invalidFilesCount;
                 $errorCountTotal += $fileResult->countErrors();
                 $fileResult->applyFixes();
                 $io->writeln(' * fixed <info>' . $fileResult->countErrors() . ' issues</info> in file <info>' . $file . '</info>.');
             }
         }
 
-        $io->writeln('<info>Done. Fixed ' . $errorCountTotal . ' issues in ' . count($fileResults) . ' files!</info>');
+        if ($errorCountTotal > 0) {
+            $io->writeln('<info>Done. Fixed ' . $errorCountTotal . ' issues in ' . $invalidFilesCount . ' files!</info>');
+        } else {
+            $io->writeln('<info>Done. No issues found to fix.</info>');
+        }
 
         return 0;
     }
