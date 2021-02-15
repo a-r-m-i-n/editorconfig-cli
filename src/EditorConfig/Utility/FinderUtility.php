@@ -9,6 +9,11 @@ use Symfony\Component\Finder\Finder;
 class FinderUtility
 {
     /**
+     * @var array
+     */
+    private static $currentExcludes = [];
+
+    /**
      * @param mixed $names
      */
     public static function create(
@@ -22,6 +27,8 @@ class FinderUtility
             $excludePaths[] = 'node_modules';
         }
 
+        self::$currentExcludes = $excludePaths;
+
         $finder = new Finder();
         $finder
             ->files()
@@ -31,5 +38,10 @@ class FinderUtility
             ->in($path);
 
         return $finder;
+    }
+
+    public static function getCurrentExcludes(): array
+    {
+        return self::$currentExcludes;
     }
 }

@@ -65,18 +65,19 @@ class Application extends SingleCommandApplication
         $returnValue = 0;
 
         if ($realPath) {
-            $io->writeln(sprintf('Searching in directory <comment>%s</comment> ...', $realPath));
-            if ($output->isVerbose()) {
-                $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
-                $io->writeln('<debug>Excluded: ' . implode(', ', (array)$input->getOption('exclude')) . '</debug>');
-            }
-
             $finder = FinderUtility::create(
                 $realPath,
                 (array)$input->getArgument('names'),
                 (array)$input->getOption('exclude'),
                 (bool)$input->getOption('disable-auto-exclude')
             );
+
+            $io->writeln(sprintf('Searching in directory <comment>%s</comment> ...', $realPath));
+            if ($output->isVerbose()) {
+                $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
+                $io->writeln('<debug>Excluded: ' . implode(', ', FinderUtility::getCurrentExcludes()) . '</debug>');
+            }
+
             $io->writeln(sprintf('Found <info>%d files</info> to scan.', $count = $finder->count()));
 
             if ($count > 500 && !$input->getOption('no-interaction') && !$io->confirm('Continue?', false)) {
