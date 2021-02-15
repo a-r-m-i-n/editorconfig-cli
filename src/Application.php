@@ -140,7 +140,7 @@ class Application extends SingleCommandApplication
 
         if ($errorCountTotal > 0) {
             $io->writeln('<warning>Found ' . $errorCountTotal . ' issues in ' . $invalidFilesCount . ' files!</warning>');
-            if ($io->isVerbose()) {
+            if ($io->isVerbose() && count($unstagedFiles) > 0) {
                 $io->newLine();
                 $io->writeln('<debug>' . count($unstagedFiles) . ' files are not covered by .editiorconfig declarations:</debug>');
                 foreach ($unstagedFiles as $unstagedFileResult) {
