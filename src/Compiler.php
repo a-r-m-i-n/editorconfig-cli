@@ -43,7 +43,7 @@ class Compiler
         $finder->files()
                ->ignoreVCS(true)
                ->name('*.php')
-               ->exclude('Compiler.php')
+               ->notName('Compiler.php')
                ->in(__DIR__ . '/../src')
                ->in(__DIR__ . '/../bin')
                ->sort($finderSort);
