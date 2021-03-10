@@ -6,6 +6,12 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.1.2
+
+- [TASK] Update symfony/console
+- [BUGFIX] Exclude Compiler.php file correctly from PHAR result
+- [BUGFIX] Fix wrong php requirement in "ec" binary
+
 
 ### 1.1.1
 
