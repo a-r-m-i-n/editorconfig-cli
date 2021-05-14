@@ -6,6 +6,14 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.2.0
+
+- [FEATURE] Add MaxLineLengthRule
+- [DEVOPS] Update PhpCsFixer config
+- [TASK] Allow Rules to only check code (not fixing them)
+- [TASK] Remove Composer patch and update dependencies
+
+
 ### 1.1.2
 
 - [TASK] Update symfony/console
