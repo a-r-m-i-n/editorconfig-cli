@@ -2,6 +2,7 @@
 namespace Armin\EditorconfigCli\Tests\Unit\EditorConfig\Rules\File;
 
 use Armin\EditorconfigCli\EditorConfig\Rules\File\CharsetRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\UnfixableException;
 use PHPUnit\Framework\TestCase;
 
 class CharsetRuleTest extends TestCase
@@ -52,6 +53,14 @@ class CharsetRuleTest extends TestCase
         self::assertFalse($subject->isValid());
         $subject = new CharsetRule('dummy/path/file.txt', $this->loadText('utf-8'), 'utf-8-bom');
         self::assertFalse($subject->isValid());
+    }
+
+    public function testFixingCharsetNotSupported()
+    {
+        $subject = new CharsetRule('dummy/path/file.txt', $this->loadText('utf-8-bom'), 'utf-8');
+
+        self::expectException(UnfixableException::class);
+        $subject->fixContent('');
     }
 
     private function loadText(string $name): string

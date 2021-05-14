@@ -162,21 +162,31 @@ class Application extends SingleCommandApplication
         $fileResults = $this->scanner->scan($finder, $strict);
         $invalidFilesCount = 0;
         $errorCountTotal = 0;
+        $hasUnfixableExceptions = false;
         foreach ($fileResults as $file => $fileResult) {
             if (!$fileResult->isValid()) {
                 ++$invalidFilesCount;
                 $errorCountTotal += $fileResult->countErrors();
                 $fileResult->applyFixes();
-                $io->writeln(' * fixed <info>' . $fileResult->countErrors() . ' issues</info> in file <info>' . $file . '</info>.');
+
+                if ($fileResult->hasUnfixableExceptions()) {
+                    $errorCountTotal -= $fileResult->countErrors();
+                    $hasUnfixableExceptions = true;
+                    foreach ($fileResult->getUnfixableExceptions() as $e) {
+                        $io->writeln(' * <warning>WARNING</warning> ' . $e->getMessage());
+                    }
+                } else {
+                    $io->writeln(' * fixed <info>' . $fileResult->countErrors() . ' issues</info> in file <info>' . $file . '</info>.');
+                }
             }
         }
 
         if ($errorCountTotal > 0) {
             $io->writeln('<info>Done. Fixed ' . $errorCountTotal . ' issues in ' . $invalidFilesCount . ' files!</info>');
         } else {
-            $io->writeln('<info>Done. No issues found to fix.</info>');
+            $io->writeln('<info>Done. No issues fixed.</info>');
         }
 
-        return 0;
+        return false === $hasUnfixableExceptions ? 0 : 1;
     }
 }

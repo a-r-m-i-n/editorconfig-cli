@@ -21,6 +21,11 @@ class FileResult
      */
     private $isBinary;
 
+    /**
+     * @var array
+     */
+    private $unfixableExceptions = [];
+
     public function __construct(string $filePath, array $rules, bool $isBinary = false)
     {
         $this->rules = $rules;
@@ -104,11 +109,30 @@ class FileResult
         }
         $content = (string)file_get_contents($this->getFilePath());
         foreach ($this->rules as $rule) {
-            $content = $rule->fixContent($content);
+            if (!$rule->isValid()) {
+                try {
+                    $content = $rule->fixContent($content);
+                } catch (UnfixableException $e) {
+                    $this->unfixableExceptions[] = $e;
+                }
+            }
         }
         $status = file_put_contents($this->getFilePath(), $content);
         if (!$status) {
             throw new \RuntimeException(sprintf('Unable to update file "%s"!', $this->getFilePath()));
         }
+    }
+
+    public function hasUnfixableExceptions(): bool
+    {
+        return count($this->getUnfixableExceptions()) > 0;
+    }
+
+    /**
+     * @return UnfixableException[]
+     */
+    public function getUnfixableExceptions(): array
+    {
+        return $this->unfixableExceptions;
     }
 }

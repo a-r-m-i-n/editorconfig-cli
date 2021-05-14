@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Armin\EditorconfigCli\EditorConfig\Rules\File;
 
 use Armin\EditorconfigCli\EditorConfig\Rules\AbstractRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\UnfixableException;
 use Armin\EditorconfigCli\EditorConfig\Utility\FileEncodingUtility;
 
 class CharsetRule extends AbstractRule
@@ -36,23 +37,11 @@ class CharsetRule extends AbstractRule
         return $result;
     }
 
+    /**
+     * @throws UnfixableException
+     */
     public function fixContent(string $content): string
     {
-        $toEncoding = $this->expectedEncoding;
-        if ('latin1' === $toEncoding) {
-            $toEncoding = 'iso-8859-1';
-        }
-        $fromEncoding = (string)FileEncodingUtility::detect($content);
-        if ('latin1' === $fromEncoding) {
-            $fromEncoding = 'iso-8859-1';
-        }
-
-        $bom = '';
-        if ('utf-8-bom' === $this->expectedEncoding) {
-            $bom = FileEncodingUtility::getUTF8ByteOrderMark();
-            $toEncoding = 'utf-8';
-        }
-
-        return $bom . iconv($fromEncoding, $toEncoding, $content);
+        throw new UnfixableException(sprintf('Automatic fix of wrong charset is not possible for file "%s"', $this->getFilePath()), 1620996364);
     }
 }

@@ -42,7 +42,7 @@ $ php ec-1.1.0.phar --help
 - Validating every file against corresponding .editorconfig declarations
 - Tool to fix issues automatically
 - The following "rules" are existing:
-    - Charset
+    - Charset (check only)
     - EndOfLine
     - InsertFinalNewLine
     - TrimTrailingWhitespace
