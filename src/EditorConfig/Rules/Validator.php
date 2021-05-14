@@ -9,11 +9,13 @@ use Armin\EditorconfigCli\EditorConfig\Rules\File\EndOfLineRule;
 use Armin\EditorconfigCli\EditorConfig\Rules\File\InsertFinalNewLineRule;
 use Armin\EditorconfigCli\EditorConfig\Rules\File\TrimTrailingWhitespaceRule;
 use Armin\EditorconfigCli\EditorConfig\Rules\Line\IndentionRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\Line\MaxLineLengthRule;
 use Idiosyncratic\EditorConfig\Declaration\Charset;
 use Idiosyncratic\EditorConfig\Declaration\EndOfLine;
 use Idiosyncratic\EditorConfig\Declaration\IndentSize;
 use Idiosyncratic\EditorConfig\Declaration\IndentStyle;
 use Idiosyncratic\EditorConfig\Declaration\InsertFinalNewline;
+use Idiosyncratic\EditorConfig\Declaration\MaxLineLength;
 use Idiosyncratic\EditorConfig\Declaration\TabWidth;
 use Idiosyncratic\EditorConfig\Declaration\TrimTrailingWhitespace;
 use Symfony\Component\Finder\SplFileInfo;
@@ -23,12 +25,13 @@ class Validator
 {
     public function createValidatedFileResult(SplFileInfo $file, array $editorConfig, bool $strictMode = false): FileResult
     {
+        $filePath = (string)$file->getRealPath();
         $rules = [];
 
         $mime = new MimeTypes();
-        $mimeType = (string)$mime->guessMimeType((string)$file->getRealPath());
+        $mimeType = (string)$mime->guessMimeType($filePath);
         if (0 !== strpos($mimeType, 'text/')) {
-            return new FileResult((string)$file->getRealPath(), [], true); // Skip non-ascii files
+            return new FileResult($filePath, [], true); // Skip non-ascii files
         }
 
         // Line rules
@@ -47,29 +50,36 @@ class Validator
             $size = 4;
         }
         if ($style && $size) {
-            $rules[] = new IndentionRule((string)$file->getRealPath(), $file->getContents(), $style, $size, $strictMode);
+            $rules[] = new IndentionRule($filePath, $file->getContents(), $style, $size, $strictMode);
         }
 
         if (isset($editorConfig['trim_trailing_whitespace']) && $editorConfig['trim_trailing_whitespace'] instanceof TrimTrailingWhitespace && $editorConfig['trim_trailing_whitespace']->getValue()) {
-            $rules[] = new Line\TrimTrailingWhitespaceRule((string)$file->getRealPath(), $file->getContents());
+            $rules[] = new Line\TrimTrailingWhitespaceRule($filePath, $file->getContents());
         }
 
         // File rules
         if (isset($editorConfig['charset']) && $editorConfig['charset'] instanceof Charset) {
-            $rules[] = new CharsetRule((string)$file->getRealPath(), $file->getContents(), strtolower($editorConfig['charset']->getStringValue()));
+            $rules[] = new CharsetRule($filePath, $file->getContents(), strtolower($editorConfig['charset']->getStringValue()));
         }
 
         if (isset($editorConfig['end_of_line']) && $editorConfig['end_of_line'] instanceof EndOfLine) {
-            $rules[] = $eofRule = new EndOfLineRule((string)$file->getRealPath(), $file->getContents(), $editorConfig['end_of_line']->getStringValue());
+            $rules[] = $eofRule = new EndOfLineRule($filePath, $file->getContents(), $editorConfig['end_of_line']->getStringValue());
         }
 
         if (isset($eofRule) && isset($editorConfig['insert_final_newline']) && $editorConfig['insert_final_newline'] instanceof InsertFinalNewline && $insertFinalNewLine = $editorConfig['insert_final_newline']->getValue()) {
-            $rules[] = new InsertFinalNewLineRule((string)$file->getRealPath(), $file->getContents(), $eofRule->getEndOfLine());
+            $rules[] = new InsertFinalNewLineRule($filePath, $file->getContents(), $eofRule->getEndOfLine());
         }
         if (isset($editorConfig['trim_trailing_whitespace']) && $editorConfig['trim_trailing_whitespace'] instanceof TrimTrailingWhitespace && $editorConfig['trim_trailing_whitespace']->getValue()) {
-            $rules[] = new TrimTrailingWhitespaceRule((string)$file->getRealPath(), $file->getContents(), $insertFinalNewLine ?? false);
+            $rules[] = new TrimTrailingWhitespaceRule($filePath, $file->getContents(), $insertFinalNewLine ?? false);
         }
 
-        return new FileResult((string)$file->getRealPath(), $rules);
+        if (isset($editorConfig['max_line_length']) && $editorConfig['max_line_length'] instanceof MaxLineLength && $editorConfig['max_line_length']->getValue() && 'off' !== $editorConfig['max_line_length']->getValue()) {
+            $maxLineLength = (int)$editorConfig['max_line_length']->getValue();
+            if ($maxLineLength > 0) {
+                $rules[] = new MaxLineLengthRule($filePath, $file->getContents(), $maxLineLength);
+            }
+        }
+
+        return new FileResult($filePath, $rules);
     }
 }

@@ -20,7 +20,8 @@ $ composer req --dev armin/editorconfig-cli:"^1.1"
 
 **Tip:** You can also install packages globally with Composer (using the ``composer global`` command).
 
-To download the PHAR executables, checkout the releases section [here](https://github.com/a-r-m-i-n/editorconfig-cli/releases).
+To download the PHAR executables, checkout the releases section
+[here](https://github.com/a-r-m-i-n/editorconfig-cli/releases).
 
 
 ## Usage
@@ -46,6 +47,7 @@ $ php ec-1.1.0.phar --help
     - EndOfLine
     - InsertFinalNewLine
     - TrimTrailingWhitespace
+    - MaxLineLength (check only)
     - Indention
         - Style (tab/spaces)
         - Size (width)
@@ -56,7 +58,8 @@ $ php ec-1.1.0.phar --help
 
 1. Counting all files in given working directory (``-d``)
 2. If amount of files is greater than 500, ask user for confirmation to continue. (``-n`` for non-interactive mode)
-3. Starting with scan (when ``--fix`` is **not** set). By default a visual activity indicator shows scanned files (and highlights errors). You can disable this, with ``--no-progress``.
+3. Starting with scan (when ``--fix`` is **not** set). By default a visual activity indicator shows scanned files
+   (and highlights errors). You can disable this, with ``--no-progress``.
    When ``--fix`` (or ``-f``) is set, all found issues get fixed.
 4. It displays the results (to hide details of each file, you can enable the compact mode ``-c``)
 
