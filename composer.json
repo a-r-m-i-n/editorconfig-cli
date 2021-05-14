@@ -35,8 +35,7 @@
         "phpstan/phpstan": "^0.12.74",
         "jangregor/phpstan-prophecy": "^0.8.1",
         "friendsofphp/php-cs-fixer": "^2.18.2",
-        "phpunit/phpunit": "^7.5",
-        "cweagans/composer-patches": "^1.7"
+        "phpunit/phpunit": "^7.5"
     },
     "replace": {
         "phpunit/php-token-stream": "*"
@@ -52,14 +51,6 @@
     "autoload-dev": {
         "psr-4": {
             "Armin\\EditorconfigCli\\Tests\\": "tests"
-        }
-    },
-    "extra": {
-        "composer-exit-on-patch-failure": true,
-        "patches": {
-            "idiosyncratic/editorconfig": {
-                "Do not throw exception, when .editorconfig value is not lowercase": "patches/convert-editorconfig-values-to-lowercase.patch"
-            }
         }
     },
     "scripts": {
