@@ -5,6 +5,7 @@ if (PHP_SAPI !== 'cli') {
 }
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/../src/')
+    ->notName('SingleCommandApplication.php')
 ;
 
 return (new PhpCsFixer\Config())

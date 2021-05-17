@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Armin\EditorconfigCli;
 
+use Armin\EditorconfigCli\Compatibility\SingleCommandApplication;
 use Armin\EditorconfigCli\EditorConfig\Rules\FileResult;
 use Armin\EditorconfigCli\EditorConfig\Scanner;
 use Armin\EditorconfigCli\EditorConfig\Utility\FinderUtility;
@@ -13,7 +14,6 @@ use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
-use Symfony\Component\Console\SingleCommandApplication;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 
