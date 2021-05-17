@@ -4,7 +4,14 @@
 
 Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
+
 ## Versions
+
+### 1.2.1
+
+- [TASK] Do not replace "phpunit/php-token-stream" and update dependencies
+- [BUGFIX] Make editor-config work in environments using symfony/console in version 4
+
 
 ### 1.2.0
 
