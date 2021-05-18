@@ -7,6 +7,11 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.2.2
+
+- [BUGFIX] Allow uppercase config values
+
+
 ### 1.2.1
 
 - [TASK] Do not replace "phpunit/php-token-stream" and update dependencies
