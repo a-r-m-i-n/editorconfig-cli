@@ -1,6 +1,7 @@
 <?php declare(strict_types = 1);
 namespace Armin\EditorconfigCli\Tests\Unit\EditorConfig\Rules\Line;
 
+use Armin\EditorconfigCli\EditorConfig\Rules\File\EndOfLineRule;
 use Armin\EditorconfigCli\EditorConfig\Rules\Line\IndentionRule;
 use PHPUnit\Framework\TestCase;
 
@@ -25,6 +26,24 @@ class IndentionRuleTest extends TestCase
         self::assertTrue($subject->isValid());
         $subject = new IndentionRule('dummy/path/file.txt', "    Non Trailing\n     Non Trailing\n    Non Trailing\n", 'space', 4, true);
         self::assertFalse($subject->isValid());
+    }
+
+    public function testDetectWrongIndentionsCorrectlyWhenUppercase()
+    {
+        $subject = new IndentionRule('dummy/path/file.txt', "    Non Trailing\n    Non Trailing\n    Non Trailing\n", 'SPACE', 4);
+        self::assertTrue($subject->isValid());
+        $subject = new IndentionRule('dummy/path/file.txt', "    Non Trailing\n\tNon Trailing\n    Non Trailing\n", 'SPACE', 4);
+        self::assertFalse($subject->isValid());
+        $subject = new IndentionRule('dummy/path/file.txt', "\tNon Trailing\n\tNon Trailing\n\tNon Trailing\n", 'TAB', 4);
+        self::assertTrue($subject->isValid());
+        $subject = new IndentionRule('dummy/path/file.txt', "\tNon Trailing\n\tNon Trailing\n    Non Trailing\n", 'TAB', 4);
+        self::assertFalse($subject->isValid());
+    }
+
+    public function testInvalidIndentionStyleConfigThrowsException()
+    {
+        self::expectException(\InvalidArgumentException::class);
+        new IndentionRule('dummy/path/file.txt', "", 'INVALID', 4);
     }
 
     public function testFixingIndentionWorks()

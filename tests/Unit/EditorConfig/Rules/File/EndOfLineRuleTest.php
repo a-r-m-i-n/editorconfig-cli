@@ -31,6 +31,22 @@ class EndOfLineRuleTest extends TestCase
         self::assertFalse($subject->isValid());
     }
 
+    public function testDetectWrongLineEndingsCorrectlyWhenUppercase()
+    {
+        $subject = new EndOfLineRule('dummy/path/file.txt', "Test\nist\nLF\n", 'LF');
+        self::assertTrue($subject->isValid());
+        $subject = new EndOfLineRule('dummy/path/file.txt', "Test\nist\nLF\n", 'CR');
+        self::assertFalse($subject->isValid());
+        $subject = new EndOfLineRule('dummy/path/file.txt', "Test\nist\nLF\n", 'CRLF');
+        self::assertFalse($subject->isValid());
+    }
+
+    public function testInvalidLineEndingsConfigThrowsException()
+    {
+        self::expectException(\InvalidArgumentException::class);
+        new EndOfLineRule('dummy/path/file.txt', "Test\nist\nLF\n", 'INVALID');
+    }
+
     public function testFixWrongLineEndingsCorrectlyToCR()
     {
         $wrongText = "Test\nist\nLF\n";

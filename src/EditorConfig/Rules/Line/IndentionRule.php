@@ -25,7 +25,10 @@ class IndentionRule extends AbstractRule
 
     public function __construct(string $filePath, string $fileContent, string $style, ?int $size, bool $strict = false)
     {
-        $this->style = $style;
+        $this->style = strtolower($style);
+        if (!in_array($this->style, ['space', 'tab'], true)) {
+            throw new \InvalidArgumentException(sprintf('Unknown indention style value "%s" given in .editorconfig', $style), 1621325864);
+        }
         $this->size = $size;
         $this->strict = $strict;
         parent::__construct($filePath, $fileContent);

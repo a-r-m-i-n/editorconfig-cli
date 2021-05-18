@@ -21,8 +21,12 @@ class EndOfLineRule extends AbstractRule
 
     public function __construct(string $filePath, string $fileContent, string $endOfLine)
     {
-        $this->endOfLine = $endOfLine;
-        $this->expectedEndOfLine = LineEndingUtility::convertReadableToActualChars($endOfLine) ?? '';
+        $this->endOfLine = strtolower($endOfLine);
+        $this->expectedEndOfLine = LineEndingUtility::convertReadableToActualChars($this->endOfLine) ?? '';
+
+        if ('' === $this->expectedEndOfLine) {
+            throw new \InvalidArgumentException(sprintf('Unknown end of line value "%s" given in .editorconfig', $endOfLine), 1621325385);
+        }
 
         parent::__construct($filePath, $fileContent);
     }

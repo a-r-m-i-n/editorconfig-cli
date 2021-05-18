@@ -28,7 +28,7 @@ class LineEndingUtility
 
     public static function convertReadableToActualChars(string $lineEnding): ?string
     {
-        return self::$lineEndings[$lineEnding] ?? null;
+        return self::$lineEndings[strtolower($lineEnding)] ?? null;
     }
 
     public static function convertActualCharToReadable(string $actualChar): ?string
