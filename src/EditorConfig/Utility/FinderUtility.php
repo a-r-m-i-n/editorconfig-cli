@@ -20,17 +20,13 @@ class FinderUtility
     {
         $excludePaths = $finderOptions['exclude'];
 
-        if (!$finderOptions['disable-auto-exclude']) {
-            $excludePaths[] = 'vendor';
-            $excludePaths[] = 'node_modules';
-        }
-
         self::$currentExcludes = $excludePaths;
 
         $finder = new Finder();
         $finder
             ->files()
             ->ignoreVCS(true)
+            ->ignoreVCSIgnored(!$finderOptions['disable-auto-exclude'])
             ->name($finderOptions['names'])
             ->notPath($excludePaths)
             ->in($finderOptions['path']);

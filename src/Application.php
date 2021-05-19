@@ -34,10 +34,12 @@ class Application extends SingleCommandApplication
             ->setName('ec')
             ->setVersion(VersionUtility::getApplicationVersionFromComposerJson())
             ->setDescription("CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.\n  Version: <comment>" . VersionUtility::getApplicationVersionFromComposerJson() . '</comment>')
-            ->addUsage('ec -e"vendor"')
-            ->addUsage('ec -e"vendor" --fix')
-            ->addUsage('ec -e"vendor" -n --no-progress')
+            ->addUsage('ec')
+            ->addUsage('ec --fix')
+            ->addUsage('ec -e"dist" -e".build"')
+            ->addUsage('ec -n --no-progress')
             ->addUsage('ec --finder-instance finder-config.php')
+            ->addUsage('ec *.js *.css')
 
             ->addArgument('names', InputArgument::IS_ARRAY, 'Name(s) of file names to get checked. Wildcards allowed.', ['*'])
 
@@ -47,7 +49,7 @@ class Application extends SingleCommandApplication
 
             ->addOption('dir', 'd', InputOption::VALUE_OPTIONAL, 'Working directory to scan.', getcwd())
             ->addOption('finder-config', null, InputOption::VALUE_OPTIONAL, 'Optional path to PHP file (relative from working dir (-d)), returning a pre-configured Symfony Finder instance.')
-            ->addOption('disable-auto-exclude', 'a', InputOption::VALUE_NONE, 'When set, "vendor" and "node_modules" are not excluded by default.')
+            ->addOption('disable-auto-exclude', 'a', InputOption::VALUE_NONE, 'By default all files ignored by existing .gitignore, will be excluded from scanning. This options disables it.')
             ->addOption('exclude', 'e', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Directories to exclude.')
 
             ->addOption('no-progress', '', InputOption::VALUE_NONE, 'When set, no progress indicator is displayed.')

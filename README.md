@@ -40,8 +40,9 @@ $ php ec-1.1.0.phar --help
 ### Functionality
 
 - Parsing .editorconfig file
-- Validating every file against corresponding .editorconfig declarations
-- Tool to fix issues automatically
+- Validating files against corresponding .editorconfig declarations
+    - Auto exclusion of files matching .gitignore declarations
+- Tool to fix most issues automatically
 - The following "rules" are existing:
     - Charset (check only)
     - EndOfLine

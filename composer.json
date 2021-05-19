@@ -53,8 +53,8 @@
     "scripts": {
         "ec": "@editor-config",
         "ec-fix": "@editor-config-fix",
-        "editor-config": "@php bin/ec -e\"vendor\" -n",
-        "editor-config-fix": "@php bin/ec -e\"vendor\" -n --fix",
+        "editor-config": "@php bin/ec -n",
+        "editor-config-fix": "@php bin/ec -n --fix",
         "check": [
             "@composer dump -o",
             "@ec",
