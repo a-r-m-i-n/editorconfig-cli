@@ -58,6 +58,7 @@ class FinderUtility
                 }
                 throw new \RuntimeException('Custom Symfony Finder configuration (' . $finderConfigPath . ") should return an instance of \Symfony\Component\Finder\Finder. \nInstead it returns: " . $returnType, 1621343069);
             }
+            $finder->files();
 
             return $finder;
         };

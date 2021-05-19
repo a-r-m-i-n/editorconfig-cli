@@ -20,11 +20,14 @@ Within the config file, you need to create and configure a Finder instance. **Th
 - editorconfig-cli expects as return value a ``Symfony\Component\Finder\Finder`` instance.
   Anything else will cause an exception.
 
-- The finder instance requires two options set, to work properly with editorconfig-cli's rules:
+- The finder instance requires one option to be set:
+  ```
+  $finder->in('/path');
+  ```
+- Also, the rules require ``->files()`` to be set, which happens automatically in editorconfig-cli, after
+  the custom Finder instance as been successfully imported.
 
-  - ``->in('/path')`` which is required by Finder itself
 
-  - ``->files()`` which is required by the rules, which doesn't expect directories to be given
 
 ### Minimum example
 
@@ -35,7 +38,6 @@ use Symfony\Component\Finder\Finder;
 
 $finder = new Finder();
 $finder
-    ->files()
     ->in($GLOBALS['finderOptions']['path']);
 
 return $finder;
