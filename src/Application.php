@@ -104,6 +104,12 @@ class Application extends SingleCommandApplication
 
             $io->writeln(sprintf('Found <info>%d files</info> to scan.', $count = $finder->count()));
 
+            if (0 === $count) {
+                $io->writeln('Nothing to do here.');
+
+                return $returnValue; // Early return
+            }
+
             if ($count > 500 && !$input->getOption('no-interaction') && !$io->confirm('Continue?', false)) {
                 $io->writeln('Canceled.');
 
