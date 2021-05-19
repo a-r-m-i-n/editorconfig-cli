@@ -15,29 +15,29 @@ To install the editor-config CLI tool you need to download a handy PHAR executab
 or use Composer like this:
 
 ```
-$ composer req --dev armin/editorconfig-cli:"^1.1"
+$ composer req --dev armin/editorconfig-cli"
 ```
 
 **Tip:** You can also install packages globally with Composer (using the ``composer global`` command).
 
-To download the PHAR executables, checkout the releases section
+To download the PHAR executables, check out the releases section
 [here](https://github.com/a-r-m-i-n/editorconfig-cli/releases).
 
 
-## Usage
+## What is EditorConfig?
 
-Composer style:
-```
-$ vendor/bin/ec --help
-```
+![EditorConfig logo](docs/images/editorconfig-logo.png)
 
-PHAR style:
-```
-$ php ec-1.1.0.phar --help
-```
+> EditorConfig helps maintain consistent coding styles for multiple developers working on the
+> same project across various editors and IDEs.
+
+Which coding styles should get applied, are configured in the **.editorconfig** file.
+
+You'll find more info about syntax and features of EditorConfig on
+https://editorconfig.org
 
 
-### Functionality
+## Features
 
 - Parsing .editorconfig file
 - Validating files against corresponding .editorconfig declarations
@@ -55,14 +55,28 @@ $ php ec-1.1.0.phar --help
 - Optional strict mode to force defined indent size of spaces
 
 
+## Usage
+
+Composer style:
+```
+$ vendor/bin/ec --help
+```
+
+PHAR style:
+```
+$ php ec-1.3.0.phar --help
+```
+
+
 ### How it works
 
-1. Counting all files in given working directory (``-d``)
-2. If amount of files is greater than 500, ask user for confirmation to continue. (``-n`` for non-interactive mode)
+1. Counting all files in the given working directory (``-d``).
+2. If the amount of files is greater than 500, ask the user for confirmation to continue
+   (use ``-n`` for non-interactive mode).
 3. Starting with scan (when ``--fix`` is **not** set). By default a visual activity indicator shows scanned files
    (and highlights errors). You can disable this, with ``--no-progress``.
    When ``--fix`` (or ``-f``) is set, all found issues get fixed.
-4. It displays the results (to hide details of each file, you can enable the compact mode ``-c``)
+4. It displays the results (to hide details of each file, you can enable the compact mode ``-c``).
 
 
 ### Screenshot
@@ -71,10 +85,10 @@ Here you see all arguments and options the ``ec`` CLI command provides:
 
 ![Screenshot](docs/images/ec.png)
 
+
 ### Arguments and options
 
 - Read more about using [Custom Finder instances](docs/CustomFinderInstance.md) (``--finder-config``)
-
 
 
 ## Dev notes
@@ -100,6 +114,6 @@ $ ddev composer run compile
 Note: In php.ini the option ``phar.readonly`` must be set to ``0``.
 
 
-### Changelog
+## Changelog
 
 [See here](docs/Versions.md)
