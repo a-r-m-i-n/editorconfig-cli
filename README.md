@@ -70,6 +70,11 @@ Here you see all arguments and options the ``ec`` CLI command provides:
 
 ![Screenshot](docs/images/ec.png)
 
+### Arguments and options
+
+- Read more about using [Custom Finder instances](docs/CustomFinderInstance.md) (``--finder-config``)
+
+
 
 ## Dev notes
 

@@ -37,15 +37,18 @@ class Application extends SingleCommandApplication
             ->addUsage('ec -e"vendor"')
             ->addUsage('ec -e"vendor" --fix')
             ->addUsage('ec -e"vendor" -n --no-progress')
+            ->addUsage('ec --finder-instance finder-config.php')
 
             ->addArgument('names', InputArgument::IS_ARRAY, 'Name(s) of file names to get checked. Wildcards allowed.', ['*'])
 
-            ->addOption('dir', 'd', InputOption::VALUE_OPTIONAL, 'Working directory to scan.', getcwd())
-            ->addOption('disable-auto-exclude', 'a', InputOption::VALUE_NONE, 'When set, "vendor" and "node_modules" are not excluded by default.')
-            ->addOption('exclude', 'e', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Directories to exclude.')
             ->addOption('strict', 's', InputOption::VALUE_NONE, 'When set, any difference of indention size is spotted.')
             ->addOption('fix', 'f', InputOption::VALUE_NONE, 'Fixes all found issues in files (files get overwritten).')
             ->addOption('compact', 'c', InputOption::VALUE_NONE, 'When set, does only list files, no details.')
+
+            ->addOption('dir', 'd', InputOption::VALUE_OPTIONAL, 'Working directory to scan.', getcwd())
+            ->addOption('finder-config', null, InputOption::VALUE_OPTIONAL, 'Optional path to PHP file (relative from working dir (-d)), returning a pre-configured Symfony Finder instance.')
+            ->addOption('disable-auto-exclude', 'a', InputOption::VALUE_NONE, 'When set, "vendor" and "node_modules" are not excluded by default.')
+            ->addOption('exclude', 'e', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Directories to exclude.')
 
             ->addOption('no-progress', '', InputOption::VALUE_NONE, 'When set, no progress indicator is displayed.')
             ->addOption('no-error-on-exit', '', InputOption::VALUE_NONE, 'When set, the CLI tool will always return code 0, also when issues have been found.')
@@ -65,15 +68,34 @@ class Application extends SingleCommandApplication
         $returnValue = 0;
 
         if ($realPath) {
-            $finder = FinderUtility::create(
-                $realPath,
-                (array)$input->getArgument('names'),
-                (array)$input->getOption('exclude'),
-                (bool)$input->getOption('disable-auto-exclude')
-            );
+            // Create (or get) Symfony Finder instance
+            $finderOptions = [
+                'path' => $realPath,
+                'names' => (array)$input->getArgument('names'),
+                'exclude' => (array)$input->getOption('exclude'),
+                'disable-auto-exclude' => (bool)$input->getOption('disable-auto-exclude'),
+            ];
 
-            $io->writeln(sprintf('Searching in directory <comment>%s</comment> ...', $realPath));
-            if ($output->isVerbose()) {
+            $finderConfigPath = null;
+            if (!empty($input->getOption('finder-config'))) {
+                /** @var string $finderConfigPath */
+                $finderConfigPath = $input->getOption('finder-config');
+                $finderConfigPath = $realPath . '/' . $finderConfigPath;
+                $finder = FinderUtility::loadCustomFinderInstance($finderConfigPath, $finderOptions);
+
+                $io->writeln(
+                    sprintf('<comment>Loading custom Symfony Finder configuration from %s</comment>', $finderConfigPath)
+                );
+            }
+            $finder = $finder ?? FinderUtility::createByFinderOptions($finderOptions);
+
+            // Check amount of files to scan and ask for confirmation
+            if ($finderConfigPath) {
+                $io->writeln('Searching with custom Finder instance...');
+            } else {
+                $io->writeln(sprintf('Searching in directory <comment>%s</comment> ...', $realPath));
+            }
+            if (!$finderConfigPath && $output->isVerbose()) {
                 $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
                 $io->writeln('<debug>Excluded: ' . implode(', ', FinderUtility::getCurrentExcludes()) . '</debug>');
             }
@@ -86,6 +108,7 @@ class Application extends SingleCommandApplication
                 return $returnValue; // Early return
             }
 
+            // Start scanning or fixing
             $returnValue = !$input->getOption('fix')
                 ? $this->scan($finder, $io, (bool)$input->getOption('strict'), (bool)$input->getOption('no-progress'), (bool)$input->getOption('compact'))
                 : $this->fix($finder, $io, (bool)$input->getOption('strict'));
