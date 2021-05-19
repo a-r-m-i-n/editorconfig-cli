@@ -7,6 +7,15 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.3.0
+
+- [DOCS] Improve README
+- [TASK] Set required ->files() in custom Finder instance
+- [BUGFIX] Do not call scan (or fix) when amount of files is zero
+- [TASK] Automatic exclusion: Replace hardcoded folders with Finder's ignoreVCSIgnored(true)
+- [FEATURE] Configurable custom Symfony Finder instance
+
+
 ### 1.2.2
 
 - [BUGFIX] Allow uppercase config values
