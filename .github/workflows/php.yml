@@ -1,0 +1,53 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        php:
+          - "7.3"
+          - "7.4"
+          - "8.0"
+        dependencies:
+          - "lowest"
+          - "highest"
+  
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup PHP
+      uses: "shivammathur/setup-php@v2"
+      with:
+        php-version: "${{ matrix.php }}"
+        
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.dependencies }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Composer install
+      uses: "ramsey/composer-install@v1"
+      with:
+        dependency-versions: "${{ matrix.dependencies }}"
+        composer-options: "${{ matrix.composer-options }}"
+
+    - name: Run code quality checks 
+      run: composer run-script check
+
+    - name: Run test suite
+      run: composer run-script test
