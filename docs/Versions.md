@@ -7,6 +7,14 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.3.1
+
+- [TASK] Update dependencies
+- [BUGFIX] Fix minimum required versions
+- [DEVOPS] Add Github actions
+- [DOCS] Add missing editorconfig logo
+
+
 ### 1.3.0
 
 - [DOCS] Improve README
