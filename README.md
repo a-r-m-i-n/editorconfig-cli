@@ -15,7 +15,7 @@ To install the editor-config CLI tool you need to download a handy PHAR executab
 or use Composer like this:
 
 ```
-$ composer req --dev armin/editorconfig-cli"
+$ composer req --dev armin/editorconfig-cli
 ```
 
 **Tip:** You can also install packages globally with Composer (using the ``composer global`` command).
