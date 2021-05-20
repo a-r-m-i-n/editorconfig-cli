@@ -26,8 +26,8 @@
         "ext-json": "*",
         "ext-iconv": "*",
         "symfony/console": "^4 || ^5",
-        "symfony/finder": "^4 || ^5",
-        "idiosyncratic/editorconfig": "^0.1.0",
+        "symfony/finder": "^4.4 || ^5",
+        "idiosyncratic/editorconfig": "^0.1.1",
         "symfony/mime": "^4 || ^5"
     },
     "require-dev": {
