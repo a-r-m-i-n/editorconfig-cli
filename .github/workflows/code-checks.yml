@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Code Checks
 
 on:
   push:
@@ -17,17 +17,17 @@ jobs:
         dependencies:
           - "lowest"
           - "highest"
-  
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Setup PHP
       uses: "shivammathur/setup-php@v2"
       with:
         php-version: "${{ matrix.php }}"
-        
+
     - name: Validate composer.json and composer.lock
       run: composer validate
 
@@ -46,7 +46,7 @@ jobs:
         dependency-versions: "${{ matrix.dependencies }}"
         composer-options: "${{ matrix.composer-options }}"
 
-    - name: Run code quality checks 
+    - name: Run code quality checks
       run: composer run-script check
 
     - name: Run test suite
