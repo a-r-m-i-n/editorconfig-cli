@@ -62,6 +62,13 @@ class Application extends SingleCommandApplication
         ;
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        /** @var string $dir */
+        $dir = $input->getOption('dir');
+        $this->scanner->setRootPath($dir);
+    }
+
     protected function executing(Input $input, Output $output): int
     {
         $io = new SymfonyStyle($input, $output);
