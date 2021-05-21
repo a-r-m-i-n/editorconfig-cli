@@ -68,6 +68,7 @@ class Compiler
                ->in(__DIR__ . '/../vendor/symfony/string')
                ->in(__DIR__ . '/../vendor/psr/')
                ->in(__DIR__ . '/../vendor/idiosyncratic/')
+               ->notName('EditorConfig.php')
                ->sort($finderSort);
         foreach ($finder as $file) {
             self::addFile($phar, $file);
