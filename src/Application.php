@@ -110,7 +110,12 @@ class Application extends SingleCommandApplication
             }
             if (!$finderConfigPath && $output->isVerbose()) {
                 $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
-                $io->writeln('<debug>Excluded: ' . implode(', ', FinderUtility::getCurrentExcludes()) . '</debug>');
+                $io->writeln('<debug>Excluded: ' . (count(FinderUtility::getCurrentExcludes()) > 0 ? implode(', ', FinderUtility::getCurrentExcludes()) : '-') . '</debug>');
+                $io->writeln('<debug>Auto exclude: ' . ($input->getOption('disable-auto-exclude') ? 'disabled' : 'enabled') . '</debug>');
+            }
+            if ($output->isVerbose()) {
+                $io->writeln('<debug>Strict mode: ' . ($input->getOption('strict') ? 'enabled' : 'disabled') . '</debug>');
+                $io->writeln('<debug>Output mode: ' . ($input->getOption('compact') ? 'compact' : 'full') . '</debug>');
             }
 
             $io->writeln(sprintf('Found <info>%d files</info> to scan.', $count = $finder->count()));
@@ -137,6 +142,9 @@ class Application extends SingleCommandApplication
         }
 
         if ($input->getOption('no-error-on-exit')) {
+            if ($returnValue > 0 && $output->isVerbose()) {
+                $io->writeln(sprintf('<debug>Bypassing error code %d</debug>', $returnValue));
+            }
             $returnValue = 0;
         }
 
@@ -205,6 +213,7 @@ class Application extends SingleCommandApplication
                 foreach ($unstagedFiles as $unstagedFileResult) {
                     $io->writeln('<debug> - ' . $unstagedFileResult->getFilePath() . '</debug>');
                 }
+                $io->newLine();
             }
 
             return 2;
