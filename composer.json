@@ -68,12 +68,14 @@
         ],
         "test": [
             "@composer dump -o",
-            "@test-php-unit"
+            "@test-php-unit",
+            "@test-php-functional"
         ],
         "php-stan": "phpstan analyse -c .build/phpstan.neon",
         "php-cs": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi --verbose --diff --dry-run",
         "php-fix": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi",
-        "test-php-unit": "phpunit -c .build/phpunit.xml --colors=always",
+        "test-php-unit": "phpunit -c .build/phpunit.xml --colors=always --testsuite Unit",
+        "test-php-functional": "phpunit -c .build/phpunit.xml --colors=always --testsuite Functional",
         "compile": [
             "@composer dump -o --no-dev",
             "Armin\\EditorconfigCli\\Compiler::compile"
