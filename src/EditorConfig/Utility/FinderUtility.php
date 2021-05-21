@@ -26,7 +26,7 @@ class FinderUtility
         $finder
             ->files()
             ->ignoreVCS(true)
-            ->ignoreVCSIgnored(!$finderOptions['disable-auto-exclude'])
+            ->ignoreVCSIgnored(!$finderOptions['disable-auto-exclude'] && is_readable($finderOptions['path'] . '/.gitignore'))
             ->name($finderOptions['names'])
             ->notPath($excludePaths)
             ->in($finderOptions['path']);
