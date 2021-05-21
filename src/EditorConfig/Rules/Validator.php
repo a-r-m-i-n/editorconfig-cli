@@ -62,12 +62,13 @@ class Validator
             $rules[] = new CharsetRule($filePath, $file->getContents(), strtolower($editorConfig['charset']->getStringValue()));
         }
 
+        $eofRule = null;
         if (isset($editorConfig['end_of_line']) && $editorConfig['end_of_line'] instanceof EndOfLine) {
             $rules[] = $eofRule = new EndOfLineRule($filePath, $file->getContents(), $editorConfig['end_of_line']->getStringValue());
         }
 
-        if (isset($eofRule) && isset($editorConfig['insert_final_newline']) && $editorConfig['insert_final_newline'] instanceof InsertFinalNewline && $insertFinalNewLine = $editorConfig['insert_final_newline']->getValue()) {
-            $rules[] = new InsertFinalNewLineRule($filePath, $file->getContents(), $eofRule->getEndOfLine());
+        if (isset($editorConfig['insert_final_newline']) && $editorConfig['insert_final_newline'] instanceof InsertFinalNewline && $insertFinalNewLine = $editorConfig['insert_final_newline']->getValue()) {
+            $rules[] = new InsertFinalNewLineRule($filePath, $file->getContents(), $eofRule ? $eofRule->getEndOfLine() : null);
         }
         if (isset($editorConfig['trim_trailing_whitespace']) && $editorConfig['trim_trailing_whitespace'] instanceof TrimTrailingWhitespace && $editorConfig['trim_trailing_whitespace']->getValue()) {
             $rules[] = new TrimTrailingWhitespaceRule($filePath, $file->getContents(), $insertFinalNewLine ?? false);

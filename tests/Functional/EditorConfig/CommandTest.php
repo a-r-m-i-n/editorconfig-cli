@@ -37,4 +37,12 @@ class CommandTest extends TestCase
 
         self::assertSame(2, $process->getExitCode());
     }
+
+    public function testTrailingWhitespacesVsAddNewLine()
+    {
+        $process = new Process([PHP_BINARY, 'bin/ec', '-d', 'tests/Functional/EditorConfig/Data/trailing-whitespace-vs-add-new-line/']);
+        $process->run();
+
+        self::assertSame(0, $process->getExitCode(), $process->getOutput());
+    }
 }
