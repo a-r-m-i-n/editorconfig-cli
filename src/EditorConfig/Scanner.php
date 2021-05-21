@@ -12,6 +12,11 @@ use Symfony\Component\Finder\Finder;
 class Scanner
 {
     /**
+     * @var string|null
+     */
+    private $rootPath;
+
+    /**
      * @var EditorConfig
      */
     private $editorConfig;
@@ -27,6 +32,13 @@ class Scanner
         $this->validator = $validator ?? new Validator();
     }
 
+    public function setRootPath(?string $rootPath): void
+    {
+        if ($rootPath) {
+            $this->rootPath = realpath($rootPath);
+        }
+    }
+
     /**
      * @param bool $strict when true, any difference of indention size is spotted
      *
@@ -40,7 +52,11 @@ class Scanner
 
             $fileResult = $this->validator->createValidatedFileResult($file, $config, $strict);
             if (!$fileResult->isBinary()) {
-                $results[$fileResult->getFilePath()] = $fileResult;
+                $filePath = $fileResult->getFilePath();
+                if (!empty($this->rootPath)) {
+                    $filePath = substr($filePath, strlen($this->rootPath));
+                }
+                $results[$filePath] = $fileResult;
             }
             if ($tickCallback) {
                 $tickCallback($fileResult);
