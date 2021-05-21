@@ -43,7 +43,13 @@
     "autoload": {
         "psr-4": {
             "Armin\\EditorconfigCli\\": "src"
-        }
+        },
+        "classmap": [
+            "src/Compatibility/EditorConfig.php"
+        ],
+        "exclude-from-classmap": [
+            "vendor/idiosyncratic/editorconfig/src/EditorConfig.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
