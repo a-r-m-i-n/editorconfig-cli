@@ -8,12 +8,16 @@ use Armin\EditorconfigCli\Compatibility\SingleCommandApplication;
 use Armin\EditorconfigCli\EditorConfig\Rules\FileResult;
 use Armin\EditorconfigCli\EditorConfig\Scanner;
 use Armin\EditorconfigCli\EditorConfig\Utility\FinderUtility;
+use Armin\EditorconfigCli\EditorConfig\Utility\StringFormatUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\VersionUtility;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Finder\Finder;
 
@@ -95,7 +99,7 @@ class Application extends SingleCommandApplication
             if ($finderConfigPath) {
                 $io->writeln('Searching with custom Finder instance...');
             } else {
-                $io->writeln(sprintf('Searching in directory <comment>%s</comment> ...', $realPath));
+                $io->writeln(sprintf('Searching in directory <comment>%s</comment>...', $realPath));
             }
             if (!$finderConfigPath && $output->isVerbose()) {
                 $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
@@ -118,7 +122,7 @@ class Application extends SingleCommandApplication
 
             // Start scanning or fixing
             $returnValue = !$input->getOption('fix')
-                ? $this->scan($finder, $io, (bool)$input->getOption('strict'), (bool)$input->getOption('no-progress'), (bool)$input->getOption('compact'))
+                ? $this->scan($finder, $count, $io, (bool)$input->getOption('strict'), (bool)$input->getOption('no-progress'), (bool)$input->getOption('compact'))
                 : $this->fix($finder, $io, (bool)$input->getOption('strict'));
         } else {
             $io->error(sprintf('Invalid working directory "%s" given!', $workingDirectory));
@@ -132,25 +136,39 @@ class Application extends SingleCommandApplication
         return $returnValue;
     }
 
-    protected function scan(Finder $finder, SymfonyStyle $io, bool $strict = false, bool $noProgress = false, bool $compact = false): int
+    protected function scan(Finder $finder, int $fileCount, SymfonyStyle $io, bool $strict = false, bool $noProgress = false, bool $compact = false): int
     {
+        $io->writeln('<comment>Starting scan...</comment>');
+
         $callback = null;
+        $progressBar = null;
         if (!$noProgress) {
-            $callback = function (FileResult $fileResult) use ($io) {
-                if ($fileResult->isValid()) {
-                    $io->write('.');
-                } else {
-                    $io->write('<error>E</error>');
+            // Progress bar
+            $progressBar = $this->createProgressBar($io, $fileCount);
+            $amountIssues = $amountFilesWithIssues = 0;
+            $callback = function (FileResult $fileResult) use ($progressBar, &$amountIssues, &$amountFilesWithIssues) {
+                $progressBar->advance();
+                if (!$fileResult->isValid()) {
+                    ++$amountFilesWithIssues;
+                    $amountIssues += $fileResult->countErrors();
+                    $progressBar->setMessage(
+                        '<error>' . StringFormatUtility::buildScanResultMessage($amountIssues, $amountFilesWithIssues) . '</error>'
+                    );
                 }
             };
         }
 
-        $io->writeln('<comment>Starting scan...</comment>');
+        // Start the scan
         $fileResults = $this->scanner->scan($finder, $strict, $callback);
 
-        if ($callback) {
+        if (!$noProgress && $progressBar) {
+            // Progress bar
+            $progressBar->setFormat(' %current%/%max% [%bar%] %percent:3s%%');
+            $progressBar->finish();
             $io->newLine(2);
         }
+
+        // Prepare results after scan
         $invalidFilesCount = 0;
         $errorCountTotal = 0;
         $unstagedFiles = [];
@@ -169,8 +187,11 @@ class Application extends SingleCommandApplication
             }
         }
 
+        // Output results
         if ($errorCountTotal > 0) {
-            $io->writeln('<warning>Found ' . $errorCountTotal . ' issues in ' . $invalidFilesCount . ' files!</warning>');
+            $io->writeln('<error>' . StringFormatUtility::buildScanResultMessage($errorCountTotal, $invalidFilesCount) . '</error>');
+
+            // Uncovered files
             if ($io->isVerbose() && count($unstagedFiles) > 0) {
                 $io->newLine();
                 $io->writeln('<debug>' . count($unstagedFiles) . ' files are not covered by .editiorconfig declarations:</debug>');
@@ -207,17 +228,28 @@ class Application extends SingleCommandApplication
                         $io->writeln(' * <warning>WARNING</warning> ' . $e->getMessage());
                     }
                 } else {
-                    $io->writeln(' * fixed <info>' . $fileResult->countErrors() . ' issues</info> in file <info>' . $file . '</info>.');
+                    $text = 1 === $fileResult->countErrors() ? 'one issue' : $fileResult->countErrors() . ' issues';
+                    $io->writeln(' * fixed <info>' . $text . '</info> in file <info>' . $file . '</info>.');
                 }
             }
         }
 
-        if ($errorCountTotal > 0) {
-            $io->writeln('<info>Done. Fixed ' . $errorCountTotal . ' issues in ' . $invalidFilesCount . ' files!</info>');
-        } else {
-            $io->writeln('<info>Done. No issues fixed.</info>');
-        }
+        $io->writeln('<info>Done. ' . StringFormatUtility::buildScanResultMessage($errorCountTotal, $invalidFilesCount, 'Fixed') . '</info>');
 
         return false === $hasUnfixableExceptions ? 0 : 1;
+    }
+
+    protected function createProgressBar(SymfonyStyle $io, int $fileCount): ProgressBar
+    {
+        $progressBar = $io->createProgressBar($fileCount);
+
+        $progressBar->setProgressCharacter('>');
+        $progressBar->setBarCharacter('=');
+        $progressBar->setBarWidth(50);
+        $progressBar->setFormat(' %current%/%max% [%bar%] %percent:3s%% %remaining:6s% | %message%');
+
+        $progressBar->setMessage('<info>No issues found, yet</info>');
+
+        return $progressBar;
     }
 }
