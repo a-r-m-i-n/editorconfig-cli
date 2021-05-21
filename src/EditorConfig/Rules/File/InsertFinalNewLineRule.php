@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Armin\EditorconfigCli\EditorConfig\Rules\File;
 
 use Armin\EditorconfigCli\EditorConfig\Rules\AbstractRule;
+use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class InsertFinalNewLineRule extends AbstractRule
 {
@@ -13,9 +14,13 @@ class InsertFinalNewLineRule extends AbstractRule
      */
     private $newLineFormat;
 
-    public function __construct(string $filePath, string $fileContent, string $newLineFormat = "\n")
+    public function __construct(string $filePath, string $fileContent, ?string $newLineFormat = null)
     {
-        $this->newLineFormat = $newLineFormat;
+        if (null === $newLineFormat) {
+            $newLineFormat = LineEndingUtility::detectLineEnding($fileContent, false);
+        }
+
+        $this->newLineFormat = $newLineFormat ?? "\n";
         parent::__construct($filePath, $fileContent);
     }
 

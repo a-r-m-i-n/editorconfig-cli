@@ -16,6 +16,15 @@ class InsertFinalNewLineRuleTest extends TestCase
         self::assertFalse($subject->isValid());
     }
 
+    public function testDetectWrongMissingFinalLineEndingCorrectlyWithoutNewlineFormatGiven()
+    {
+        $subject = new InsertFinalNewLineRule('dummy/path/file.txt', "All okay\n", null);
+        self::assertTrue($subject->isValid());
+
+        $subject = new InsertFinalNewLineRule('dummy/path/file.txt', "Missing", null);
+        self::assertFalse($subject->isValid());
+    }
+
     public function testFixMissingFinalLineEndingWorks()
     {
         $wrongText = "\n\nMissing";
@@ -23,6 +32,15 @@ class InsertFinalNewLineRuleTest extends TestCase
         $result = $subject->fixContent($wrongText);
         self::assertStringEndsWith("\n", $result);
     }
+
+    public function testFixMissingFinalLineEndingWorksWithoutNewlineFormatGiven()
+    {
+        $wrongText = "\n\nMissing";
+        $subject = new InsertFinalNewLineRule('dummy/path/file.txt', $wrongText, null);
+        $result = $subject->fixContent($wrongText);
+        self::assertStringEndsWith("\n", $result);
+    }
+
     public function testDoNotTouchIfAllOkay()
     {
         $correctText = "All okay\n";
