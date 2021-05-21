@@ -39,11 +39,12 @@ class Application extends SingleCommandApplication
             ->setVersion(VersionUtility::getApplicationVersionFromComposerJson())
             ->setDescription("CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.\n  Version: <comment>" . VersionUtility::getApplicationVersionFromComposerJson() . '</comment>')
             ->addUsage('ec')
-            ->addUsage('ec --fix')
+            ->addUsage('ec --unstaged')
             ->addUsage('ec -e"dist" -e".build"')
             ->addUsage('ec -n --no-progress')
             ->addUsage('ec --finder-instance finder-config.php')
             ->addUsage('ec *.js *.css')
+            ->addUsage('ec --fix')
 
             ->addArgument('names', InputArgument::IS_ARRAY, 'Name(s) of file names to get checked. Wildcards allowed.', ['*'])
 
@@ -56,6 +57,7 @@ class Application extends SingleCommandApplication
             ->addOption('disable-auto-exclude', 'a', InputOption::VALUE_NONE, 'By default all files ignored by existing .gitignore, will be excluded from scanning. This options disables it.')
             ->addOption('exclude', 'e', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Directories to exclude.')
 
+            ->addOption('uncovered', 'u', InputOption::VALUE_NONE, 'When set, all files which are not covered by .editorconfig get listed.')
             ->addOption('no-progress', '', InputOption::VALUE_NONE, 'When set, no progress indicator is displayed.')
             ->addOption('no-error-on-exit', '', InputOption::VALUE_NONE, 'When set, the CLI tool will always return code 0, also when issues have been found.')
             ->setCode([$this, 'executing'])
@@ -134,7 +136,7 @@ class Application extends SingleCommandApplication
 
             // Start scanning or fixing
             $returnValue = !$input->getOption('fix')
-                ? $this->scan($finder, $count, $io, (bool)$input->getOption('strict'), (bool)$input->getOption('no-progress'), (bool)$input->getOption('compact'))
+                ? $this->scan($finder, $count, $io, (bool)$input->getOption('strict'), (bool)$input->getOption('no-progress'), (bool)$input->getOption('compact'), (bool)$input->getOption('uncovered'))
                 : $this->fix($finder, $io, (bool)$input->getOption('strict'));
         } else {
             $io->error(sprintf('Invalid working directory "%s" given!', $workingDirectory));
@@ -151,7 +153,7 @@ class Application extends SingleCommandApplication
         return $returnValue;
     }
 
-    protected function scan(Finder $finder, int $fileCount, SymfonyStyle $io, bool $strict = false, bool $noProgress = false, bool $compact = false): int
+    protected function scan(Finder $finder, int $fileCount, SymfonyStyle $io, bool $strict = false, bool $noProgress = false, bool $compact = false, bool $uncovered = false): int
     {
         $io->writeln('<comment>Starting scan...</comment>');
 
@@ -186,41 +188,47 @@ class Application extends SingleCommandApplication
         // Prepare results after scan
         $invalidFilesCount = 0;
         $errorCountTotal = 0;
-        $unstagedFiles = [];
-        foreach ($fileResults as $file => $fileResult) {
+        $uncoveredFilePaths = [];
+        foreach ($fileResults as $filePath => $fileResult) {
             if (!$fileResult->isValid()) {
                 $errorCount = $fileResult->countErrors();
                 ++$invalidFilesCount;
                 $errorCountTotal += $errorCount;
-                $io->writeln('<info>' . $file . '</info> <comment>[' . $errorCount . ']</comment>');
+                $io->writeln('<info>' . $filePath . '</info> <comment>[' . $errorCount . ']</comment>');
                 if (!$compact) {
                     $io->listing(explode(PHP_EOL, $fileResult->getErrorsAsString()));
                 }
             }
-            if (!$fileResult->hasDeclarations()) {
-                $unstagedFiles[] = $fileResult;
+            if ($uncovered && !$fileResult->hasDeclarations()) {
+                $uncoveredFilePaths[] = $filePath;
             }
         }
 
         // Output results
         if ($errorCountTotal > 0) {
             $io->writeln('<error>' . StringFormatUtility::buildScanResultMessage($errorCountTotal, $invalidFilesCount) . '</error>');
+        } else {
+            $io->writeln('<info>Done. No issues found.</info>');
+        }
 
-            // Uncovered files
-            if ($io->isVerbose() && count($unstagedFiles) > 0) {
-                $io->newLine();
-                $io->writeln('<debug>' . count($unstagedFiles) . ' files are not covered by .editiorconfig declarations:</debug>');
-                foreach ($unstagedFiles as $unstagedFileResult) {
-                    $io->writeln('<debug> - ' . $unstagedFileResult->getFilePath() . '</debug>');
+        // Uncovered files
+        if ($uncovered) {
+            $io->newLine();
+
+            if (0 === count($uncoveredFilePaths)) {
+                $io->writeln('No uncovered files found. Good job!');
+            } else {
+                $textFiles = 1 === count($uncoveredFilePaths) ? 'One file is' : count($uncoveredFilePaths) . ' files are';
+
+                $io->writeln($textFiles . ' not covered by .editiorconfig declarations:');
+                foreach ($uncoveredFilePaths as $unstagedFilePath) {
+                    $io->writeln('<info>' . $unstagedFilePath . '</info>');
                 }
                 $io->newLine();
             }
-
-            return 2;
         }
-        $io->writeln('<info>Done. No issues found.</info>');
 
-        return 0;
+        return $errorCountTotal > 0 ? 2 : 0;
     }
 
     protected function fix(Finder $finder, SymfonyStyle $io, bool $strict = false): int
