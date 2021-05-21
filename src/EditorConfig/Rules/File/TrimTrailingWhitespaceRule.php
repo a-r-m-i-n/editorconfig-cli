@@ -24,7 +24,10 @@ class TrimTrailingWhitespaceRule extends AbstractRule
     {
         $trim = rtrim($content);
         if ($this->insertFinalNewLine) {
-            $trim .= LineEndingUtility::detectLineEnding($content, false) ?: "\n";
+            $insertFinalNewLineRule = new InsertFinalNewLineRule($this->filePath, $content);
+            if ($insertFinalNewLineRule->isValid()) {
+                $trim .= LineEndingUtility::detectLineEnding($content, false) ?: "\n";
+            }
         }
         if ($content !== $trim) {
             $this->addError(null, 'This file has trailing whitespaces.');
