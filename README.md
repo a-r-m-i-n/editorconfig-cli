@@ -93,15 +93,15 @@ Here you see all arguments and options the ``ec`` CLI command provides:
 
 ## Dev notes
 
+```
+$ ddev composer run all
+```
+
 ### Code quality tools
 
 ```
 $ ddev composer run check
-```
-```
 $ ddev composer run fix
-```
-```
 $ ddev composer run test
 ```
 
