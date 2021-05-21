@@ -55,6 +55,12 @@
         "ec-fix": "@editor-config-fix",
         "editor-config": "@php bin/ec -n",
         "editor-config-fix": "@php bin/ec -n --fix",
+        "all": [
+            "@fix",
+            "@check",
+            "@test",
+            "@compile"
+        ],
         "check": [
             "@composer dump -o",
             "@ec",
