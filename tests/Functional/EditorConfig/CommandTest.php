@@ -45,6 +45,7 @@ class CommandTest extends TestCase
 
         self::assertSame(0, $process->getExitCode(), $process->getOutput());
     }
+
     public function testMissingFinalLineTriggersTrailingWhitespace()
     {
         $process = new Process([PHP_BINARY, 'bin/ec', '-d', 'tests/Functional/EditorConfig/Data/missing-final-line-triggers-trailing-whitespace/']);
@@ -52,5 +53,20 @@ class CommandTest extends TestCase
 
         self::assertSame(2, $process->getExitCode());
         self::assertContains('Found 1 issue in 1 file', $process->getOutput());
+    }
+
+    public function testSkippingRules()
+    {
+        $process = new Process([PHP_BINARY, 'bin/ec', '-d', 'tests/Functional/EditorConfig/Data/skip-rules/']);
+        $process->run();
+
+        self::assertSame(2, $process->getExitCode());
+        self::assertContains('This file has trailing whitespaces.', $process->getOutput());
+
+        $process = new Process([PHP_BINARY, 'bin/ec', '-d', 'tests/Functional/EditorConfig/Data/skip-rules/', '-s', 'trim']);
+        $process->run();
+
+        self::assertContains('Skipping rules: trim_trailing_whitespace', $process->getOutput());
+        self::assertSame(0, $process->getExitCode());
     }
 }

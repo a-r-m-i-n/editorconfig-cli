@@ -6,6 +6,7 @@ namespace Armin\EditorconfigCli;
 
 use Armin\EditorconfigCli\Compatibility\SingleCommandApplication;
 use Armin\EditorconfigCli\EditorConfig\Rules\FileResult;
+use Armin\EditorconfigCli\EditorConfig\Rules\Rule;
 use Armin\EditorconfigCli\EditorConfig\Scanner;
 use Armin\EditorconfigCli\EditorConfig\Utility\FinderUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\StringFormatUtility;
@@ -42,13 +43,15 @@ class Application extends SingleCommandApplication
             ->addUsage('ec --unstaged')
             ->addUsage('ec -e"dist" -e".build"')
             ->addUsage('ec -n --no-progress')
+            ->addUsage('ec -s charset,eol -s trim')
             ->addUsage('ec --finder-instance finder-config.php')
             ->addUsage('ec *.js *.css')
             ->addUsage('ec --fix')
 
             ->addArgument('names', InputArgument::IS_ARRAY, 'Name(s) of file names to get checked. Wildcards allowed.', ['*'])
 
-            ->addOption('strict', 's', InputOption::VALUE_NONE, 'When set, any difference of indention size is spotted.')
+            ->addOption('skip', 's', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Disables rules by name. Comma-separation allowed.')
+            ->addOption('strict', null, InputOption::VALUE_NONE, 'When set, any difference of indention size is spotted.')
             ->addOption('fix', 'f', InputOption::VALUE_NONE, 'Fixes all found issues in files (files get overwritten).')
             ->addOption('compact', 'c', InputOption::VALUE_NONE, 'When set, does only list files, no details.')
 
@@ -69,6 +72,11 @@ class Application extends SingleCommandApplication
         /** @var string $dir */
         $dir = $input->getOption('dir');
         $this->scanner->setRootPath($dir);
+
+        /** @var array|null $skip */
+        $skip = $input->getOption('skip');
+        $skippingRules = $this->parseSkippingRules($skip);
+        $this->scanner->setSkippingRules($skippingRules);
     }
 
     protected function executing(Input $input, Output $output): int
@@ -132,6 +140,10 @@ class Application extends SingleCommandApplication
                 $io->writeln('Canceled.');
 
                 return $returnValue; // Early return
+            }
+
+            if (!empty($this->scanner->getSkippingRules())) {
+                $io->writeln('Skipping rules: <comment>' . implode('</comment>, <comment>', $this->scanner->getSkippingRules()) . '</comment>');
             }
 
             // Start scanning or fixing
@@ -253,7 +265,7 @@ class Application extends SingleCommandApplication
                     }
                 } else {
                     $text = 1 === $fileResult->countErrors() ? 'one issue' : $fileResult->countErrors() . ' issues';
-                    $io->writeln(' * fixed <info>' . $text . '</info> in file <info>' . $file . '</info>.');
+                    $io->writeln(' * fixed <info>' . $text . '</info> in file <info>' . $file . '</info>');
                 }
             }
         }
@@ -275,5 +287,41 @@ class Application extends SingleCommandApplication
         $progressBar->setMessage('<info>No issues found, yet</info>');
 
         return $progressBar;
+    }
+
+    protected function parseSkippingRules(array $skippingRules = null): array
+    {
+        if (!$skippingRules) {
+            return [];
+        }
+
+        $flattenSkipRules = [];
+        foreach ($skippingRules as $skipRule) {
+            foreach (explode(',', $skipRule) as $flatRule) {
+                $flattenSkipRules[] = trim($flatRule);
+            }
+        }
+        $skippingRules = $flattenSkipRules;
+
+        foreach ($skippingRules as $index => $skipRule) {
+            $replacements = [
+                'char' => 'charset',
+                'eol' => 'end_of_line',
+                'indent_size' => 'size',
+                'indent_style' => 'style',
+                'tab' => 'tab_width',
+                'newline' => 'insert_final_newline',
+                'trim' => 'trim_trailing_whitespace',
+            ];
+            if (array_key_exists($skipRule, $replacements)) {
+                $skippingRules[$index] = $replacements[$skipRule];
+            }
+        }
+
+        if (!empty($notExistingRules = array_diff($skippingRules, Rule::getDefinitions()))) {
+            throw new \InvalidArgumentException('You try to skip rules which are not existing (' . implode(', ', $notExistingRules) . ').' . PHP_EOL . 'Available rules are: ' . implode(', ', Rule::getDefinitions()), 1621795334);
+        }
+
+        return $skippingRules;
     }
 }

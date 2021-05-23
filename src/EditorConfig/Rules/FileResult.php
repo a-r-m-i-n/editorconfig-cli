@@ -12,7 +12,7 @@ class FileResult
     private $filePath;
 
     /**
-     * @var array|AbstractRule[]
+     * @var array|Rule[]
      */
     private $rules;
 
@@ -70,7 +70,7 @@ class FileResult
     public function getErrors(): array
     {
         $errors = [];
-        /** @var AbstractRule $rule */
+        /** @var Rule $rule */
         foreach ($this->rules as $rule) {
             array_push($errors, ...$rule->getErrors());
         }

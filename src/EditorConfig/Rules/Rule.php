@@ -4,8 +4,17 @@ declare(strict_types = 1);
 
 namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
-abstract class AbstractRule implements RuleInterface
+abstract class Rule implements RuleInterface
 {
+    public const CHARSET = 'charset';
+    public const END_OF_LINE = 'end_of_line';
+    public const INDENT_SIZE = 'indent_size';
+    public const INDENT_STYLE = 'indent_style';
+    public const TAB_WIDTH = 'tab_width';
+    public const INSERT_FINAL_NEWLINE = 'insert_final_newline';
+    public const MAX_LINE_LENGTH = 'max_line_length';
+    public const TRIM_TRAILING_WHITESPACE = 'trim_trailing_whitespace';
+
     /**
      * @var string
      */
@@ -15,6 +24,19 @@ abstract class AbstractRule implements RuleInterface
      * @var array|RuleError[]
      */
     protected $errors = [];
+
+    public static function getDefinitions(): array
+    {
+        return [
+            self::CHARSET,
+            self::END_OF_LINE,
+            self::INDENT_SIZE,
+            self::INDENT_STYLE,
+            self::TAB_WIDTH,
+            self::INSERT_FINAL_NEWLINE,
+            self::TRIM_TRAILING_WHITESPACE,
+        ];
+    }
 
     public function __construct(string $filePath, string $fileContent = null)
     {

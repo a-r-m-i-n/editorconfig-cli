@@ -11,20 +11,28 @@ use Armin\EditorconfigCli\EditorConfig\Rules\File\TrimTrailingWhitespaceRule;
 use Armin\EditorconfigCli\EditorConfig\Rules\Line\IndentionRule;
 use Armin\EditorconfigCli\EditorConfig\Rules\Line\MaxLineLengthRule;
 use Idiosyncratic\EditorConfig\Declaration\Charset;
-use Idiosyncratic\EditorConfig\Declaration\EndOfLine;
-use Idiosyncratic\EditorConfig\Declaration\IndentSize;
-use Idiosyncratic\EditorConfig\Declaration\IndentStyle;
-use Idiosyncratic\EditorConfig\Declaration\InsertFinalNewline;
-use Idiosyncratic\EditorConfig\Declaration\MaxLineLength;
-use Idiosyncratic\EditorConfig\Declaration\TabWidth;
+use Idiosyncratic\EditorConfig\Declaration\Declaration;
 use Idiosyncratic\EditorConfig\Declaration\TrimTrailingWhitespace;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Mime\MimeTypes;
 
 class Validator
 {
-    public function createValidatedFileResult(SplFileInfo $file, array $editorConfig, bool $strictMode = false): FileResult
+    /**
+     * @var array
+     */
+    private $editorConfig;
+
+    /**
+     * @var array
+     */
+    private $skippingRules;
+
+    public function createValidatedFileResult(SplFileInfo $file, array $editorConfig, bool $strictMode = false, array $skippingRules = []): FileResult
     {
+        $this->editorConfig = $editorConfig;
+        $this->skippingRules = $skippingRules;
+
         $filePath = (string)$file->getRealPath();
         $rules = [];
 
@@ -36,14 +44,15 @@ class Validator
 
         // Line rules
         $style = $size = $width = null;
-        if (isset($editorConfig['indent_style']) && $editorConfig['indent_style'] instanceof IndentStyle) {
-            $style = $editorConfig['indent_style']->getStringValue();
+
+        if ($this->hasRuleSet(Rule::INDENT_STYLE)) {
+            $style = $editorConfig[Rule::INDENT_STYLE]->getStringValue();
         }
-        if (isset($editorConfig['indent_size']) && $editorConfig['indent_size'] instanceof IndentSize) {
-            $size = $editorConfig['indent_size']->getValue();
+        if ($this->hasRuleSet(Rule::INDENT_SIZE)) {
+            $size = $editorConfig[Rule::INDENT_SIZE]->getValue();
         }
-        if (isset($editorConfig['tab_width']) && $editorConfig['tab_width'] instanceof TabWidth) {
-            $width = $editorConfig['tab_width']->getValue();
+        if ($this->hasRuleSet(Rule::TAB_WIDTH)) {
+            $width = $editorConfig[Rule::TAB_WIDTH]->getValue();
         }
         $size = $size ?? $width;
         if (!$size) {
@@ -63,19 +72,19 @@ class Validator
         }
 
         $eofRule = null;
-        if (isset($editorConfig['end_of_line']) && $editorConfig['end_of_line'] instanceof EndOfLine) {
+        if ($this->hasRuleSet(Rule::END_OF_LINE)) {
             $rules[] = $eofRule = new EndOfLineRule($filePath, $file->getContents(), $editorConfig['end_of_line']->getStringValue());
         }
 
         $insertFinalNewLine = null;
-        if (isset($editorConfig['insert_final_newline']) && $editorConfig['insert_final_newline'] instanceof InsertFinalNewline && $insertFinalNewLine = $editorConfig['insert_final_newline']->getValue()) {
+        if ($this->hasRuleSet(Rule::INSERT_FINAL_NEWLINE) && $insertFinalNewLine = $editorConfig[Rule::INSERT_FINAL_NEWLINE]->getValue()) {
             $rules[] = new InsertFinalNewLineRule($filePath, $file->getContents(), $eofRule ? $eofRule->getEndOfLine() : null);
         }
-        if (isset($editorConfig['trim_trailing_whitespace']) && $editorConfig['trim_trailing_whitespace'] instanceof TrimTrailingWhitespace && $editorConfig['trim_trailing_whitespace']->getValue()) {
+        if ($this->hasRuleSet(Rule::TRIM_TRAILING_WHITESPACE)) {
             $rules[] = new TrimTrailingWhitespaceRule($filePath, $file->getContents(), $insertFinalNewLine ?? false);
         }
 
-        if (isset($editorConfig['max_line_length']) && $editorConfig['max_line_length'] instanceof MaxLineLength && $editorConfig['max_line_length']->getValue() && 'off' !== $editorConfig['max_line_length']->getValue()) {
+        if ($this->hasRuleSet(Rule::MAX_LINE_LENGTH) && 'off' !== $editorConfig['max_line_length']->getValue()) {
             $maxLineLength = (int)$editorConfig['max_line_length']->getValue();
             if ($maxLineLength > 0) {
                 $rules[] = new MaxLineLengthRule($filePath, $file->getContents(), $maxLineLength);
@@ -83,5 +92,16 @@ class Validator
         }
 
         return new FileResult($filePath, $rules);
+    }
+
+    /**
+     * @param string $ruleName see \Armin\EditorconfigCli\EditorConfig\Rules\Rule class constants
+     */
+    protected function hasRuleSet(string $ruleName): bool
+    {
+        return !in_array($ruleName, $this->skippingRules, true)
+            && isset($this->editorConfig[$ruleName])
+            && $this->editorConfig[$ruleName] instanceof Declaration
+            && ($this->editorConfig[$ruleName]->getValue() || $this->editorConfig[$ruleName]->getStringValue());
     }
 }

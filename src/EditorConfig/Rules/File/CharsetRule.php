@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace Armin\EditorconfigCli\EditorConfig\Rules\File;
 
-use Armin\EditorconfigCli\EditorConfig\Rules\AbstractRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\Rule;
 use Armin\EditorconfigCli\EditorConfig\Rules\UnfixableException;
 use Armin\EditorconfigCli\EditorConfig\Utility\FileEncodingUtility;
 
-class CharsetRule extends AbstractRule
+class CharsetRule extends Rule
 {
     /**
      * @var string
