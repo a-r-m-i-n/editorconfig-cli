@@ -1,0 +1,1 @@
+This file lacks of the required new line at the end.
