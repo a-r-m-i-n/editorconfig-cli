@@ -17,6 +17,11 @@ class Scanner
     private $rootPath;
 
     /**
+     * @var array
+     */
+    private $skippingRules;
+
+    /**
      * @var EditorConfig
      */
     private $editorConfig;
@@ -26,10 +31,12 @@ class Scanner
      */
     private $validator;
 
-    public function __construct(?EditorConfig $editorConfig = null, ?Validator $validator = null)
+    public function __construct(?EditorConfig $editorConfig = null, ?Validator $validator = null, string $rootPath = null, array $skippingRules = [])
     {
         $this->editorConfig = $editorConfig ?? new EditorConfig();
         $this->validator = $validator ?? new Validator();
+        $this->rootPath = $rootPath;
+        $this->skippingRules = $skippingRules;
     }
 
     public function setRootPath(?string $rootPath): void
@@ -38,6 +45,16 @@ class Scanner
             $this->rootPath = realpath($rootPath) ?: '';
             $this->editorConfig = new EditorConfig($rootPath);
         }
+    }
+
+    public function getSkippingRules(): array
+    {
+        return $this->skippingRules;
+    }
+
+    public function setSkippingRules(array $skippingRules): void
+    {
+        $this->skippingRules = $skippingRules;
     }
 
     /**
@@ -51,7 +68,7 @@ class Scanner
         foreach ($finderInstance as $file) {
             $config = $this->editorConfig->getConfigForPath((string)$file->getRealPath());
 
-            $fileResult = $this->validator->createValidatedFileResult($file, $config, $strict);
+            $fileResult = $this->validator->createValidatedFileResult($file, $config, $strict, $this->skippingRules);
             if (!$fileResult->isBinary()) {
                 $filePath = $fileResult->getFilePath();
                 if (!empty($this->rootPath)) {

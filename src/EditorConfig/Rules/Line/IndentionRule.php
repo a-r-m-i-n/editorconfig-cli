@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace Armin\EditorconfigCli\EditorConfig\Rules\Line;
 
-use Armin\EditorconfigCli\EditorConfig\Rules\AbstractRule;
+use Armin\EditorconfigCli\EditorConfig\Rules\Rule;
 use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
-class IndentionRule extends AbstractRule
+class IndentionRule extends Rule
 {
     /**
      * @var string
