@@ -60,12 +60,12 @@ class IndentionRule extends Rule
             }
 
             if ('tab' === $this->style && $whitespaces !== $beginningWhitespaces) {
-                $this->addError($lineCount, 'Expected indention style "tab" but found "spaces".');
+                $this->addError($lineCount, 'Expected indention style "tab" but found "spaces"');
                 $isValid = false;
                 $lineValid = false;
             }
             if ('space' === $this->style && false !== strpos($whitespaces, "\t")) {
-                $this->addError($lineCount, 'Expected indention style "space" but found "tabs".');
+                $this->addError($lineCount, 'Expected indention style "space" but found "tabs"');
                 $isValid = false;
                 $lineValid = false;
             }
@@ -75,7 +75,7 @@ class IndentionRule extends Rule
                 if ($this->strict && $tooMuchSpaces > 0) {
                     $expected = strlen($whitespaces) - $tooMuchSpaces;
                     $actual = $expected + $tooMuchSpaces;
-                    $this->addError($lineCount, 'Expected %d spaces, found %d.', $expected, $actual);
+                    $this->addError($lineCount, 'Expected %d spaces, found %d', $expected, $actual);
                 }
             }
         }

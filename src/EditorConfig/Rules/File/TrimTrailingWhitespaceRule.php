@@ -30,7 +30,7 @@ class TrimTrailingWhitespaceRule extends Rule
             }
         }
         if ($content !== $trim) {
-            $this->addError(null, 'This file has trailing whitespaces.');
+            $this->addError(null, 'This file has trailing whitespaces');
 
             return false;
         }

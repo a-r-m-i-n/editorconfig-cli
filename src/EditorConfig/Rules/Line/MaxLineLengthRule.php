@@ -36,7 +36,7 @@ class MaxLineLengthRule extends Rule
             ++$lineCount;
             $lineLength = strlen($line);
             if ($lineLength > $this->maxLineLength) {
-                $this->addError($lineCount, 'Max line length (%d chars) exceeded by %d chars.', $this->maxLineLength, $lineLength);
+                $this->addError($lineCount, 'Max line length (%d chars) exceeded by %d chars', $this->maxLineLength, $lineLength);
             }
         }
 
