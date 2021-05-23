@@ -1,6 +1,11 @@
 # armin/editorconfig-cli
 
 CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.
+This allows you to automatically ensure EditorConfig declarations during your CI processes.
+
+It is released under [MIT license](LICENSE).
+
+Written by **Armin Vieweg**  <<https://v.ieweg.de>>
 
 
 ## Requirements
@@ -11,7 +16,7 @@ CLI tool to validate and auto-fix text files, based on given .editorconfig decla
 
 ## Installation
 
-To install the editor-config CLI tool you need to download a handy PHAR executable,
+To install the editor-config CLI tool you need to [download a handy PHAR executable](https://github.com/a-r-m-i-n/editorconfig-cli/releases),
 or use Composer like this:
 
 ```
@@ -37,6 +42,18 @@ You'll find more info about syntax and features of EditorConfig on
 https://editorconfig.org
 
 
+### Screenshots
+
+This screenshot shows the help page you get when calling ``ec --help``:
+
+![Screenshot](docs/images/ec.png)
+
+
+Here you see two example runs:
+
+![Demo run](docs/images/ec-demo.gif)
+
+
 ## Features
 
 - Parsing .editorconfig file
@@ -59,13 +76,53 @@ https://editorconfig.org
 
 Composer style:
 ```
-$ vendor/bin/ec --help
+$ vendor/bin/ec [options] [--] [<names>...]
 ```
 
 PHAR style:
 ```
-$ php ec-1.3.0.phar --help
+$ php ec-1.4.0.phar [options] [--] [<names>...]
 ```
+
+**Scanning**
+
+When you do not enter any options, the scan starts immediately when calling ``ec`` PHP binary.
+
+**Fixing**
+
+To apply automatic fixes after scan append the ``--fix`` (or ``-f``) option.
+
+
+### Argument
+
+Name(s) of file names to get checked. Wildcards allowed. Default: ``['*']``
+
+With this you can only scan certain file types, e.g.
+
+```
+$ vendor/bin/ec *.css *.js *.html
+```
+
+
+### Options
+
+The ``ec`` binary supports the following options:
+
+| Option | Shortcut | Description |
+| ------ | -------- | ----------- |
+| ``--dir`` | ``-d`` | Define the directory to scan. By default, the current working directory is used. |
+| ``--exclude`` | ``-e`` | Directories to exclude from scan. Multiple values are allowed. |
+| ``--disable-auto-exclude`` | ``-a`` | Disables exclusion of files ignored by root .gitignore file (when given). |
+| ``--finder-config`` | | Allows to define a PHP file providing a custom Finder instance. [Read more](docs/CustomFinderInstance.md) |
+| ``--skip`` | ``-s`` | Disables rules by name. Multiple and comma-separated values are allowed. |
+| ``--strict`` | | When set, **any** difference of indention size is spotted. |
+| ``--compact`` | ``-s`` | Only shows only files with issues, not the issues itself.  |
+| ``--uncovered`` | ``-u`` | Lists all files which are not covered by .editorconfig. |
+| ``--verbose`` | ``-v`` | Shows additional informations. |
+| ``--no-interaction`` | ``-n`` | Do not ask for confirmation, if more than 500 files found. |
+| ``--no-error-on-exit`` | | By default ``ec`` returns code 2 when issues occurred. With this option set return code is always 0. |
+
+**Tip:** The "usage" section on ``ec``'s help page shows some examples.
 
 
 ### How it works
@@ -73,22 +130,10 @@ $ php ec-1.3.0.phar --help
 1. Counting all files in the given working directory (``-d``).
 2. If the amount of files is greater than 500, ask the user for confirmation to continue
    (use ``-n`` for non-interactive mode).
-3. Starting with scan (when ``--fix`` is **not** set). By default a visual activity indicator shows scanned files
-   (and highlights errors). You can disable this, with ``--no-progress``.
+3. Starting with scan (when ``--fix`` is **not** set). By default a progress indicator shows scanned files
+   (and shows amount of errors). You can disable this, with ``--no-progress``.
    When ``--fix`` (or ``-f``) is set, all found issues get fixed.
 4. It displays the results (to hide details of each file, you can enable the compact mode ``-c``).
-
-
-### Screenshot
-
-Here you see all arguments and options the ``ec`` CLI command provides:
-
-![Screenshot](docs/images/ec.png)
-
-
-### Arguments and options
-
-- Read more about using [Custom Finder instances](docs/CustomFinderInstance.md) (``--finder-config``)
 
 
 ## Dev notes
@@ -112,6 +157,15 @@ $ ddev composer run compile
 ```
 
 Note: In php.ini the option ``phar.readonly`` must be set to ``0``.
+
+
+## Support
+
+Do you have questions, issues or feature requests? Checkout the
+[issue tracker](https://github.com/a-r-m-i-n/editorconfig-cli/issues) on Github.
+
+If you like this project, you are invited to [donate some help](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2DCCULSKFRZFU)
+to support further development. Thank you!
 
 
 ## Changelog

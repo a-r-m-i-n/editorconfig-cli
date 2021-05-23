@@ -38,7 +38,7 @@ class Application extends SingleCommandApplication
         $this
             ->setName('ec')
             ->setVersion(VersionUtility::getApplicationVersionFromComposerJson())
-            ->setDescription("CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.\n  Version: <comment>" . VersionUtility::getApplicationVersionFromComposerJson() . '</comment>')
+            ->setDescription("CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.\n  Version: <comment>" . VersionUtility::getApplicationVersionFromComposerJson() . '</comment>' . "\n  Written by: <comment>Armin Vieweg <https://v.ieweg.de></comment>")
             ->addUsage('ec')
             ->addUsage('ec --unstaged')
             ->addUsage('ec -e"dist" -e".build"')
