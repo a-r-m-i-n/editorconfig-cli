@@ -22,9 +22,9 @@ class RuleError
         $this->line = $line;
     }
 
-    public function getLine(): ?int
+    public function getLine(): int
     {
-        return $this->line;
+        return $this->line ?? 0;
     }
 
     public function getMessage(): string
@@ -35,7 +35,7 @@ class RuleError
     public function __toString(): string
     {
         $errorString = '';
-        if ($this->getLine()) {
+        if (!empty($this->getLine())) {
             $errorString = 'Line ' . $this->getLine() . ': ';
         }
         $errorString .= $this->getMessage();

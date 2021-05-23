@@ -75,6 +75,10 @@ class FileResult
             array_push($errors, ...$rule->getErrors());
         }
 
+        uasort($errors, function (RuleError $a, RuleError $b): int {
+            return $a->getLine() > $b->getLine() ? 1 : -1;
+        });
+
         return $errors;
     }
 
