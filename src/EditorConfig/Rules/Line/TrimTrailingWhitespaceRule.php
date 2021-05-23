@@ -25,7 +25,7 @@ class TrimTrailingWhitespaceRule extends Rule
 
             $trim = rtrim($line);
             if ($trim !== $line) {
-                $this->addError($lineCount, 'Trailing whitespaces found.');
+                $this->addError($lineCount, 'Trailing whitespaces found');
             }
         }
 

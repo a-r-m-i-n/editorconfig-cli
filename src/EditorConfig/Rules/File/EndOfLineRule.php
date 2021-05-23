@@ -48,7 +48,7 @@ class EndOfLineRule extends Rule
         if (!$result) {
             $this->addError(
                 null,
-                'Given line ending "%s" does not match with expected "%s".',
+                'This file has line ending "%s" given, but "%s" is expected',
                 LineEndingUtility::convertActualCharToReadable($actualEndOfLine),
                 $this->endOfLine
             );

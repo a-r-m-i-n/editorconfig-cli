@@ -36,12 +36,13 @@ class CommandTest extends TestCase
         $process->run();
 
         self::assertSame(2, $process->getExitCode());
-        self::assertContains('/invalid.txt [4]', $process->getOutput());
-        self::assertContains('Line 1: Expected indention style "space" but found "tabs"', $process->getOutput());
-        self::assertContains('Given encoding does not match! Expected: "latin1", Given: "utf-8"', $process->getOutput());
+        self::assertContains('/invalid.txt [5]', $process->getOutput());
+        self::assertContains('This file has line ending "lf" given, but "crlf" is expected', $process->getOutput());
+        self::assertContains('This file has invalid encoding given! Expected: "latin1", Given: "utf-8"', $process->getOutput());
         self::assertContains('This file has trailing whitespaces', $process->getOutput());
+        self::assertContains('Line 1: Expected indention style "space" but found "tabs"', $process->getOutput());
         self::assertContains('Line 5: Max line length (80 chars) exceeded by 123 chars', $process->getOutput());
-        self::assertContains('Missing final new line', $process->getOutput());
+        self::assertContains('This file has no final new line given', $process->getOutput());
     }
 
     public function testTrailingWhitespacesVsAddNewLine()
@@ -67,7 +68,7 @@ class CommandTest extends TestCase
         $process->run();
 
         self::assertSame(2, $process->getExitCode());
-        self::assertContains('This file has trailing whitespaces.', $process->getOutput());
+        self::assertContains('This file has trailing whitespaces', $process->getOutput());
 
         $process = new Process([PHP_BINARY, 'bin/ec', '-d', 'tests/Functional/EditorConfig/Data/skip-rules/', '-s', 'trim']);
         $process->run();

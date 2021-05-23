@@ -29,7 +29,7 @@ class InsertFinalNewLineRule extends Rule
         $lastChar = substr($content, -1);
         $result = in_array($lastChar, ["\r", "\n"], true);
         if (!$result) {
-            $this->addError(null, 'Missing final new line.');
+            $this->addError(null, 'This file has no final new line given');
         }
 
         return $result;

@@ -28,7 +28,7 @@ class CharsetRule extends Rule
         if (!$result) {
             $this->addError(
                 null,
-                'Given encoding does not match! Expected: "%s", Given: "%s"',
+                'This file has invalid encoding given! Expected: "%s", Given: "%s"',
                 $this->expectedEncoding,
                 $actualEncoding
             );
