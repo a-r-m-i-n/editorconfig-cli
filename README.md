@@ -1,9 +1,11 @@
 # armin/editorconfig-cli
 
-CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.
-This allows you to automatically ensure EditorConfig declarations during your CI processes.
+[![Code Checks](https://github.com/a-r-m-i-n/editorconfig-cli/actions/workflows/code-checks.yml/badge.svg)](https://github.com/a-r-m-i-n/editorconfig-cli/actions/workflows/code-checks.yml)
 
-It is released under [MIT license](LICENSE).
+Free CLI tool (written in PHP) to **validate and auto-fix** text files based on given **.editorconfig** declarations.
+This allows you to automatically ensure EditorConfig declarations during your CI and development processes.
+
+**armin/editorconfig-cli** is released under [MIT license](LICENSE).
 
 Written by **Armin Vieweg**  <<https://v.ieweg.de>>
 
@@ -46,7 +48,7 @@ https://editorconfig.org
 
 This screenshot shows the help page you get when calling ``ec --help``:
 
-![Screenshot](docs/images/ec.png)
+![Screenshot](docs/images/ec-1.4.png)
 
 
 Here you see two example runs:
@@ -69,8 +71,9 @@ Here you see two example runs:
     - Indention
         - Style (tab/spaces)
         - Size (width)
-- Optional strict mode to force defined indent size of spaces
-
+- Optional strict mode (``--strict``) to force defined indent size of spaces (may conflict with other code linters)
+- Allow skipping certain rules (e.g. ``--skip charset,eol``)
+- List files, currently uncovered by given .editorconfig declarations (``--uncovered``)
 
 ## Usage
 
@@ -88,9 +91,20 @@ $ php ec-1.4.0.phar [options] [--] [<names>...]
 
 When you do not enter any options, the scan starts immediately when calling ``ec`` PHP binary.
 
+**Note:** By default **no** dotted files/dirs are scanned (e.g. ``.ddev/`` or ``.htaccess``).
+          To change this you need to specifiy a [custom Finder instance](docs/CustomFinderInstance.md).
+
+
 **Fixing**
 
 To apply automatic fixes after scan append the ``--fix`` (or ``-f``) option.
+
+Currently, two rules do not support auto-fixing:
+
+- Charset
+- MaxLineLength
+
+You get a notice for this in result output, when such issues occur.
 
 
 ### Argument
@@ -115,7 +129,7 @@ The ``ec`` binary supports the following options:
 | ``--disable-auto-exclude`` | ``-a`` | Disables exclusion of files ignored by root .gitignore file (when given). |
 | ``--finder-config`` | | Allows to define a PHP file providing a custom Finder instance. [Read more](docs/CustomFinderInstance.md) |
 | ``--skip`` | ``-s`` | Disables rules by name. Multiple and comma-separated values are allowed. |
-| ``--strict`` | | When set, **any** difference of indention size is spotted. |
+| ``--strict`` | | When set, given indention size is forced during scan and fixing. This might conflict with more detailed indention rules, checked by other linters and style-fixers in your project. |
 | ``--compact`` | ``-s`` | Only shows only files with issues, not the issues itself.  |
 | ``--uncovered`` | ``-u`` | Lists all files which are not covered by .editorconfig. |
 | ``--verbose`` | ``-v`` | Shows additional informations. |
