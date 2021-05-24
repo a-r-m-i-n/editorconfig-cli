@@ -7,6 +7,27 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.4.0
+
+- [TASK] Improve texts
+- [TASK] Streamline wording of error messages
+- [TASK] Sort error result by line
+- [TEST] Improve functional test
+- [FEATURE] Add new option --skip (-s)
+- [BUGFIX] Respect "root=true" flag
+- [TEMP] Add patched EditorConfig
+- [BUGFIX] Respect missing final new line
+- [DEVOPS] Add composer script "all"
+- [FEATURE] Add new option --uncovered
+- [TASK] Add more verbose output (-v)
+- [BUGFIX] Do not require "end_of_line", when using "insert_final_newline"
+- [FEATURE] Add first functional tests
+- [BUGFIX] Do not throw exception, when no root .gitignore file given
+- [TASK] Do not output full path in result
+- [TASK] Add progress bar and streamline scan result message
+- [DEVOPS] Add Github action to automate releases
+
+
 ### 1.3.1
 
 - [TASK] Update dependencies
