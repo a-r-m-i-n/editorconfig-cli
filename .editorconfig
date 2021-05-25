@@ -34,7 +34,7 @@ indent_size = 4
 # YAML-Files
 [{*.yaml,*.yml}]
 indent_style = space
-indent_size = 4
+indent_size = 2
 
 [LICENSE]
 indent_style = tab

@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Build and test application
     strategy:
       matrix:
         php:
@@ -50,4 +51,11 @@ jobs:
       run: composer run-script check
 
     - name: Run test suite
-      run: composer run-script test
+      run: composer run-script test-with-coverage
+
+    - name: Upload test reports artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: test-reports-${{ matrix.php }}-${{ matrix.dependencies }}
+        path: |
+            .build/reports/*
