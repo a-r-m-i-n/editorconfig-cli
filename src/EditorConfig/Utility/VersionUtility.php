@@ -10,7 +10,9 @@ class VersionUtility
     {
         $data = file_get_contents(__DIR__ . '/../../../composer.json');
         if (!$data) {
+            // @codeCoverageIgnoreStart
             return '';
+            // @codeCoverageIgnoreEnd
         }
         $json = json_decode($data, true);
 

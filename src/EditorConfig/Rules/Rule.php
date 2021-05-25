@@ -56,6 +56,11 @@ abstract class Rule implements RuleInterface
         return $this->errors;
     }
 
+    /**
+     * Only used in UnitTests.
+     *
+     * @codeCoverageIgnore
+     */
     public function getErrorsAsText(): string
     {
         $errors = [];
