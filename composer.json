@@ -83,11 +83,18 @@
             "@test-php-unit",
             "@test-php-functional"
         ],
+        "test-with-coverage": [
+            "@composer dump -o",
+            "@test-php-unit-coverage",
+            "@test-php-functional-coverage"
+        ],
         "php-stan": "phpstan analyse -c .build/phpstan.neon",
         "php-cs": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi --verbose --diff --dry-run",
         "php-fix": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi",
-        "test-php-unit": "phpunit -c .build/phpunit.xml --colors=always --testsuite Unit",
-        "test-php-functional": "phpunit -c .build/phpunit.xml --colors=always --testsuite Functional",
+        "test-php-unit": "phpunit -c .build/phpunit-unit.xml --no-coverage",
+        "test-php-functional": "phpunit -c .build/phpunit-functional.xml --no-coverage",
+        "test-php-unit-coverage": "export XDEBUG_MODE=coverage && phpunit -c .build/phpunit-unit.xml",
+        "test-php-functional-coverage": "export XDEBUG_MODE=coverage && phpunit -c .build/phpunit-functional.xml",
         "compile": [
             "@composer dump -o --no-dev",
             "Armin\\EditorconfigCli\\Compiler::compile"
