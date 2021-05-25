@@ -3,3 +3,4 @@
 *.phar
 /.php_cs.cache
 /.build/reports
+/.build/.cache

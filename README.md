@@ -164,6 +164,21 @@ $ ddev composer run fix
 $ ddev composer run test
 ```
 
+### Testing
+
+```
+$ ddev composer run test-with-coverage
+```
+Note: Xdebug must be available (``ddev xdebug on``)
+
+The results will be located here:
+
+- [Text Report for Unit Tests](.build/reports/phpunit-unit-results.txt)
+- [Text Report for Functional Tests](.build/reports/phpunit-functional-results.txt)
+- [HTML Coverage Report for Unit Tests](.build/reports/coverage-unit/index.html)
+- [HTML Coverage Report for Functional Tests](.build/reports/coverage-functional/index.html)
+
+
 ### Compiling phar binary
 
 ```
