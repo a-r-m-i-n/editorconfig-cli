@@ -1,1 +1,0 @@
-No trailing whitespaces, but also no single new line.

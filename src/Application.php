@@ -137,9 +137,11 @@ class Application extends SingleCommandApplication
             }
 
             if ($count > 500 && !$input->getOption('no-interaction') && !$io->confirm('Continue?', false)) {
+                // @codeCoverageIgnoreStart
                 $io->writeln('Canceled.');
 
                 return $returnValue; // Early return
+                // @codeCoverageIgnoreEnd
             }
 
             if (!empty($this->scanner->getSkippingRules())) {
@@ -220,7 +222,7 @@ class Application extends SingleCommandApplication
         if ($errorCountTotal > 0) {
             $io->writeln('<error>' . StringFormatUtility::buildScanResultMessage($errorCountTotal, $invalidFilesCount) . '</error>');
         } else {
-            $io->writeln('<info>Done. No issues found.</info>');
+            $io->writeln('<info>Done. ' . StringFormatUtility::buildScanResultMessage($errorCountTotal, $invalidFilesCount) . '</info>');
         }
 
         // Uncovered files
