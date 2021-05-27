@@ -8,7 +8,6 @@ use function array_merge;
 use function array_pop;
 use const DIRECTORY_SEPARATOR;
 use function dirname;
-use function implode;
 use function is_file;
 use function is_readable;
 use function realpath;
@@ -56,13 +55,6 @@ final class EditorConfig
         }
 
         return $configuration;
-    }
-
-    public function printConfigForPath(string $path): string
-    {
-        $config = $this->getConfigForPath($path);
-
-        return implode("\n", $config);
     }
 
     /**
