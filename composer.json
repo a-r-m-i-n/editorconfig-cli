@@ -59,8 +59,8 @@
     "scripts": {
         "ec": "@editor-config",
         "ec-fix": "@editor-config-fix",
-        "editor-config": "@php bin/ec -n",
-        "editor-config-fix": "@php bin/ec -n --fix",
+        "editor-config": "@php bin/ec -n -g",
+        "editor-config-fix": "@php bin/ec -n -g --fix",
         "all": [
             "@fix",
             "@check",

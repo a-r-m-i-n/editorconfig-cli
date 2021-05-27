@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Armin\EditorconfigCli\EditorConfig\Utility;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class FinderUtility
 {
@@ -14,24 +15,58 @@ class FinderUtility
     private static $currentExcludes = [];
 
     /**
-     * Creates new Symfony Finder instance by given finderOptions array.
+     * Creates new Symfony Finder instance based on given config.
      */
-    public static function createByFinderOptions(array $finderOptions): Finder
+    public static function createByFinderOptions(array $finderOptions, ?string $gitOnly = null): Finder
     {
-        $excludePaths = $finderOptions['exclude'];
+        if (!empty($gitOnly)) {
+            return self::buildGitOnlyFinder($finderOptions['path'], $gitOnly);
+        }
 
-        self::$currentExcludes = $excludePaths;
+        return self::buildFinderByCliArguments($finderOptions);
+    }
+
+    /**
+     * Using finderOptions array to build Finder instance.
+     */
+    protected static function buildFinderByCliArguments(array $finderOptions): Finder
+    {
+        self::$currentExcludes = $finderOptions['exclude'];
 
         $finder = new Finder();
-        $finder
+
+        return $finder
             ->files()
             ->ignoreVCS(true)
             ->ignoreVCSIgnored(!$finderOptions['disable-auto-exclude'] && is_readable($finderOptions['path'] . '/.gitignore'))
             ->name($finderOptions['names'])
-            ->notPath($excludePaths)
+            ->notPath(self::$currentExcludes)
             ->in($finderOptions['path']);
+    }
 
-        return $finder;
+    /**
+     * Calling local git binary to identify files known to Git.
+     * Used, when --git-only (-g) is set.
+     */
+    protected static function buildGitOnlyFinder(string $workingDir, string $gitOnlyCommand): Finder
+    {
+        exec('cd ' . $workingDir . ' && ' . $gitOnlyCommand . ' 2>&1', $result, $returnCode);
+        if (0 !== $returnCode) {
+            throw new \RuntimeException('Git binary returned error code ' . $returnCode . ' with the following output:' . PHP_EOL . PHP_EOL . implode(PHP_EOL, $result), $returnCode);
+        }
+
+        $finder = new Finder();
+        if (!empty($result)) {
+            $iterator = [];
+            foreach ($result as $item) {
+                $iterator[] = new SplFileInfo($workingDir . '/' . $item, $item, $item);
+            }
+            $finder->append($iterator);
+        } else {
+            $finder->append([]);
+        }
+
+        return $finder->files()->ignoreVCS(true);
     }
 
     /**
