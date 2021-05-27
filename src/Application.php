@@ -56,6 +56,8 @@ class Application extends SingleCommandApplication
             ->addOption('compact', 'c', InputOption::VALUE_NONE, 'When set, does only list files, no details')
 
             ->addOption('dir', 'd', InputOption::VALUE_OPTIONAL, 'Working directory to scan', getcwd())
+            ->addOption('git-only', 'g', InputOption::VALUE_NONE, 'Only scans files which are currently under control of Git.')
+            ->addOption('git-only-cmd', null, InputOption::VALUE_OPTIONAL, 'Allows to modify git command executed when --git-only (-g) is given.', 'git ls-files')
             ->addOption('finder-config', null, InputOption::VALUE_OPTIONAL, 'Optional path to PHP file (relative from working dir (-d)), returning a pre-configured Symfony Finder instance')
             ->addOption('disable-auto-exclude', 'a', InputOption::VALUE_NONE, 'By default all files ignored by existing .gitignore, will be excluded from scanning. This options disables it')
             ->addOption('exclude', 'e', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Directories to exclude')
@@ -110,18 +112,30 @@ class Application extends SingleCommandApplication
                     sprintf('<comment>Loading custom Symfony Finder configuration from %s</comment>', $finderConfigPath)
                 );
             }
-            $finder = $finder ?? FinderUtility::createByFinderOptions($finderOptions);
+            /** @var bool $gitOnlyEnabled */
+            $gitOnlyEnabled = $input->getOption('git-only');
+            /** @var string|null $gitOnlyCommand */
+            $gitOnlyCommand = $input->getOption('git-only-cmd');
+
+            $finder = $finder ?? FinderUtility::createByFinderOptions($finderOptions, $gitOnlyEnabled ? $gitOnlyCommand : null);
 
             // Check amount of files to scan and ask for confirmation
             if ($finderConfigPath) {
                 $io->writeln('Searching with custom Finder instance...');
             } else {
                 $io->writeln(sprintf('Searching in directory <comment>%s</comment>...', $realPath));
+                if ($gitOnlyEnabled && $gitOnlyCommand) {
+                    $io->writeln('Get files from git binary (command: <comment>' . $gitOnlyCommand . '</comment>):');
+                }
             }
             if (!$finderConfigPath && $output->isVerbose()) {
-                $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
-                $io->writeln('<debug>Excluded: ' . (count(FinderUtility::getCurrentExcludes()) > 0 ? implode(', ', FinderUtility::getCurrentExcludes()) : '-') . '</debug>');
-                $io->writeln('<debug>Auto exclude: ' . ($input->getOption('disable-auto-exclude') ? 'disabled' : 'enabled') . '</debug>');
+                if ($gitOnlyEnabled && $gitOnlyCommand) {
+                    $io->writeln('<debug>Names and (auto-) excludes disabled, because of set git-only mode.</debug>');
+                } else {
+                    $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
+                    $io->writeln('<debug>Excluded: ' . (count(FinderUtility::getCurrentExcludes()) > 0 ? implode(', ', FinderUtility::getCurrentExcludes()) : '-') . '</debug>');
+                    $io->writeln('<debug>Auto exclude: ' . ($input->getOption('disable-auto-exclude') ? 'disabled' : 'enabled') . '</debug>');
+                }
             }
             if ($output->isVerbose()) {
                 $io->writeln('<debug>Strict mode: ' . ($input->getOption('strict') ? 'enabled' : 'disabled') . '</debug>');

@@ -44,7 +44,7 @@ You'll find more info about syntax and features of EditorConfig on
 https://editorconfig.org
 
 
-### Screenshots
+## Screenshots
 
 This screenshot shows the help page you get when calling ``ec --help``:
 
@@ -87,15 +87,22 @@ PHAR style:
 $ php ec-1.4.0.phar [options] [--] [<names>...]
 ```
 
-**Scanning**
+### Scanning
 
 When you do not enter any options, the scan starts immediately when calling ``ec`` PHP binary.
 
-**Note:** By default **no** dotted files/dirs are scanned (e.g. ``.ddev/`` or ``.htaccess``).
-          To change this you need to specifiy a [custom Finder instance](docs/CustomFinderInstance.md).
+EditorConfigCli supports **three different modes to find files** to check for:
 
+1. **By CLI arguments and options**, which configures and utilizes a ``symfony/finder`` instance (used by default).
 
-**Fixing**
+   *Note:* No dotted files and directories are getting scanned (e.g. ``.ddev/`` or ``.htaccess``).
+   Also, files covered by root ``.gitignore`` file, will be automatically excluded from scan.
+
+2. **Using local Git binary**, to get all files known Git. CLI args and options are ignored, then. (``--git-only``)
+
+3. **Using a custom finder instance**, which you can provide via a separate PHP file (``--finder-config``).
+
+### Fixing
 
 To apply automatic fixes after scan append the ``--fix`` (or ``-f``) option.
 
@@ -106,6 +113,8 @@ Currently, two rules do not support auto-fixing:
 
 You get a notice for this in result output, when such issues occur.
 
+
+## CLI
 
 ### Argument
 
@@ -127,6 +136,8 @@ The ``ec`` binary supports the following options:
 | ``--dir`` | ``-d`` | Define the directory to scan. By default, the current working directory is used. |
 | ``--exclude`` | ``-e`` | Directories to exclude from scan. Multiple values are allowed. |
 | ``--disable-auto-exclude`` | ``-a`` | Disables exclusion of files ignored by root .gitignore file (when given). |
+| ``--git-only`` | ``-g`` | Ignores all excludes and scans for all files known to Git. Requires git binary to be present. |
+| ``--git-only-cmd`` | | Allows you to modify the git command (incl. binary) to get file list. Default: ``git ls-files`` |
 | ``--finder-config`` | | Allows to define a PHP file providing a custom Finder instance. [Read more](docs/CustomFinderInstance.md) |
 | ``--skip`` | ``-s`` | Disables rules by name. Multiple and comma-separated values are allowed. |
 | ``--strict`` | | When set, given indention size is forced during scan and fixing. This might conflict with more detailed indention rules, checked by other linters and style-fixers in your project. |
@@ -138,16 +149,6 @@ The ``ec`` binary supports the following options:
 
 **Tip:** The "usage" section on ``ec``'s help page shows some examples.
 
-
-### How it works
-
-1. Counting all files in the given working directory (``-d``).
-2. If the amount of files is greater than 500, ask the user for confirmation to continue
-   (use ``-n`` for non-interactive mode).
-3. Starting with scan (when ``--fix`` is **not** set). By default a progress indicator shows scanned files
-   (and shows amount of errors). You can disable this, with ``--no-progress``.
-   When ``--fix`` (or ``-f``) is set, all found issues get fixed.
-4. It displays the results (to hide details of each file, you can enable the compact mode ``-c``).
 
 
 ## Dev notes

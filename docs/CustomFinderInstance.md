@@ -13,6 +13,14 @@ the project's root directory and is named **ec-cli-config.php**:
 $ bin/ec --finder-config ec-cli-config.php
 ```
 
+**Important:** When this option is set, the following CLI options will not have any impact
+anymore:
+
+- ``-d, --dir[=DIR]``
+- ``-a, --disable-auto-exclude``
+- ``-e, --exclude[=EXCLUDE]``
+- ``-g, --git-only``
+
 ## Finder config file
 
 Within the config file, you need to create and configure a Finder instance. **The following aspects are important:**
