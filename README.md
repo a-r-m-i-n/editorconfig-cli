@@ -60,17 +60,17 @@ Here you see two example runs:
 
 - Parsing .editorconfig file
 - Validating files against corresponding .editorconfig declarations
-    - Auto exclusion of files matching .gitignore declarations
-- Tool to fix most issues automatically
-- The following "rules" are existing:
-    - Charset (check only)
+- Several modes to iterate through your project files
+- Tool to fix issues automatically
+- The following EditorConfig declarations (also called "rules") are being processed:
     - EndOfLine
     - InsertFinalNewLine
     - TrimTrailingWhitespace
-    - MaxLineLength (check only)
     - Indention
         - Style (tab/spaces)
         - Size (width)
+    - Charset (*check only*)
+    - MaxLineLength (*check only*)
 - Optional strict mode (``--strict``) to force defined indent size of spaces (may conflict with other code linters)
 - Allow skipping certain rules (e.g. ``--skip charset,eol``)
 - List files, currently uncovered by given .editorconfig declarations (``--uncovered``)
@@ -101,6 +101,7 @@ EditorConfigCli supports **three different modes to find files** to check for:
 2. **Using local Git binary**, to get all files known Git. CLI args and options are ignored, then. (``--git-only``)
 
 3. **Using a custom finder instance**, which you can provide via a separate PHP file (``--finder-config``).
+
 
 ### Fixing
 
@@ -150,52 +151,15 @@ The ``ec`` binary supports the following options:
 **Tip:** The "usage" section on ``ec``'s help page shows some examples.
 
 
-
-## Dev notes
-
-```
-$ ddev composer run all
-```
-
-### Code quality tools
-
-```
-$ ddev composer run check
-$ ddev composer run fix
-$ ddev composer run test
-```
-
-### Testing
-
-```
-$ ddev composer run test-with-coverage
-```
-Note: Xdebug must be available (``ddev xdebug on``)
-
-The results will be located here:
-
-- [Text Report for Unit Tests](.build/reports/phpunit-unit-results.txt)
-- [Text Report for Functional Tests](.build/reports/phpunit-functional-results.txt)
-- [HTML Coverage Report for Unit Tests](.build/reports/coverage-unit/index.html)
-- [HTML Coverage Report for Functional Tests](.build/reports/coverage-functional/index.html)
-
-
-### Compiling phar binary
-
-```
-$ ddev composer run compile
-```
-
-Note: In php.ini the option ``phar.readonly`` must be set to ``0``.
-
-
-## Support
+## Support and Contribution
 
 Do you have questions, issues or feature requests? Checkout the
 [issue tracker](https://github.com/a-r-m-i-n/editorconfig-cli/issues) on Github.
 
 If you like this project, you are invited to [donate some help](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2DCCULSKFRZFU)
 to support further development. Thank you!
+
+In case you want to contribute code, checkout the [Contribution guide](docs/Contribute.md) for developers.
 
 
 ## Changelog
