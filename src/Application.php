@@ -89,6 +89,9 @@ class Application extends SingleCommandApplication
 
         /** @var string $workingDirectory */
         $workingDirectory = $input->getOption('dir');
+        if (empty($workingDirectory)) {
+            $workingDirectory = getcwd() ?: '.';
+        }
         $realPath = realpath($workingDirectory);
         $returnValue = 0;
 
