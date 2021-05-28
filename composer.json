@@ -93,8 +93,8 @@
         "php-fix": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi",
         "test-php-unit": "phpunit -c .build/phpunit-unit.xml --no-coverage",
         "test-php-functional": "phpunit -c .build/phpunit-functional.xml --no-coverage",
-        "test-php-unit-coverage": "export XDEBUG_MODE=coverage && phpunit -c .build/phpunit-unit.xml",
-        "test-php-functional-coverage": "export XDEBUG_MODE=coverage && phpunit -c .build/phpunit-functional.xml",
+        "test-php-unit-coverage": "export XDEBUG_MODE=coverage && phpunit -c .build/phpunit-unit.xml --coverage-text",
+        "test-php-functional-coverage": "export XDEBUG_MODE=coverage && phpunit -c .build/phpunit-functional.xml --coverage-text",
         "compile": [
             "@composer dump -o --no-dev",
             "Armin\\EditorconfigCli\\Compiler::compile"
