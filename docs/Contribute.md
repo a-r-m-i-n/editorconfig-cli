@@ -1,6 +1,6 @@
 # Contribute
 
-Any contributions to EditorConfigCli are very welcome! No matter if you report issues or contribute code.
+Any contributions to EditorConfigCLI are very welcome! No matter if you report issues or contribute code.
 
 If you want to provide some code, here are some hints for you.
 

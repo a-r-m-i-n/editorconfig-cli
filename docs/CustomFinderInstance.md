@@ -1,6 +1,6 @@
 # Custom Finder Instance
 
-Since version 1.3, the editorconfig-cli binary allows you to define a specific PHP file,
+Since version 1.3, the EditorConfigCLI binary allows you to define a specific PHP file,
 providing your own Symfony Finder instance, which is used to identify the files to be processed.
 
 ## CLI Call
@@ -25,14 +25,14 @@ anymore:
 
 Within the config file, you need to create and configure a Finder instance. **The following aspects are important:**
 
-- editorconfig-cli expects as return value a ``Symfony\Component\Finder\Finder`` instance.
+- EditorConfigCLI expects as return value a ``Symfony\Component\Finder\Finder`` instance.
   Anything else will cause an exception.
 
 - The finder instance requires one option to be set:
   ```
   $finder->in('/path');
   ```
-- Also, the rules require ``->files()`` to be set, which happens automatically in editorconfig-cli, after
+- Also, the rules require ``->files()`` to be set, which happens automatically in EditorConfigCLI, after
   the custom Finder instance as been successfully imported.
 
 

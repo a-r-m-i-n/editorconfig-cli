@@ -10,6 +10,7 @@ use Armin\EditorconfigCli\EditorConfig\Rules\Rule;
 use Armin\EditorconfigCli\EditorConfig\Scanner;
 use Armin\EditorconfigCli\EditorConfig\Utility\FinderUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\StringFormatUtility;
+use Armin\EditorconfigCli\EditorConfig\Utility\TimeTrackingUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\VersionUtility;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -29,15 +30,22 @@ class Application extends SingleCommandApplication
      */
     private $scanner;
 
+    /**
+     * @var string
+     */
+    private $version;
+
     public function __construct(string $name = 'ec', ?Scanner $scanner = null)
     {
+        TimeTrackingUtility::reset();
+        TimeTrackingUtility::addStep('Start');
         parent::__construct($name);
 
         $this->scanner = $scanner ?? new Scanner();
 
         $this
             ->setName('ec')
-            ->setVersion(VersionUtility::getApplicationVersionFromComposerJson())
+            ->setVersion($this->version = VersionUtility::getApplicationVersionFromComposerJson())
             ->setDescription("CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.\n  Version:    <comment>" . VersionUtility::getApplicationVersionFromComposerJson() . '</comment>' . "\n  Written by: <comment>Armin Vieweg <https://v.ieweg.de></comment>")
             ->addUsage('ec')
             ->addUsage('ec *.js *.css')
@@ -93,85 +101,101 @@ class Application extends SingleCommandApplication
             $workingDirectory = getcwd() ?: '.';
         }
         $realPath = realpath($workingDirectory);
-        $returnValue = 0;
-
-        if ($realPath) {
-            // Create (or get) Symfony Finder instance
-            $finderOptions = [
-                'path' => $realPath,
-                'names' => (array)$input->getArgument('names'),
-                'exclude' => (array)$input->getOption('exclude'),
-                'disable-auto-exclude' => (bool)$input->getOption('disable-auto-exclude'),
-            ];
-
-            $finderConfigPath = null;
-            if (!empty($input->getOption('finder-config'))) {
-                /** @var string $finderConfigPath */
-                $finderConfigPath = $input->getOption('finder-config');
-                $finderConfigPath = $realPath . '/' . $finderConfigPath;
-                $finder = FinderUtility::loadCustomFinderInstance($finderConfigPath, $finderOptions);
-
-                $io->writeln(
-                    sprintf('<comment>Loading custom Symfony Finder configuration from %s</comment>', $finderConfigPath)
-                );
-            }
-            /** @var bool $gitOnlyEnabled */
-            $gitOnlyEnabled = $input->getOption('git-only');
-            /** @var string|null $gitOnlyCommand */
-            $gitOnlyCommand = $input->getOption('git-only-cmd');
-
-            $finder = $finder ?? FinderUtility::createByFinderOptions($finderOptions, $gitOnlyEnabled ? $gitOnlyCommand : null);
-
-            // Check amount of files to scan and ask for confirmation
-            if ($finderConfigPath) {
-                $io->writeln('Searching with custom Finder instance...');
-            } else {
-                $io->writeln(sprintf('Searching in directory <comment>%s</comment>...', $realPath));
-                if ($gitOnlyEnabled && $gitOnlyCommand) {
-                    $io->writeln('Get files from git binary (command: <comment>' . $gitOnlyCommand . '</comment>):');
-                }
-            }
-            if (!$finderConfigPath && $output->isVerbose()) {
-                if ($gitOnlyEnabled && $gitOnlyCommand) {
-                    $io->writeln('<debug>Names and (auto-) excludes disabled, because of set git-only mode.</debug>');
-                } else {
-                    $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
-                    $io->writeln('<debug>Excluded: ' . (count(FinderUtility::getCurrentExcludes()) > 0 ? implode(', ', FinderUtility::getCurrentExcludes()) : '-') . '</debug>');
-                    $io->writeln('<debug>Auto exclude: ' . ($input->getOption('disable-auto-exclude') ? 'disabled' : 'enabled') . '</debug>');
-                }
-            }
-            if ($output->isVerbose()) {
-                $io->writeln('<debug>Strict mode: ' . ($input->getOption('strict') ? 'enabled' : 'disabled') . '</debug>');
-                $io->writeln('<debug>Output mode: ' . ($input->getOption('compact') ? 'compact' : 'full') . '</debug>');
-            }
-
-            $io->writeln(sprintf('Found <info>%d files</info> to scan.', $count = $finder->count()));
-
-            if (0 === $count) {
-                $io->writeln('Nothing to do here.');
-
-                return $returnValue; // Early return
-            }
-
-            if ($count > 500 && !$input->getOption('no-interaction') && !$io->confirm('Continue?', false)) {
-                // @codeCoverageIgnoreStart
-                $io->writeln('Canceled.');
-
-                return $returnValue; // Early return
-                // @codeCoverageIgnoreEnd
-            }
-
-            if (!empty($this->scanner->getSkippingRules())) {
-                $io->writeln('Skipping rules: <comment>' . implode('</comment>, <comment>', $this->scanner->getSkippingRules()) . '</comment>');
-            }
-
-            // Start scanning or fixing
-            $returnValue = !$input->getOption('fix')
-                ? $this->scan($finder, $count, $io, (bool)$input->getOption('strict'), (bool)$input->getOption('no-progress'), (bool)$input->getOption('compact'), (bool)$input->getOption('uncovered'))
-                : $this->fix($finder, $io, (bool)$input->getOption('strict'));
-        } else {
+        if (!$realPath) {
             $io->error(sprintf('Invalid working directory "%s" given!', $workingDirectory));
-            $returnValue = 1;
+
+            return 1;
+        }
+
+        TimeTrackingUtility::addStep('Command initialized');
+
+        $io->writeln('EditorConfigCLI <info>v' . $this->version . '</info> by Armin Vieweg');
+
+        // Init return value
+        $returnValue = 0;
+        // Create (or get) Symfony Finder instance
+        $finderOptions = [
+            'path' => $realPath,
+            'names' => (array)$input->getArgument('names'),
+            'exclude' => (array)$input->getOption('exclude'),
+            'disable-auto-exclude' => (bool)$input->getOption('disable-auto-exclude'),
+        ];
+
+        $finderConfigPath = null;
+        if (!empty($input->getOption('finder-config'))) {
+            /** @var string $finderConfigPath */
+            $finderConfigPath = $input->getOption('finder-config');
+            $finderConfigPath = $realPath . '/' . $finderConfigPath;
+            $finder = FinderUtility::loadCustomFinderInstance($finderConfigPath, $finderOptions);
+
+            $io->writeln(
+                sprintf('<comment>Loading custom Symfony Finder configuration from %s</comment>', $finderConfigPath)
+            );
+        }
+        /** @var bool $gitOnlyEnabled */
+        $gitOnlyEnabled = $input->getOption('git-only');
+        /** @var string|null $gitOnlyCommand */
+        $gitOnlyCommand = $input->getOption('git-only-cmd');
+
+        $finder = $finder ?? FinderUtility::createByFinderOptions($finderOptions, $gitOnlyEnabled ? $gitOnlyCommand : null);
+
+        // Check amount of files to scan and ask for confirmation
+        if ($finderConfigPath) {
+            $io->writeln('Searching with custom Finder instance...');
+        } else {
+            $io->writeln(sprintf('Searching in directory <comment>%s</comment>...', $realPath));
+            if ($gitOnlyEnabled && $gitOnlyCommand) {
+                $io->writeln('Get files from git binary (command: <comment>' . $gitOnlyCommand . '</comment>):');
+            }
+        }
+        if (!$finderConfigPath && $output->isVerbose()) {
+            if ($gitOnlyEnabled && $gitOnlyCommand) {
+                $io->writeln('<debug>Names and (auto-) excludes disabled, because of set git-only mode.</debug>');
+            } else {
+                $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
+                $io->writeln('<debug>Excluded: ' . (count(FinderUtility::getCurrentExcludes()) > 0 ? implode(', ', FinderUtility::getCurrentExcludes()) : '-') . '</debug>');
+                $io->writeln('<debug>Auto exclude: ' . ($input->getOption('disable-auto-exclude') ? 'disabled' : 'enabled') . '</debug>');
+            }
+        }
+        if ($output->isVerbose()) {
+            $io->writeln('<debug>Strict mode: ' . ($input->getOption('strict') ? 'enabled' : 'disabled') . '</debug>');
+            $io->writeln('<debug>Output mode: ' . ($input->getOption('compact') ? 'compact' : 'full') . '</debug>');
+        }
+
+        $io->writeln(sprintf('Found <info>%d files</info> to scan.', $count = $finder->count()));
+        TimeTrackingUtility::addStep('Fetched files to scan');
+        if (0 === $count) {
+            $io->writeln('Nothing to do here.');
+
+            return $returnValue; // Early return
+        }
+
+        if ($count > 500 && !$input->getOption('no-interaction') && !$io->confirm('Continue?', false)) {
+            // @codeCoverageIgnoreStart
+            $io->writeln('Canceled.');
+
+            return $returnValue; // Early return
+            // @codeCoverageIgnoreEnd
+        }
+
+        if (!empty($this->scanner->getSkippingRules())) {
+            $io->writeln('Skipping rules: <comment>' . implode('</comment>, <comment>', $this->scanner->getSkippingRules()) . '</comment>');
+        }
+
+        // Start scanning or fixing
+        $returnValue = !$input->getOption('fix')
+            ? $this->scan($finder, $count, $io, (bool)$input->getOption('strict'), (bool)$input->getOption('no-progress'), (bool)$input->getOption('compact'), (bool)$input->getOption('uncovered'))
+            : $this->fix($finder, $io, (bool)$input->getOption('strict'));
+
+        if ($output->isVerbose()) {
+            $io->newLine();
+            $io->writeln('<debug>Time tracking</debug>');
+            $io->writeln('<debug>----------------------------------------</debug>');
+            $io->writeln(TimeTrackingUtility::getRecordedSteps());
+            $io->writeln('<debug>----------------------------------------</debug>');
+            $io->writeln('<debug>Memory peak: ' . round(memory_get_peak_usage(false) / 1024 / 1024, 2) . 'MB (Real: ' . round(memory_get_peak_usage(true) / 1024 / 1024, 2) . 'MB)</debug>');
+        } else {
+            $io->writeln('<debug>Duration: ' . TimeTrackingUtility::getDuration() . 's</debug>');
         }
 
         if ($input->getOption('no-error-on-exit')) {
@@ -289,6 +313,7 @@ class Application extends SingleCommandApplication
             }
         }
 
+        TimeTrackingUtility::addStep('Fixing finished');
         $io->writeln('<info>Done. ' . StringFormatUtility::buildScanResultMessage($errorCountTotal, $invalidFilesCount, 'Fixed') . '</info>');
 
         return false === $hasUnfixableExceptions ? 0 : 1;
