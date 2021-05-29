@@ -2,7 +2,7 @@
 
 [![Code Checks](https://github.com/a-r-m-i-n/editorconfig-cli/actions/workflows/code-checks.yml/badge.svg)](https://github.com/a-r-m-i-n/editorconfig-cli/actions/workflows/code-checks.yml)
 
-Free CLI tool (written in PHP) to **validate and auto-fix** text files based on given **.editorconfig** declarations.
+EditorConfigCLI is a free CLI tool (written in PHP) to **validate and auto-fix** text files based on given **.editorconfig** declarations.
 This allows you to automatically ensure EditorConfig declarations during your CI and development processes.
 
 **armin/editorconfig-cli** is released under [MIT license](LICENSE).
@@ -18,7 +18,7 @@ Written by **Armin Vieweg**  <<https://v.ieweg.de>>
 
 ## Installation
 
-To install the editor-config CLI tool you need to [download a handy PHAR executable](https://github.com/a-r-m-i-n/editorconfig-cli/releases),
+To install the EditorConfigCLI tool you need to [download a handy PHAR executable](https://github.com/a-r-m-i-n/editorconfig-cli/releases),
 or use Composer like this:
 
 ```
@@ -91,7 +91,7 @@ $ php ec-1.4.0.phar [options] [--] [<names>...]
 
 When you do not enter any options, the scan starts immediately when calling ``ec`` PHP binary.
 
-EditorConfigCli supports **three different modes to find files** to check for:
+EditorConfigCLI supports **three different modes to find files** to check for:
 
 1. **By CLI arguments and options**, which configures and utilizes a ``symfony/finder`` instance (used by default).
 
@@ -144,7 +144,7 @@ The ``ec`` binary supports the following options:
 | ``--strict`` | | When set, given indention size is forced during scan and fixing. This might conflict with more detailed indention rules, checked by other linters and style-fixers in your project. |
 | ``--compact`` | ``-s`` | Only shows only files with issues, not the issues itself.  |
 | ``--uncovered`` | ``-u`` | Lists all files which are not covered by .editorconfig. |
-| ``--verbose`` | ``-v`` | Shows additional informations. |
+| ``--verbose`` | ``-v`` | Shows additional informations, like detailed info about internal time tracking. |
 | ``--no-interaction`` | ``-n`` | Do not ask for confirmation, if more than 500 files found. |
 | ``--no-error-on-exit`` | | By default ``ec`` returns code 2 when issues occurred. With this option set return code is always 0. |
 

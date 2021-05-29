@@ -6,6 +6,7 @@ namespace Armin\EditorconfigCli\EditorConfig;
 
 use Armin\EditorconfigCli\EditorConfig\Rules\FileResult;
 use Armin\EditorconfigCli\EditorConfig\Rules\Validator;
+use Armin\EditorconfigCli\EditorConfig\Utility\TimeTrackingUtility;
 use Idiosyncratic\EditorConfig\EditorConfig;
 use Symfony\Component\Finder\Finder;
 
@@ -80,6 +81,7 @@ class Scanner
                 $tickCallback($fileResult);
             }
         }
+        TimeTrackingUtility::addStep('Scan finished');
 
         return $results;
     }
