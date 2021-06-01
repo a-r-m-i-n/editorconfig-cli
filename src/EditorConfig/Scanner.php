@@ -42,9 +42,8 @@ class Scanner
 
     public function setRootPath(?string $rootPath): void
     {
-        if (!empty($rootPath)) {
-            $this->rootPath = realpath($rootPath) ?: '';
-            $this->editorConfig = new EditorConfig($rootPath);
+        if ($rootPath) {
+            $this->rootPath = realpath($rootPath);
         }
     }
 
