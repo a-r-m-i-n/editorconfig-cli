@@ -32,7 +32,7 @@ TXT,
 
         self::assertSame(0, $commandTester->getStatusCode());
         self::assertStringContainsString('Done. No issues found.', $commandTester->getDisplay());
-        self::assertStringContainsString('2 files are not covered by .editiorconfig declarations', $commandTester->getDisplay());
+        self::assertStringContainsString('2 files are not covered by .editorconfig declarations', $commandTester->getDisplay());
         self::assertStringContainsString('uncovered1.md', $commandTester->getDisplay());
         self::assertStringContainsString('uncovered2.md', $commandTester->getDisplay());
 

@@ -12,6 +12,7 @@ use Armin\EditorconfigCli\EditorConfig\Utility\FinderUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\StringFormatUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\TimeTrackingUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\VersionUtility;
+use InvalidArgumentException;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\Input;
@@ -218,7 +219,7 @@ class Application extends SingleCommandApplication
             // Progress bar
             $progressBar = $this->createProgressBar($io, $fileCount);
             $amountIssues = $amountFilesWithIssues = 0;
-            $callback = function (FileResult $fileResult) use ($progressBar, &$amountIssues, &$amountFilesWithIssues) {
+            $callback = static function (FileResult $fileResult) use ($progressBar, &$amountIssues, &$amountFilesWithIssues) {
                 $progressBar->advance();
                 if (!$fileResult->isValid()) {
                     ++$amountFilesWithIssues;
@@ -275,7 +276,7 @@ class Application extends SingleCommandApplication
             } else {
                 $textFiles = 1 === count($uncoveredFilePaths) ? 'One file is' : count($uncoveredFilePaths) . ' files are';
 
-                $io->writeln($textFiles . ' not covered by .editiorconfig declarations:');
+                $io->writeln($textFiles . ' not covered by .editorconfig declarations:');
                 foreach ($uncoveredFilePaths as $unstagedFilePath) {
                     $io->writeln('<info>' . $unstagedFilePath . '</info>');
                 }
@@ -363,7 +364,7 @@ class Application extends SingleCommandApplication
         }
 
         if (!empty($notExistingRules = array_diff($skippingRules, Rule::getDefinitions()))) {
-            throw new \InvalidArgumentException('You try to skip rules which are not existing (' . implode(', ', $notExistingRules) . ').' . PHP_EOL . 'Available rules are: ' . implode(', ', Rule::getDefinitions()), 1621795334);
+            throw new InvalidArgumentException('You try to skip rules which are not existing (' . implode(', ', $notExistingRules) . ').' . PHP_EOL . 'Available rules are: ' . implode(', ', Rule::getDefinitions()), 1621795334);
         }
 
         return $skippingRules;
