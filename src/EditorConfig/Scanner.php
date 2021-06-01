@@ -43,7 +43,7 @@ class Scanner
     public function setRootPath(?string $rootPath): void
     {
         if ($rootPath) {
-            $this->rootPath = realpath($rootPath);
+            $this->rootPath = realpath($rootPath) ?: null;
         }
     }
 
