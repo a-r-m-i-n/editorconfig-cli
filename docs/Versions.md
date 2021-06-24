@@ -7,6 +7,24 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.5.0
+
+- [TASK] Update dependencies
+- [TASK] Small improvements
+- Revert "[BUGFIX] Respect "root=true" flag"
+- Revert "[TEMP] Add patched EditorConfig"
+- [FEATURE] Measure and show duration of scan/fix
+- [DOCS] Improve README
+- [DEVOPS] Display code coverage in CLI output
+- [BUGFIX] Use current working directory when "--dir" is null
+- [FEATURE] Add new option --git-only
+- [TEST] Improve functional tests
+- [DEVOPS] Add Github action: Upload test reports artifact
+- [DEVOPS] Add phpunit code coverage
+- [DEVOPS] Update phpunit from ^7.5 to ^9.5
+- [TASK] Remove unused code
+
+
 ### 1.4.0
 
 - [TASK] Improve texts
