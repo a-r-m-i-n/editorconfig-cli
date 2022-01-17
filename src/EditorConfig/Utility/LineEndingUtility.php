@@ -35,6 +35,6 @@ class LineEndingUtility
     {
         $chars = array_flip(self::$lineEndings);
 
-        return $chars[$actualChar] ?? null;
+        return $chars[$actualChar] ? (string) $chars[$actualChar] : null;
     }
 }
