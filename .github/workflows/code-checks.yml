@@ -15,7 +15,6 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
-          - "8.1"
         dependencies:
           - "lowest"
           - "highest"
@@ -50,8 +49,6 @@ jobs:
 
     - name: Run code quality checks
       run: composer run-script check
-      env:
-        PHP_CS_FIXER_IGNORE_ENV: 1
 
     - name: Run test suite
       run: composer run-script test-with-coverage
