@@ -25,10 +25,10 @@
         "php": "^7.3 | ^8.0",
         "ext-json": "*",
         "ext-iconv": "*",
-        "symfony/console": "^4 || ^5",
-        "symfony/finder": "^4.4 || ^5",
+        "symfony/console": "^4 || ^5 || ^6",
+        "symfony/finder": "^4.4 || ^5 || ^6",
         "idiosyncratic/editorconfig": "^0.1.1",
-        "symfony/mime": "^4 || ^5"
+        "symfony/mime": "^4 || ^5 || ^6"
     },
     "require-dev": {
         "seld/phar-utils": "^1.1",
