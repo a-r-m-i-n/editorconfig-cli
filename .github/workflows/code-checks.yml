@@ -53,6 +53,7 @@ jobs:
 
     - name: Run test suite
       run: composer run-script test-with-coverage
+      if: ${{ matrix.php != '8.1' }}
 
     - name: Upload test reports artifact
       uses: actions/upload-artifact@v2
