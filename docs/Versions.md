@@ -7,6 +7,11 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.5.1
+
+- [TASK] Add support for Symfony 6.x
+- [DEVOPS] Add PHP 8.1 to GitHub Action matrix Armin Vieweg Today 13:37
+
 ### 1.5.0
 
 - [TASK] Update dependencies
