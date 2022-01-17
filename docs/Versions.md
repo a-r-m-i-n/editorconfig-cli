@@ -7,6 +7,10 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.5.2
+
+- [BUGFIX] Downgrade to compatible versions (PHP 7.3)
+
 ### 1.5.1
 
 - [TASK] Add support for Symfony 6.x
