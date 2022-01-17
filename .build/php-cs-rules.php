@@ -49,5 +49,6 @@ return (new PhpCsFixer\Config())
         'declare_equal_normalize' => ['space' => 'single'],
         'dir_constant' => true,
         'phpdoc_no_access' => true,
+        'assign_null_coalescing_to_coalesce_equal' => false,
     ])
     ->setFinder($finder);
