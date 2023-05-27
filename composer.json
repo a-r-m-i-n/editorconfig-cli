@@ -83,7 +83,10 @@
             "@test-php-functional-coverage"
         ],
         "php-stan": "phpstan analyse -c .build/phpstan.neon",
-        "php-cs": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi --verbose --diff --dry-run",
+        "php-cs": [
+            "@putenv PHP_CS_FIXER_IGNORE_ENV=1",
+            "php-cs-fixer fix --config .build/php-cs-rules.php --ansi --verbose --diff --dry-run"
+        ],
         "php-fix": "php-cs-fixer fix --config .build/php-cs-rules.php --ansi",
         "test-php-unit": "phpunit -c .build/phpunit-unit.xml --no-coverage",
         "test-php-functional": "phpunit -c .build/phpunit-functional.xml --no-coverage",
