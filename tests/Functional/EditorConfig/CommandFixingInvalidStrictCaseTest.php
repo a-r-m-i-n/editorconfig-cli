@@ -49,7 +49,7 @@ This line has trailing tabs ->		" . "
         $commandTester->execute(['-d' => $this->workspacePath, '--no-progress' => true, '--strict' => true]);
 
         self::assertSame(2, $commandTester->getStatusCode());
-        self::assertStringContainsString('/invalid.txt [9]', $commandTester->getDisplay());
+        self::assertStringContainsString(DIRECTORY_SEPARATOR . 'invalid.txt [9]', $commandTester->getDisplay());
         self::assertStringContainsString('This file has invalid encoding given! Expected: "latin1", Given: "utf-8"', $commandTester->getDisplay());
         self::assertStringContainsString('This file has line ending "lf" given, but "crlf" is expected', $commandTester->getDisplay());
         self::assertStringContainsString('This file has trailing whitespaces', $commandTester->getDisplay());

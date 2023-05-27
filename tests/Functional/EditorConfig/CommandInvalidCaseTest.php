@@ -54,7 +54,7 @@ TXT,
         $commandTester->execute(['-d' => $this->workspacePath, '--no-progress' => true]);
 
         self::assertSame(2, $commandTester->getStatusCode());
-        self::assertStringContainsString('/invalid.txt [7]', $commandTester->getDisplay());
+        self::assertStringContainsString(DIRECTORY_SEPARATOR . 'invalid.txt [7]', $commandTester->getDisplay());
         self::assertStringContainsString('This file has invalid encoding given! Expected: "latin1", Given: "utf-8"', $commandTester->getDisplay());
         self::assertStringContainsString('This file has line ending "lf" given, but "crlf" is expected', $commandTester->getDisplay());
         self::assertStringContainsString('This file has trailing whitespaces', $commandTester->getDisplay());
@@ -63,9 +63,9 @@ TXT,
         self::assertStringContainsString('Line 8: Trailing whitespaces found', $commandTester->getDisplay());
         self::assertStringContainsString('Line 9: Trailing whitespaces found', $commandTester->getDisplay());
         self::assertStringContainsString('This file has no final new line given', $commandTester->getDisplay());
-        self::assertStringContainsString('/invalid2.txt [2]', $commandTester->getDisplay());
+        self::assertStringContainsString(DIRECTORY_SEPARATOR . 'invalid2.txt [2]', $commandTester->getDisplay());
         self::assertStringContainsString('This file has no final new line given', $commandTester->getDisplay());
-        self::assertStringContainsString('/invalid3.txt [3]', $commandTester->getDisplay());
+        self::assertStringContainsString(DIRECTORY_SEPARATOR . 'invalid3.txt [3]', $commandTester->getDisplay());
         self::assertStringContainsString('Line 1: Expected indention style "tab" but found "spaces"', $commandTester->getDisplay());
         self::assertStringContainsString('Line 2: Expected indention style "tab" but found "spaces"', $commandTester->getDisplay());
         self::assertStringContainsString('Found 12 issues in 3 files', $commandTester->getDisplay());
