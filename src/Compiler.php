@@ -73,6 +73,17 @@ class Compiler
             self::addFile($phar, $file);
         }
 
+        // Add required assets to PHAR
+        $finder = new Finder();
+        $finder->files()
+            ->ignoreVCS(true)
+            ->name('*')
+            ->in(__DIR__ . '/../vendor/symfony/console/Resources')
+            ->sort($finderSort);
+        foreach ($finder as $file) {
+            self::addFile($phar, $file);
+        }
+
         // More files to add
         self::addComposerAutoloader($phar);
         self::addBinary($phar);
