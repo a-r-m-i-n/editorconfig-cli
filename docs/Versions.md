@@ -7,6 +7,12 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.6.0
+
+- [DEVOPS] Various improvements
+- [BUGFIX] Add max_line_length to skip-able rules
+- [BUGFIX] Fix functional tests, to work on Windows
+
 ### 1.5.2
 
 - [BUGFIX] Downgrade to compatible versions (PHP 7.3)
