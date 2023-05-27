@@ -34,6 +34,7 @@ abstract class Rule implements RuleInterface
             self::INDENT_STYLE,
             self::TAB_WIDTH,
             self::INSERT_FINAL_NEWLINE,
+            self::MAX_LINE_LENGTH,
             self::TRIM_TRAILING_WHITESPACE,
         ];
     }
