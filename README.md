@@ -12,7 +12,7 @@ Written by **Armin Vieweg**  <<https://v.ieweg.de>>
 
 ## Requirements
 
-- PHP 7.3, 7.4, 8.0, 8.1 or 8.2
+- PHP 7.4, 8.0, 8.1 or 8.2
 - Enabled PHP extensions: iconv, json
 
 

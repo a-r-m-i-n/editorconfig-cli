@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2bf5f889007c64d3445b3cf504f41e70",
+    "content-hash": "6f331dea21db2412dc7e7ed5889d708c",
     "packages": [
         {
             "name": "idiosyncratic/editorconfig",
@@ -4158,7 +4158,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3 | ^8.0",
+        "php": "^7.4 | ^8.0",
         "ext-json": "*",
         "ext-iconv": "*"
     },
