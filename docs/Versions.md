@@ -7,6 +7,10 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.6.2
+
+- [BUGFIX] Set composer.lock file to PHP 7.4 level
+
 ### 1.6.1
 
 - [TASK] Drop PHP 7.3 support
