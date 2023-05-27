@@ -1,0 +1,42 @@
+<phpunit
+  backupGlobals="true"
+  backupStaticAttributes="false"
+  cacheResultFile=".cache/.phpunit-functional.result.cache"
+  colors="true"
+  convertErrorsToExceptions="false"
+  convertWarningsToExceptions="false"
+  convertNoticesToExceptions="false"
+  forceCoversAnnotation="false"
+  processIsolation="false"
+  stopOnError="false"
+  stopOnFailure="false"
+  stopOnIncomplete="false"
+  stopOnSkipped="false"
+  verbose="false">
+
+  <testsuites>
+    <testsuite name="Functional">
+      <directory>../tests/Functional</directory>
+    </testsuite>
+  </testsuites>
+
+  <coverage cacheDirectory=".cache/coverage-functional"
+            includeUncoveredFiles="false"
+            processUncoveredFiles="false"
+            pathCoverage="false">
+    <include>
+      <directory suffix=".php">../src</directory>
+    </include>
+    <report>
+      <clover outputFile="reports/coverage-functional.xml"/>
+      <html outputDirectory="reports/coverage-functional" lowUpperBound="50" highLowerBound="90"/>
+      <text outputFile="reports/coverage-functional.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+    </report>
+  </coverage>
+
+  <logging>
+    <junit outputFile="reports/phpunit-functional-results.xml"/>
+    <testdoxText outputFile="reports/phpunit-functional-results.txt"/>
+  </logging>
+
+</phpunit>

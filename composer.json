@@ -16,11 +16,6 @@
         "issues": "https://github.com/a-r-m-i-n/editorconfig-cli/issues",
         "source": "https://github.com/a-r-m-i-n/editorconfig-cli"
     },
-    "config": {
-        "platform": {
-            "php": "7.3.25"
-        }
-    },
     "require": {
         "php": "^7.3 | ^8.0",
         "ext-json": "*",
@@ -35,7 +30,7 @@
         "phpstan/phpstan": "1.4.0",
         "jangregor/phpstan-prophecy": "1.0.0",
         "friendsofphp/php-cs-fixer": "3.4.0",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5 || ^10.1"
     },
     "bin": [
         "bin/ec"

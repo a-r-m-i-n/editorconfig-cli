@@ -1,41 +1,24 @@
-<phpunit
-  backupGlobals="true"
-  backupStaticAttributes="false"
-  cacheResultFile=".cache/.phpunit-unit.result.cache"
-  colors="true"
-  convertErrorsToExceptions="true"
-  convertWarningsToExceptions="true"
-  forceCoversAnnotation="false"
-  processIsolation="false"
-  stopOnError="false"
-  stopOnFailure="false"
-  stopOnIncomplete="false"
-  stopOnSkipped="false"
-  verbose="false">
-
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="true" colors="true" processIsolation="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd" cacheDirectory=".phpunit.cache" backupStaticProperties="false" requireCoverageMetadata="false">
   <testsuites>
     <testsuite name="Unit">
       <directory>../tests/Unit</directory>
     </testsuite>
   </testsuites>
-
-  <coverage cacheDirectory=".cache/coverage-unit"
-            includeUncoveredFiles="false"
-            processUncoveredFiles="false"
-            pathCoverage="false">
-    <include>
-      <directory suffix=".php">../src</directory>
-    </include>
+  <coverage includeUncoveredFiles="false" pathCoverage="false">
     <report>
       <clover outputFile="reports/coverage-unit.xml"/>
       <html outputDirectory="reports/coverage-unit" lowUpperBound="50" highLowerBound="90"/>
       <text outputFile="reports/coverage-unit.txt" showUncoveredFiles="false" showOnlySummary="true"/>
     </report>
   </coverage>
-
   <logging>
     <junit outputFile="reports/phpunit-unit-results.xml"/>
     <testdoxText outputFile="reports/phpunit-unit-results.txt"/>
   </logging>
-
+  <source>
+    <include>
+      <directory suffix=".php">../src</directory>
+    </include>
+  </source>
 </phpunit>
