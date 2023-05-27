@@ -32,9 +32,9 @@
     },
     "require-dev": {
         "seld/phar-utils": "^1.1",
-        "phpstan/phpstan": "^1.4",
-        "jangregor/phpstan-prophecy": "^1.0",
-        "friendsofphp/php-cs-fixer": "^3.4",
+        "phpstan/phpstan": "1.4.0",
+        "jangregor/phpstan-prophecy": "1.0.0",
+        "friendsofphp/php-cs-fixer": "3.4.0",
         "phpunit/phpunit": "^9.5"
     },
     "bin": [

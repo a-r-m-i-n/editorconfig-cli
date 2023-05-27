@@ -12,7 +12,7 @@ Written by **Armin Vieweg**  <<https://v.ieweg.de>>
 
 ## Requirements
 
-- PHP 7.3, 7.4 or 8.0
+- PHP 7.3, 7.4, 8.0, 8.1 or 8.2
 - Enabled PHP extensions: iconv, json
 
 
@@ -84,7 +84,7 @@ $ vendor/bin/ec [options] [--] [<names>...]
 
 PHAR style:
 ```
-$ php ec-1.4.0.phar [options] [--] [<names>...]
+$ php ec-1.5.2.phar [options] [--] [<names>...]
 ```
 
 ### Scanning
