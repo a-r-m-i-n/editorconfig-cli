@@ -7,6 +7,10 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.6.1
+
+- [TASK] Drop PHP 7.3 support
+
 ### 1.6.0
 
 - [DEVOPS] Various improvements
