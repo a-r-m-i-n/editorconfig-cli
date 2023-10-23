@@ -7,6 +7,10 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.7.4
+
+- [BUGFIX] Do not detect trailing whitespaces in empty files
+
 ### 1.7.3
 
 - [BUGFIX] Do not apply final new line to empty files
