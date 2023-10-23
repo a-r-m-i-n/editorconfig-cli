@@ -7,6 +7,13 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.7.0
+
+**Caution!** When updating to this version, for the first time, also files with e.g. "application/" mime-type get checked.
+This was a major issue in all previous version and is fixed, now. Before only files with mime-type "text/" has been validated.
+
+- [BUGFIX] Fix check for binary files and do not exclude JSON or YAML files
+
 ### 1.6.2
 
 - [BUGFIX] Set composer.lock file to PHP 7.4 level
