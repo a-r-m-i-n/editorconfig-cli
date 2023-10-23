@@ -132,21 +132,21 @@ $ vendor/bin/ec *.css *.js *.html
 
 The ``ec`` binary supports the following options:
 
-| Option | Shortcut | Description |
-| ------ | -------- | ----------- |
-| ``--dir`` | ``-d`` | Define the directory to scan. By default, the current working directory is used. |
-| ``--exclude`` | ``-e`` | Directories to exclude from scan. Multiple values are allowed. |
-| ``--disable-auto-exclude`` | ``-a`` | Disables exclusion of files ignored by root .gitignore file (when given). |
-| ``--git-only`` | ``-g`` | Ignores all excludes and scans for all files known to Git. Requires git binary to be present. |
-| ``--git-only-cmd`` | | Allows you to modify the git command (incl. binary) to get file list. Default: ``git ls-files`` |
-| ``--finder-config`` | | Allows to define a PHP file providing a custom Finder instance. [Read more](docs/CustomFinderInstance.md) |
-| ``--skip`` | ``-s`` | Disables rules by name. Multiple and comma-separated values are allowed. |
-| ``--strict`` | | When set, given indention size is forced during scan and fixing. This might conflict with more detailed indention rules, checked by other linters and style-fixers in your project. |
-| ``--compact`` | ``-s`` | Only shows only files with issues, not the issues itself.  |
-| ``--uncovered`` | ``-u`` | Lists all files which are not covered by .editorconfig. |
-| ``--verbose`` | ``-v`` | Shows additional informations, like detailed info about internal time tracking. |
-| ``--no-interaction`` | ``-n`` | Do not ask for confirmation, if more than 500 files found. |
-| ``--no-error-on-exit`` | | By default ``ec`` returns code 2 when issues occurred. With this option set return code is always 0. |
+| Option                     | Shortcut | Description                                                                                                                                                                         |
+|----------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ``--dir``                  | ``-d``   | Define the directory to scan. By default, the current working directory is used.                                                                                                    |
+| ``--exclude``              | ``-e``   | Directories to exclude from scan. Multiple values are allowed.                                                                                                                      |
+| ``--disable-auto-exclude`` | ``-a``   | Disables exclusion of files ignored by root .gitignore file (when given).                                                                                                           |
+| ``--git-only``             | ``-g``   | Ignores all excludes and scans for all files known to Git. Requires git binary to be present.                                                                                       |
+| ``--git-only-cmd``         |          | Allows you to modify the git command (incl. binary) to get file list. Default: ``git ls-files``                                                                                     |
+| ``--finder-config``        |          | Allows to define a PHP file providing a custom Finder instance. [Read more](docs/CustomFinderInstance.md)                                                                           |
+| ``--skip``                 | ``-s``   | Disables rules by name. Multiple and comma-separated values are allowed.                                                                                                            |
+| ``--strict``               |          | When set, given indention size is forced during scan and fixing. This might conflict with more detailed indention rules, checked by other linters and style-fixers in your project. |
+| ``--compact``              | ``-c``   | Only shows only files with issues, not the issues itself.                                                                                                                           |
+| ``--uncovered``            | ``-u``   | Lists all files which are not covered by .editorconfig.                                                                                                                             |
+| ``--verbose``              | ``-v``   | Shows additional informations, like detailed info about internal time tracking.                                                                                                     |
+| ``--no-interaction``       | ``-n``   | Do not ask for confirmation, if more than 500 files found.                                                                                                                          |
+| ``--no-error-on-exit``     |          | By default ``ec`` returns code 2 when issues occurred. With this option set return code is always 0.                                                                                |
 
 **Tip:** The "usage" section on ``ec``'s help page shows some examples.
 
