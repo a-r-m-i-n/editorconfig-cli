@@ -22,6 +22,8 @@ class TrimTrailingWhitespaceRuleTest extends TestCase
         self::assertFalse($subject->isValid());
         $subject = new TrimTrailingWhitespaceRule('dummy/path/file.txt', "Trailing   \n\n", true);
         self::assertFalse($subject->isValid());
+        $subject = new TrimTrailingWhitespaceRule('dummy/path/file.txt', "", true);
+        self::assertTrue($subject->isValid());
     }
 
     public function testFixingTrailingWhitespacesWorks()
@@ -50,6 +52,14 @@ class TrimTrailingWhitespaceRuleTest extends TestCase
         self::assertSame($correctText, $result);
 
         $correctText = "\n\n\n\nTrailing\n";
+        $subject = new TrimTrailingWhitespaceRule('dummy/path/file.txt', $correctText, true);
+        $result = $subject->fixContent($correctText);
+        self::assertSame($correctText, $result);
+    }
+
+    public function testDoNotTouchWhenEmpty()
+    {
+        $correctText = "";
         $subject = new TrimTrailingWhitespaceRule('dummy/path/file.txt', $correctText, true);
         $result = $subject->fixContent($correctText);
         self::assertSame($correctText, $result);

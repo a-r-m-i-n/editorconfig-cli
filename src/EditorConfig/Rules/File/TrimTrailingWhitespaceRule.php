@@ -23,6 +23,9 @@ class TrimTrailingWhitespaceRule extends Rule
     protected function validate(string $content): bool
     {
         $trim = rtrim($content);
+        if ('' === $content) {
+            return true;
+        }
         if ($this->insertFinalNewLine) {
             $insertFinalNewLineRule = new InsertFinalNewLineRule($this->filePath, $content);
             if ($insertFinalNewLineRule->isValid()) {
@@ -40,6 +43,9 @@ class TrimTrailingWhitespaceRule extends Rule
 
     public function fixContent(string $content): string
     {
+        if ('' === $content) {
+            return $content;
+        }
         $trim = rtrim($content);
         if ($this->insertFinalNewLine) {
             $trim .= LineEndingUtility::detectLineEnding($content, false) ?: "\n";
