@@ -7,6 +7,10 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.7.1
+
+- [BUGFIX] Do not throw exception for empty file, when checking if file is binary
+
 ### 1.7.0
 
 **Caution!** When updating to this version, for the first time, also files with e.g. "application/" mime-type get checked.
