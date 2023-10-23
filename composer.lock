@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b05e92b84abae06eb47f34ce7e192643",
+    "content-hash": "ab8638e4bbb137a1b29756529adae081",
     "packages": [
         {
             "name": "idiosyncratic/editorconfig",
