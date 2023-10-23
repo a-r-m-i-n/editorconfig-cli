@@ -144,7 +144,7 @@ The ``ec`` binary supports the following options:
 | ``--strict``               |          | When set, given indention size is forced during scan and fixing. This might conflict with more detailed indention rules, checked by other linters and style-fixers in your project. |
 | ``--compact``              | ``-c``   | Only shows only files with issues, not the issues itself.                                                                                                                           |
 | ``--uncovered``            | ``-u``   | Lists all files which are not covered by .editorconfig.                                                                                                                             |
-| ``--verbose``              | ``-v``   | Shows additional informations, like detailed info about internal time tracking.                                                                                                     |
+| ``--verbose``              | ``-v``   | Shows additional informations, like detailed info about internal time tracking and which binary files have been skipped.                                                            |
 | ``--no-interaction``       | ``-n``   | Do not ask for confirmation, if more than 500 files found.                                                                                                                          |
 | ``--no-error-on-exit``     |          | By default ``ec`` returns code 2 when issues occurred. With this option set return code is always 0.                                                                                |
 

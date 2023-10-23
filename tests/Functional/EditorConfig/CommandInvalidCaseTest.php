@@ -43,6 +43,28 @@ This file lacks of the required new line at the end.
 TXT,
         'invalid3.txt' => "    This line has spaces, but it should be tabs." . self::CRLF .
                           "     This line has one space too much. After fixing, this line should have 2 tab chars." . self::CRLF,
+        'invalid4.json' => <<<JSON
+{
+	"type": "project",
+	"repositories": [
+        {
+            "type": "composer",
+            "url": "https://example.com"
+        },
+		{
+			"type": "path",
+			"url": "packages/*"
+		}
+	]
+}
+JSON,
+        'invalid5.yaml' => <<<YAML
+test:
+	invalid: true
+		invalid2: true
+    valid: true
+        valid2: true
+YAML,
     ];
 
 
@@ -68,7 +90,7 @@ TXT,
         self::assertStringContainsString(DIRECTORY_SEPARATOR . 'invalid3.txt [3]', $commandTester->getDisplay());
         self::assertStringContainsString('Line 1: Expected indention style "tab" but found "spaces"', $commandTester->getDisplay());
         self::assertStringContainsString('Line 2: Expected indention style "tab" but found "spaces"', $commandTester->getDisplay());
-        self::assertStringContainsString('Found 12 issues in 3 files', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 27 issues in 5 files', $commandTester->getDisplay());
     }
 
     public function testInvalidWorkingDirectoryGiven()

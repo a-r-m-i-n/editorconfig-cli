@@ -36,6 +36,11 @@ class Application extends SingleCommandApplication
      */
     private $version;
 
+    /**
+     * @var bool
+     */
+    private $isVerbose = false;
+
     public function __construct(string $name = 'ec', ?Scanner $scanner = null)
     {
         TimeTrackingUtility::reset();
@@ -96,6 +101,8 @@ class Application extends SingleCommandApplication
         $io->getFormatter()->setStyle('debug', new OutputFormatterStyle('blue'));
         $io->getFormatter()->setStyle('warning', new OutputFormatterStyle('black', 'yellow'));
 
+        $this->isVerbose = $output->isVerbose();
+
         /** @var string $workingDirectory */
         $workingDirectory = $input->getOption('dir');
         if (empty($workingDirectory)) {
@@ -149,7 +156,7 @@ class Application extends SingleCommandApplication
                 $io->writeln('Get files from git binary (command: <comment>' . $gitOnlyCommand . '</comment>):');
             }
         }
-        if (!$finderConfigPath && $output->isVerbose()) {
+        if (!$finderConfigPath && $this->isVerbose) {
             if ($gitOnlyEnabled && $gitOnlyCommand) {
                 $io->writeln('<debug>Names and (auto-) excludes disabled, because of set git-only mode.</debug>');
             } else {
@@ -158,7 +165,7 @@ class Application extends SingleCommandApplication
                 $io->writeln('<debug>Auto exclude: ' . ($input->getOption('disable-auto-exclude') ? 'disabled' : 'enabled') . '</debug>');
             }
         }
-        if ($output->isVerbose()) {
+        if ($this->isVerbose) {
             $io->writeln('<debug>Strict mode: ' . ($input->getOption('strict') ? 'enabled' : 'disabled') . '</debug>');
             $io->writeln('<debug>Output mode: ' . ($input->getOption('compact') ? 'compact' : 'full') . '</debug>');
         }
@@ -188,7 +195,16 @@ class Application extends SingleCommandApplication
             ? $this->scan($finder, $count, $io, (bool)$input->getOption('strict'), (bool)$input->getOption('no-progress'), (bool)$input->getOption('compact'), (bool)$input->getOption('uncovered'))
             : $this->fix($finder, $io, (bool)$input->getOption('strict'));
 
-        if ($output->isVerbose()) {
+        if ($this->isVerbose) {
+            if (!empty($this->scanner->getSkippedBinaryFiles())) {
+                $amountBinaryFiles = count($this->scanner->getSkippedBinaryFiles());
+                $io->newLine();
+                $io->writeln('<debug>' . $amountBinaryFiles . ' binary ' . StringFormatUtility::pluralizeFiles($amountBinaryFiles) . ' skipped:</debug>');
+                foreach ($this->scanner->getSkippedBinaryFiles() as $binaryFile => $mimeType) {
+                    $io->writeln('<info>' . $binaryFile . '</info> <comment>[' . $mimeType . ']</comment>');
+                }
+            }
+
             $io->newLine();
             $io->writeln('<debug>Time tracking</debug>');
             $io->writeln('<debug>----------------------------------------</debug>');
@@ -200,7 +216,7 @@ class Application extends SingleCommandApplication
         }
 
         if ($input->getOption('no-error-on-exit')) {
-            if ($returnValue > 0 && $output->isVerbose()) {
+            if ($returnValue > 0 && $this->isVerbose) {
                 $io->writeln(sprintf('<debug>Bypassing error code %d</debug>', $returnValue));
             }
             $returnValue = 0;
@@ -232,7 +248,7 @@ class Application extends SingleCommandApplication
         }
 
         // Start the scan
-        $fileResults = $this->scanner->scan($finder, $strict, $callback);
+        $fileResults = $this->scanner->scan($finder, $strict, $callback, $this->isVerbose);
 
         if (!$noProgress && $progressBar) {
             // Progress bar
@@ -291,7 +307,7 @@ class Application extends SingleCommandApplication
     {
         $io->writeln('<comment>Starting to fix issues...</comment>');
 
-        $fileResults = $this->scanner->scan($finder, $strict);
+        $fileResults = $this->scanner->scan($finder, $strict, null, $this->isVerbose);
         $invalidFilesCount = 0;
         $errorCountTotal = 0;
         $hasUnfixableExceptions = false;

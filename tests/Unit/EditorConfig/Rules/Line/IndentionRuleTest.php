@@ -40,6 +40,13 @@ class IndentionRuleTest extends TestCase
         self::assertFalse($subject->isValid());
     }
 
+    public function testDetectMixedIndentionsCorrectly()
+    {
+        $subject = new IndentionRule('dummy/path/file.json', "{\n    \"indent-spaces\": true,\n\t\"indent-tabs\": true}", 'space', 4);
+        self::assertFalse($subject->isValid());
+        self::assertSame('Line 3: Expected indention style "space" but found "tabs"', $subject->getErrorsAsText());
+    }
+
     public function testInvalidIndentionStyleConfigThrowsException()
     {
         self::expectException(\InvalidArgumentException::class);

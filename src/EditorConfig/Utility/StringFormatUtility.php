@@ -13,8 +13,17 @@ class StringFormatUtility
         }
 
         $issueText = 1 === $amountIssues ? 'issue' : 'issues';
-        $filesText = 1 === $amountFilesWithIssues ? 'file' : 'files';
+        $filesText = self::pluralizeFiles($amountFilesWithIssues);
 
         return sprintf('%s %d %s in %d %s', $text, $amountIssues, $issueText, $amountFilesWithIssues, $filesText);
+    }
+
+    public static function pluralizeFiles(int $amountFiles): string
+    {
+        if (1 === $amountFiles) {
+            return 'file';
+        }
+
+        return 'files';
     }
 }

@@ -10,11 +10,11 @@ use Armin\EditorconfigCli\EditorConfig\Rules\File\InsertFinalNewLineRule;
 use Armin\EditorconfigCli\EditorConfig\Rules\File\TrimTrailingWhitespaceRule;
 use Armin\EditorconfigCli\EditorConfig\Rules\Line\IndentionRule;
 use Armin\EditorconfigCli\EditorConfig\Rules\Line\MaxLineLengthRule;
+use Armin\EditorconfigCli\EditorConfig\Utility\MimeTypeUtility;
 use Idiosyncratic\EditorConfig\Declaration\Charset;
 use Idiosyncratic\EditorConfig\Declaration\Declaration;
 use Idiosyncratic\EditorConfig\Declaration\TrimTrailingWhitespace;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Mime\MimeTypes;
 
 class Validator
 {
@@ -36,9 +36,7 @@ class Validator
         $filePath = (string)$file->getRealPath();
         $rules = [];
 
-        $mime = new MimeTypes();
-        $mimeType = (string)$mime->guessMimeType($filePath);
-        if (0 !== strpos($mimeType, 'text/')) {
+        if (!MimeTypeUtility::isCommonTextType($filePath) && (MimeTypeUtility::isCommonBinaryType($filePath) || MimeTypeUtility::isBinaryFileType($filePath))) {
             return new FileResult($filePath, [], true); // Skip non-ascii files
         }
 
