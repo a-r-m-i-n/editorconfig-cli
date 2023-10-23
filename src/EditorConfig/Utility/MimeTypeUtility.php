@@ -101,7 +101,7 @@ class MimeTypeUtility
     public static function isBinaryFileType(string $filePath, float $threshold = .9): bool
     {
         $content = file_get_contents($filePath);
-        if (!$content) {
+        if (false === $content) {
             throw new \RuntimeException('Unable to check file "' . $filePath . '" for being binary!');
         }
         $length = strlen($content);
