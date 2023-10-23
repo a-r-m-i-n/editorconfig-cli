@@ -105,6 +105,11 @@ class MimeTypeUtility
             throw new \RuntimeException('Unable to check file "' . $filePath . '" for being binary!');
         }
         $length = strlen($content);
+
+        if (0 === $length) {
+            return false;
+        }
+
         $printableCount = 0;
 
         for ($i = 0; $i < $length; ++$i) {
