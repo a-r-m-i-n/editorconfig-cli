@@ -26,6 +26,10 @@ class InsertFinalNewLineRule extends Rule
 
     protected function validate(string $content): bool
     {
+        if ('' === $content) {
+            return true;
+        }
+
         $lastChar = substr($content, -1);
         $result = in_array($lastChar, ["\r", "\n"], true);
         if (!$result) {
@@ -37,6 +41,10 @@ class InsertFinalNewLineRule extends Rule
 
     public function fixContent(string $content): string
     {
+        if ('' === $content) {
+            return $content;
+        }
+
         return rtrim($content) . $this->newLineFormat;
     }
 }

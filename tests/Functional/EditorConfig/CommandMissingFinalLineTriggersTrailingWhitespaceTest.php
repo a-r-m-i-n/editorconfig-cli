@@ -23,6 +23,7 @@ TXT,
 No trailing whitespaces, but the required single new line, at the end of the file.
 
 TXT,
+        'empty.txt' => '',
     ];
 
 
