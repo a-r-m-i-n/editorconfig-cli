@@ -79,6 +79,7 @@ class Application extends SingleCommandApplication
             ->addOption('uncovered', 'u', InputOption::VALUE_NONE, 'When set, all files which are not covered by .editorconfig get listed')
             ->addOption('no-progress', '', InputOption::VALUE_NONE, 'When set, no progress indicator is displayed')
             ->addOption('no-error-on-exit', '', InputOption::VALUE_NONE, 'When set, the CLI tool will always return code 0, also when issues have been found')
+            ->addOption('force', '', InputOption::VALUE_NONE, 'When set, files are always processed even if more than 500 files were found')
             ->setCode([$this, 'executing'])
         ;
     }
@@ -178,7 +179,7 @@ class Application extends SingleCommandApplication
             return $returnValue; // Early return
         }
 
-        if ($count > 500 && !$input->getOption('no-interaction') && !$io->confirm('Continue?', false)) {
+        if ($count > 500 && !$input->getOption('force') && !$input->getOption('no-interaction') && !$io->confirm('Continue?', false)) {
             // @codeCoverageIgnoreStart
             $io->writeln('Canceled.');
 

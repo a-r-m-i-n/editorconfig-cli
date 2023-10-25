@@ -147,6 +147,7 @@ The ``ec`` binary supports the following options:
 | ``--verbose``              | ``-v``   | Shows additional informations, like detailed info about internal time tracking and which binary files have been skipped.                                                            |
 | ``--no-interaction``       | ``-n``   | Do not ask for confirmation, if more than 500 files found.                                                                                                                          |
 | ``--no-error-on-exit``     |          | By default ``ec`` returns code 2 when issues occurred. With this option set return code is always 0.                                                                                |
+| ``--force``                |          | When set, files are always processed even if more than 500 files were found.                                                                                                        |
 
 **Tip:** The "usage" section on ``ec``'s help page shows some examples.
 
