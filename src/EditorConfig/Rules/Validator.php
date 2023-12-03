@@ -34,6 +34,11 @@ class Validator
         $this->skippingRules = $skippingRules;
 
         $filePath = (string)$file->getRealPath();
+
+        if (empty($filePath)) {
+            throw (new FileUnavailableException())->setUnavailableFile($file);
+        }
+
         $rules = [];
 
         if (!MimeTypeUtility::isCommonTextType($filePath) && (MimeTypeUtility::isCommonBinaryType($filePath) || MimeTypeUtility::isBinaryFileType($filePath))) {

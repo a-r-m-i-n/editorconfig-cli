@@ -5,11 +5,13 @@ declare(strict_types = 1);
 namespace Armin\EditorconfigCli\EditorConfig;
 
 use Armin\EditorconfigCli\EditorConfig\Rules\FileResult;
+use Armin\EditorconfigCli\EditorConfig\Rules\FileUnavailableException;
 use Armin\EditorconfigCli\EditorConfig\Rules\Validator;
 use Armin\EditorconfigCli\EditorConfig\Utility\MimeTypeUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\TimeTrackingUtility;
 use Idiosyncratic\EditorConfig\EditorConfig;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Scanner
 {
@@ -37,6 +39,11 @@ class Scanner
      * @var array|string[]
      */
     private $skippedBinaryFiles = [];
+
+    /**
+     * @var array|SplFileInfo[]
+     */
+    private $unavailableFiles = [];
 
     public function __construct(?EditorConfig $editorConfig = null, ?Validator $validator = null, string $rootPath = null, array $skippingRules = [])
     {
@@ -72,6 +79,14 @@ class Scanner
     }
 
     /**
+     * @return array|SplFileInfo[]
+     */
+    public function getUnavailableFiles(): array
+    {
+        return $this->unavailableFiles;
+    }
+
+    /**
      * @param bool $strict when true, any difference of indention size is spotted
      *
      * @return array|FileResult[]
@@ -82,7 +97,13 @@ class Scanner
         foreach ($finderInstance as $file) {
             $config = $this->editorConfig->getConfigForPath((string)$file->getRealPath());
 
-            $fileResult = $this->validator->createValidatedFileResult($file, $config, $strict, $this->skippingRules);
+            try {
+                $fileResult = $this->validator->createValidatedFileResult($file, $config, $strict, $this->skippingRules);
+            } catch (FileUnavailableException $e) {
+                $this->unavailableFiles[] = $e->getUnavailableFile();
+                continue;
+            }
+
             $filePath = $fileResult->getFilePath();
             if (!empty($this->rootPath)) {
                 $filePath = substr($filePath, strlen($this->rootPath));

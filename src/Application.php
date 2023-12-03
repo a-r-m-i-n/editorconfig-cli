@@ -193,6 +193,22 @@ class Application extends SingleCommandApplication
             ? $this->scan($finder, $count, $io, (bool)$input->getOption('strict'), (bool)$input->getOption('no-progress'), (bool)$input->getOption('compact'), (bool)$input->getOption('uncovered'))
             : $this->fix($finder, $io, (bool)$input->getOption('strict'));
 
+        if (!empty($this->scanner->getUnavailableFiles())) {
+            $amountUnavailableFiles = count($this->scanner->getUnavailableFiles());
+            $io->warning('Found ' . $amountUnavailableFiles . ' unavailable ' . StringFormatUtility::pluralizeFiles($amountUnavailableFiles) . ' not being scanned!');
+            $filePaths = [];
+            foreach ($this->scanner->getUnavailableFiles() as $unavailableFile) {
+                $filePaths[] = $unavailableFile->getPathname();
+            }
+            $io->listing($filePaths);
+            if ($gitOnlyEnabled) {
+                $io->writeln('<comment>The files listed by the "' . $gitOnlyCommand . '" command are not physically present.</comment>');
+                $io->writeln('<comment>This typically occurs when files are deleted without being staged in Git. To verify, check "git status".</comment>');
+                $io->newLine();
+            }
+            $returnValue = 1;
+        }
+
         if ($this->isVerbose) {
             if (!empty($this->scanner->getSkippedBinaryFiles())) {
                 $amountBinaryFiles = count($this->scanner->getSkippedBinaryFiles());

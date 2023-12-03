@@ -146,7 +146,7 @@ The ``ec`` binary supports the following options:
 | ``--uncovered``            | ``-u``   | Lists all files which are not covered by .editorconfig.                                                                                                                             |
 | ``--verbose``              | ``-v``   | Shows additional informations, like detailed info about internal time tracking and which binary files have been skipped.                                                            |
 | ``--no-interaction``       | ``-n``   | Do not ask for confirmation, if more than 500 files found and continue scanning.                                                                                                    |
-| ``--no-error-on-exit``     |          | By default ``ec`` returns code 2 when issues occurred. With this option set return code is always 0.                                                                                |
+| ``--no-error-on-exit``     |          | By default ``ec`` returns code 2 when issues or code 1 when warnings occurred. With this option set return code is always 0.                                                        |
 
 **Tip:** The "usage" section on ``ec``'s help page shows some examples.
 
