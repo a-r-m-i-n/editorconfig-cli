@@ -19,14 +19,14 @@ use Symfony\Component\Finder\SplFileInfo;
 class Validator
 {
     /**
-     * @var array
+     * @var array|Declaration[]
      */
-    private $editorConfig;
+    private array $editorConfig;
 
     /**
-     * @var array
+     * @var array|string[]
      */
-    private $skippingRules;
+    private array $skippingRules;
 
     public function createValidatedFileResult(SplFileInfo $file, array $editorConfig, bool $strictMode = false, array $skippingRules = []): FileResult
     {
@@ -100,7 +100,7 @@ class Validator
     /**
      * @param string $ruleName see \Armin\EditorconfigCli\EditorConfig\Rules\Rule class constants
      */
-    protected function hasRuleSet(string $ruleName): bool
+    private function hasRuleSet(string $ruleName): bool
     {
         return !in_array($ruleName, $this->skippingRules, true)
             && isset($this->editorConfig[$ruleName])

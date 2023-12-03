@@ -10,10 +10,7 @@ use Armin\EditorconfigCli\EditorConfig\Utility\FileEncodingUtility;
 
 class CharsetRule extends Rule
 {
-    /**
-     * @var string
-     */
-    private $expectedEncoding;
+    private string $expectedEncoding;
 
     public function __construct(string $filePath, string $fileContent, string $expectedEncoding)
     {

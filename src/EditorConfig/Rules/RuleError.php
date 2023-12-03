@@ -6,15 +6,9 @@ namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
 class RuleError
 {
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
-    /**
-     * @var int|null
-     */
-    private $line;
+    private ?int $line;
 
     public function __construct(string $message, ?int $line = null)
     {

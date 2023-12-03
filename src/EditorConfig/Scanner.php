@@ -15,35 +15,26 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class Scanner
 {
-    /**
-     * @var string|null
-     */
-    private $rootPath;
-
-    /**
-     * @var array
-     */
-    private $skippingRules;
-
-    /**
-     * @var EditorConfig
-     */
-    private $editorConfig;
-
-    /**
-     * @var Validator
-     */
-    private $validator;
+    private ?string $rootPath;
 
     /**
      * @var array|string[]
      */
-    private $skippedBinaryFiles = [];
+    private array $skippingRules;
+
+    private EditorConfig $editorConfig;
+
+    private Validator $validator;
+
+    /**
+     * @var array|string[]
+     */
+    private array $skippedBinaryFiles = [];
 
     /**
      * @var array|SplFileInfo[]
      */
-    private $unavailableFiles = [];
+    private array $unavailableFiles = [];
 
     public function __construct(?EditorConfig $editorConfig = null, ?Validator $validator = null, string $rootPath = null, array $skippingRules = [])
     {
@@ -60,11 +51,17 @@ class Scanner
         }
     }
 
+    /**
+     * @return array|string[]
+     */
     public function getSkippingRules(): array
     {
         return $this->skippingRules;
     }
 
+    /**
+     * @param array|string[] $skippingRules
+     */
     public function setSkippingRules(array $skippingRules): void
     {
         $this->skippingRules = $skippingRules;

@@ -26,20 +26,11 @@ use Symfony\Component\Finder\Finder;
 
 class Application extends SingleCommandApplication
 {
-    /**
-     * @var Scanner
-     */
-    private $scanner;
+    private Scanner $scanner;
 
-    /**
-     * @var string
-     */
-    private $version;
+    private string $version;
 
-    /**
-     * @var bool
-     */
-    private $isVerbose = false;
+    private bool $isVerbose = false;
 
     public function __construct(string $name = 'ec', ?Scanner $scanner = null)
     {
@@ -91,8 +82,7 @@ class Application extends SingleCommandApplication
 
         /** @var array|null $skip */
         $skip = $input->getOption('skip');
-        $skippingRules = $this->parseSkippingRules($skip);
-        $this->scanner->setSkippingRules($skippingRules);
+        $this->scanner->setSkippingRules($this->parseSkippingRules($skip));
     }
 
     protected function executing(Input $input, Output $output): int
@@ -239,7 +229,7 @@ class Application extends SingleCommandApplication
         return $returnValue;
     }
 
-    protected function scan(Finder $finder, int $fileCount, SymfonyStyle $io, bool $strict = false, bool $noProgress = false, bool $compact = false, bool $uncovered = false): int
+    private function scan(Finder $finder, int $fileCount, SymfonyStyle $io, bool $strict = false, bool $noProgress = false, bool $compact = false, bool $uncovered = false): int
     {
         $io->writeln('<comment>Starting scan...</comment>');
 
@@ -317,7 +307,7 @@ class Application extends SingleCommandApplication
         return $errorCountTotal > 0 ? 2 : 0;
     }
 
-    protected function fix(Finder $finder, SymfonyStyle $io, bool $strict = false): int
+    private function fix(Finder $finder, SymfonyStyle $io, bool $strict = false): int
     {
         $io->writeln('<comment>Starting to fix issues...</comment>');
 
@@ -350,7 +340,7 @@ class Application extends SingleCommandApplication
         return false === $hasUnfixableExceptions ? 0 : 1;
     }
 
-    protected function createProgressBar(SymfonyStyle $io, int $fileCount): ProgressBar
+    private function createProgressBar(SymfonyStyle $io, int $fileCount): ProgressBar
     {
         $progressBar = $io->createProgressBar($fileCount);
 
@@ -364,7 +354,12 @@ class Application extends SingleCommandApplication
         return $progressBar;
     }
 
-    protected function parseSkippingRules(array $skippingRules = null): array
+    /**
+     * @param array<int, string>|null $skippingRules Strings in array may contain comma-separated values
+     *
+     * @return array|string[]
+     */
+    private function parseSkippingRules(array $skippingRules = null): array
     {
         if (!$skippingRules) {
             return [];

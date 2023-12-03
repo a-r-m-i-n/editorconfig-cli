@@ -6,25 +6,19 @@ namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
 class FileResult
 {
-    /**
-     * @var string
-     */
-    private $filePath;
+    private string $filePath;
 
     /**
      * @var array|Rule[]
      */
-    private $rules;
+    private array $rules;
+
+    private bool $isBinary;
 
     /**
-     * @var bool
+     * @var array|UnfixableException[]
      */
-    private $isBinary;
-
-    /**
-     * @var array
-     */
-    private $unfixableExceptions = [];
+    private array $unfixableExceptions = [];
 
     public function __construct(string $filePath, array $rules, bool $isBinary = false)
     {

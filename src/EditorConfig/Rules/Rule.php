@@ -15,15 +15,12 @@ abstract class Rule implements RuleInterface
     public const MAX_LINE_LENGTH = 'max_line_length';
     public const TRIM_TRAILING_WHITESPACE = 'trim_trailing_whitespace';
 
-    /**
-     * @var string
-     */
-    protected $filePath;
+    protected string $filePath;
 
     /**
      * @var array|RuleError[]
      */
-    protected $errors = [];
+    protected array $errors = [];
 
     public static function getDefinitions(): array
     {

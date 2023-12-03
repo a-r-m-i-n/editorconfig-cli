@@ -9,10 +9,7 @@ use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class InsertFinalNewLineRule extends Rule
 {
-    /**
-     * @var string
-     */
-    private $newLineFormat;
+    private string $newLineFormat;
 
     public function __construct(string $filePath, string $fileContent, ?string $newLineFormat = null)
     {

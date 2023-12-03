@@ -10,10 +10,7 @@ use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class MaxLineLengthRule extends Rule
 {
-    /**
-     * @var int|null
-     */
-    private $maxLineLength;
+    private ?int $maxLineLength;
 
     public function __construct(string $filePath, string $fileContent = null, int $maxLineLength = null)
     {
