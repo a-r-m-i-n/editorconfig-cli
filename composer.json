@@ -60,7 +60,8 @@
             "@composer dump -o",
             "@ec",
             "@php-cs",
-            "@php-stan"
+            "@php-stan",
+            "@composer validate --no-check-version"
         ],
         "fix": [
             "@composer dump -o",
