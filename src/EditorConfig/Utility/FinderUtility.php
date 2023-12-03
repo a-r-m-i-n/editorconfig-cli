@@ -59,6 +59,15 @@ class FinderUtility
         if (!empty($result)) {
             $iterator = [];
             foreach ($result as $item) {
+                // Check for quotepath, containing octal values for special chars
+                if ('"' === substr($item, 0, 1) && '"' === substr($item, -1)) {
+                    $item = substr($item, 1, -1);
+                    // Convert octal values to special chars
+                    $item = preg_replace_callback('/\\\\(\d{3})/', static function ($matches) {
+                        return chr((int)octdec($matches[1]));
+                    }, $item);
+                }
+
                 $iterator[] = new SplFileInfo($workingDir . '/' . $item, $item, $item);
             }
             $finder->append($iterator);
