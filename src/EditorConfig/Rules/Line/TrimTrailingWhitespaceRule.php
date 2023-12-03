@@ -9,7 +9,7 @@ use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class TrimTrailingWhitespaceRule extends Rule
 {
-    protected function validate(string $content): bool
+    protected function validate(string $content): void
     {
         $lineEnding = LineEndingUtility::detectLineEnding($content, false);
         if (empty($lineEnding)) {
@@ -19,7 +19,6 @@ class TrimTrailingWhitespaceRule extends Rule
         $lines = explode($lineEnding, $content);
 
         $lineCount = 0;
-        $isValid = true;
         foreach ($lines as $line) {
             ++$lineCount;
 
@@ -28,8 +27,6 @@ class TrimTrailingWhitespaceRule extends Rule
                 $this->addError($lineCount, 'Trailing whitespaces found');
             }
         }
-
-        return $isValid;
     }
 
     public function fixContent(string $content): string

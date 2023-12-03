@@ -20,11 +20,11 @@ class TrimTrailingWhitespaceRule extends Rule
         parent::__construct($filePath, $fileContent);
     }
 
-    protected function validate(string $content): bool
+    protected function validate(string $content): void
     {
         $trim = rtrim($content);
         if ('' === $content) {
-            return true;
+            return;
         }
         if ($this->insertFinalNewLine) {
             $insertFinalNewLineRule = new InsertFinalNewLineRule($this->filePath, $content);
@@ -34,11 +34,7 @@ class TrimTrailingWhitespaceRule extends Rule
         }
         if ($content !== $trim) {
             $this->addError(null, 'This file has trailing whitespaces');
-
-            return false;
         }
-
-        return true;
     }
 
     public function fixContent(string $content): string

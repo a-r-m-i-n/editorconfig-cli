@@ -21,7 +21,7 @@ class MaxLineLengthRule extends Rule
         parent::__construct($filePath, $fileContent);
     }
 
-    protected function validate(string $content): bool
+    protected function validate(string $content): void
     {
         $lineEnding = LineEndingUtility::detectLineEnding($content, false);
         if (empty($lineEnding)) {
@@ -31,7 +31,6 @@ class MaxLineLengthRule extends Rule
         $lines = explode($lineEnding, $content);
 
         $lineCount = 0;
-        $isValid = true;
         foreach ($lines as $line) {
             ++$lineCount;
             $lineLength = strlen($line);
@@ -39,8 +38,6 @@ class MaxLineLengthRule extends Rule
                 $this->addError($lineCount, 'Max line length (%d chars) exceeded by %d chars', $this->maxLineLength, $lineLength);
             }
         }
-
-        return $isValid;
     }
 
     public function fixContent(string $content): string

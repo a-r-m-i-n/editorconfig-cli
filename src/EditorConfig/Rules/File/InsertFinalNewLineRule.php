@@ -24,19 +24,16 @@ class InsertFinalNewLineRule extends Rule
         parent::__construct($filePath, $fileContent);
     }
 
-    protected function validate(string $content): bool
+    protected function validate(string $content): void
     {
         if ('' === $content) {
-            return true;
+            return;
         }
 
         $lastChar = substr($content, -1);
-        $result = in_array($lastChar, ["\r", "\n"], true);
-        if (!$result) {
+        if (!in_array($lastChar, ["\r", "\n"], true)) {
             $this->addError(null, 'This file has no final new line given');
         }
-
-        return $result;
     }
 
     public function fixContent(string $content): string

@@ -45,7 +45,7 @@ abstract class Rule implements RuleInterface
         $this->validate($fileContent ?? (string)file_get_contents($this->filePath));
     }
 
-    abstract protected function validate(string $content): bool;
+    abstract protected function validate(string $content): void;
 
     public function getFilePath(): string
     {

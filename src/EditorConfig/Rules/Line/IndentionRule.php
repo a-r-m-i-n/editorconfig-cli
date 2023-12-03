@@ -34,7 +34,7 @@ class IndentionRule extends Rule
         parent::__construct($filePath, $fileContent);
     }
 
-    protected function validate(string $content): bool
+    protected function validate(string $content): void
     {
         $lineEnding = LineEndingUtility::detectLineEnding($content, false);
         if (empty($lineEnding)) {
@@ -44,7 +44,6 @@ class IndentionRule extends Rule
         $lines = explode($lineEnding, $content);
 
         $lineCount = 0;
-        $isValid = true;
         foreach ($lines as $line) {
             ++$lineCount;
             $lineValid = true;
@@ -61,12 +60,10 @@ class IndentionRule extends Rule
 
             if ('tab' === $this->style && $whitespaces !== $beginningWhitespaces) {
                 $this->addError($lineCount, 'Expected indention style "tab" but found "spaces"');
-                $isValid = false;
                 $lineValid = false;
             }
             if ('space' === $this->style && false !== strpos($whitespaces, "\t")) {
                 $this->addError($lineCount, 'Expected indention style "space" but found "tabs"');
-                $isValid = false;
                 $lineValid = false;
             }
 
@@ -79,8 +76,6 @@ class IndentionRule extends Rule
                 }
             }
         }
-
-        return $isValid;
     }
 
     public function fixContent(string $content): string

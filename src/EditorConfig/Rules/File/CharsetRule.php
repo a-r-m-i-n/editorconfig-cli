@@ -21,11 +21,10 @@ class CharsetRule extends Rule
         parent::__construct($filePath, $fileContent);
     }
 
-    protected function validate(string $content): bool
+    protected function validate(string $content): void
     {
         $actualEncoding = FileEncodingUtility::detect($content);
-        $result = $this->expectedEncoding === $actualEncoding;
-        if (!$result) {
+        if ($this->expectedEncoding !== $actualEncoding) {
             $this->addError(
                 null,
                 'This file has invalid encoding given! Expected: "%s", Given: "%s"',
@@ -33,8 +32,6 @@ class CharsetRule extends Rule
                 $actualEncoding
             );
         }
-
-        return $result;
     }
 
     /**

@@ -36,7 +36,7 @@ class EndOfLineRule extends Rule
         return $this->expectedEndOfLine;
     }
 
-    protected function validate(string $content): bool
+    protected function validate(string $content): void
     {
         $whitespacesOnly = (string)preg_replace('/[^\r\n]/i', '', $content);
 
@@ -53,8 +53,6 @@ class EndOfLineRule extends Rule
                 $this->endOfLine
             );
         }
-
-        return $result;
     }
 
     public function fixContent(string $content): string
