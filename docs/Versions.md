@@ -7,6 +7,15 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.8.0
+
+- [TASK] Refactor type hints and method access modifiers
+- [TASK] Refactor validate method of rules (#21)
+- [BUGFIX] Do not detect "image/svg" as binary file
+- **[FEATURE] Detect and output warning when files being staged in Git are physically missing**
+- [BUGFIX] Do not throw exception when git repo contains file paths with special chars (#22)
+- [TASK] Update dependencies
+
 ### 1.7.4
 
 - [BUGFIX] Do not detect trailing whitespaces in empty files

@@ -84,7 +84,7 @@ $ vendor/bin/ec [options] [--] [<names>...]
 
 PHAR style:
 ```
-$ php ec-1.5.2.phar [options] [--] [<names>...]
+$ php ec-1.8.0.phar [options] [--] [<names>...]
 ```
 
 ### Scanning
