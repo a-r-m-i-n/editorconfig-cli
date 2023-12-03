@@ -47,7 +47,7 @@ class MimeTypeUtility
         if (0 === strpos($mimeType, 'font/')) {
             return true;
         }
-        if (0 === strpos($mimeType, 'image/')) {
+        if ('image/svg' !== $mimeType && 0 === strpos($mimeType, 'image/')) {
             return true;
         }
         if (0 === strpos($mimeType, 'audio/')) {
