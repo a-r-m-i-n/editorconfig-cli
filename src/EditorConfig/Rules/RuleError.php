@@ -10,7 +10,7 @@ class RuleError
 
     private ?int $line;
 
-    public function __construct(string $message, ?int $line = null)
+    public function __construct(string $message, int $line = null)
     {
         $this->message = $message;
         $this->line = $line;

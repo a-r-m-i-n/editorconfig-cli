@@ -9,15 +9,12 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class FinderUtility
 {
-    /**
-     * @var array
-     */
-    private static $currentExcludes = [];
+    private static array $currentExcludes = [];
 
     /**
      * Creates new Symfony Finder instance based on given config.
      */
-    public static function createByFinderOptions(array $finderOptions, ?string $gitOnly = null): Finder
+    public static function createByFinderOptions(array $finderOptions, string $gitOnly = null): Finder
     {
         if (!empty($gitOnly)) {
             return self::buildGitOnlyFinder($finderOptions['path'], $gitOnly);

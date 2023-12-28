@@ -36,7 +36,7 @@ class Scanner
      */
     private array $unavailableFiles = [];
 
-    public function __construct(?EditorConfig $editorConfig = null, ?Validator $validator = null, string $rootPath = null, array $skippingRules = [])
+    public function __construct(EditorConfig $editorConfig = null, Validator $validator = null, string $rootPath = null, array $skippingRules = [])
     {
         $this->editorConfig = $editorConfig ?? new EditorConfig();
         $this->validator = $validator ?? new Validator();

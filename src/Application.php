@@ -12,7 +12,6 @@ use Armin\EditorconfigCli\EditorConfig\Utility\FinderUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\StringFormatUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\TimeTrackingUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\VersionUtility;
-use InvalidArgumentException;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\Input;
@@ -32,7 +31,7 @@ class Application extends SingleCommandApplication
 
     private bool $isVerbose = false;
 
-    public function __construct(string $name = 'ec', ?Scanner $scanner = null)
+    public function __construct(string $name = 'ec', Scanner $scanner = null)
     {
         TimeTrackingUtility::reset();
         TimeTrackingUtility::addStep('Start');
@@ -389,7 +388,7 @@ class Application extends SingleCommandApplication
         }
 
         if (!empty($notExistingRules = array_diff($skippingRules, Rule::getDefinitions()))) {
-            throw new InvalidArgumentException('You try to skip rules which are not existing (' . implode(', ', $notExistingRules) . ').' . PHP_EOL . 'Available rules are: ' . implode(', ', Rule::getDefinitions()), 1621795334);
+            throw new \InvalidArgumentException('You try to skip rules which are not existing (' . implode(', ', $notExistingRules) . ').' . PHP_EOL . 'Available rules are: ' . implode(', ', Rule::getDefinitions()), 1621795334);
         }
 
         return $skippingRules;
