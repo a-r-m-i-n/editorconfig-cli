@@ -7,6 +7,13 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 1.8.1
+
+- [TASK] Add +x flag to bin/ec binary
+- [DOCS] Improve README contents
+- [BUGFIX] Return error code 3 when not confirming to continue (#24)
+- [TASK] Update dependencies
+
 ### 1.8.0
 
 - [TASK] Refactor type hints and method access modifiers
