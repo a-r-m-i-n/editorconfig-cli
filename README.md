@@ -54,12 +54,12 @@ https://editorconfig.org
 
 This screenshot shows the help page you get when calling ``ec --help``:
 
-![Screenshot](docs/images/ec-1.4.png)
+![Screenshot of Help page](docs/images/ec-2.0.png)
 
 
 Here you see two example runs:
 
-![Demo run](docs/images/ec-demo.gif)
+![Demo run animation](docs/images/ec-demo.gif)
 
 
 ## Features
