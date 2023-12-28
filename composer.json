@@ -17,7 +17,7 @@
         "source": "https://github.com/a-r-m-i-n/editorconfig-cli"
     },
     "require": {
-        "php": "^7.4 | ^8.0",
+        "php": "^7.4 || ^8.0",
         "ext-json": "*",
         "ext-iconv": "*",
         "symfony/console": "^4 || ^5 || ^6",
