@@ -40,7 +40,7 @@ indent_size = 2
 indent_style = tab
 indent_size = 4
 
-[{tests/*/Data/*,*Test.php}]
+[{tests/*/Data/*,tests/Fixtures/*,tests/*/*Test.php}]
 charset=unset
 end_of_line=unset
 insert_final_newline=unset
