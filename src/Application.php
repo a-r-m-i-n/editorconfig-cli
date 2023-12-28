@@ -171,7 +171,7 @@ class Application extends SingleCommandApplication
         if ($count > 500 && !$input->getOption('no-interaction') && !$io->confirm('Continue?', false)) {
             $io->writeln('Canceled.');
 
-            return $returnValue; // Early return
+            return 3; // Early return
         }
 
         if (!empty($this->scanner->getSkippingRules())) {

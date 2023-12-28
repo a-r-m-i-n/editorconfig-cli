@@ -37,6 +37,7 @@ TXT,
         $commandTester->execute(['-d' => $this->workspacePath]);
         self::assertStringContainsString('Found 501 files to scan.', $commandTester->getDisplay());
         self::assertStringContainsString('Canceled.', $commandTester->getDisplay());
+        self::assertSame(3, $commandTester->getStatusCode());
 
         $commandTester = new CommandTester($command);
         $commandTester->setInputs(['yes']);
