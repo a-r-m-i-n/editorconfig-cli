@@ -2,6 +2,7 @@
 namespace Armin\EditorconfigCli\Tests\Functional\EditorConfig;
 
 use Armin\EditorconfigCli\Application;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class CommandNoErrorOnExitTest extends AbstractTestCase
@@ -25,7 +26,7 @@ TXT,
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['-d' => $this->workspacePath, '-v' => true, '--no-error-on-exit' => true]);
+        $commandTester->execute(['-d' => $this->workspacePath, '--no-error-on-exit' => true], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
 
         self::assertSame(0, $commandTester->getStatusCode());
         self::assertStringContainsString('Bypassing error code 2', $commandTester->getDisplay());

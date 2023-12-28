@@ -55,7 +55,7 @@ TXT,
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['-d' => $this->workspacePath, '-v' => true, '--finder-config' => 'finder-config.php', '--no-progress' => true]);
+        $commandTester->execute(['-d' => $this->workspacePath, '--finder-config' => 'finder-config.php', '--no-progress' => true]);
 
         self::assertSame(2, $commandTester->getStatusCode(), $commandTester->getDisplay());
         self::assertStringContainsString('Searching with custom Finder instance', $commandTester->getDisplay());
@@ -68,7 +68,7 @@ TXT,
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
 
-        $commandTester->execute(['-d' => $this->workspacePath, '-v' => true, '--finder-config' => 'not-existing.php', '--no-progress' => true]);
+        $commandTester->execute(['-d' => $this->workspacePath, '--finder-config' => 'not-existing.php', '--no-progress' => true]);
 
         self::assertSame(1621342890, $commandTester->getStatusCode(), $commandTester->getDisplay());
         self::assertStringContainsString('Finder config file', $commandTester->getDisplay());
@@ -81,14 +81,14 @@ TXT,
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
 
-        $commandTester->execute(['-d' => $this->workspacePath, '-v' => true, '--finder-config' => 'finder-config-invalid.php', '--no-progress' => true]);
+        $commandTester->execute(['-d' => $this->workspacePath, '--finder-config' => 'finder-config-invalid.php', '--no-progress' => true]);
 
         self::assertSame(1621343069, $commandTester->getStatusCode(), $commandTester->getDisplay());
         self::assertStringContainsString('Custom Symfony Finder configuration', $commandTester->getDisplay());
         self::assertStringContainsString('should return an instance of', $commandTester->getDisplay());
         self::assertStringContainsString('Instead it returns: string', $commandTester->getDisplay());
 
-        $commandTester->execute(['-d' => $this->workspacePath, '-v' => true, '--finder-config' => 'finder-config-invalid2.php', '--no-progress' => true]);
+        $commandTester->execute(['-d' => $this->workspacePath, '--finder-config' => 'finder-config-invalid2.php', '--no-progress' => true]);
         self::assertStringContainsString('Instead it returns: instance of stdClass', $commandTester->getDisplay());
     }
 }

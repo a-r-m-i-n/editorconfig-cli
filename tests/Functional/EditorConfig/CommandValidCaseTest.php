@@ -37,5 +37,6 @@ TXT,
 
         self::assertSame(0, $commandTester->getStatusCode(), $commandTester->getDisplay());
         self::assertStringContainsString('Done. No issues found.', $commandTester->getDisplay());
+        self::assertStringContainsString('Duration: ', $commandTester->getDisplay());
     }
 }

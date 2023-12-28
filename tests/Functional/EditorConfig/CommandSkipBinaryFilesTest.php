@@ -2,6 +2,7 @@
 namespace Armin\EditorconfigCli\Tests\Functional\EditorConfig;
 
 use Armin\EditorconfigCli\Application;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class CommandSkipBinaryFilesTest extends AbstractTestCase
@@ -35,7 +36,7 @@ TXT,
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['-d' => $this->workspacePath, '-v' => true, '--no-progress' => true]);
+        $commandTester->execute(['-d' => $this->workspacePath, '--no-progress' => true], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
 
         self::assertSame(0, $commandTester->getStatusCode());
         self::assertStringContainsString('Done. No issues found.', $commandTester->getDisplay());
