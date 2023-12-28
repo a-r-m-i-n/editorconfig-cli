@@ -66,14 +66,10 @@ Composer script.
 
 Also, each build will run on the following combinations of PHP version and Composer dependencies flag:
 
-- PHP 7.4, Lowest
-- PHP 7.4, Highest
-- PHP 8.0, Lowest
-- PHP 8.0, Highest
-- PHP 8.1, Lowest
-- PHP 8.1, Highest
 - PHP 8.2, Lowest
 - PHP 8.2, Highest
+- PHP 8.3, Lowest
+- PHP 8.3, Highest
 
 *Note:* "Highest" is the default behaviour of Composer.
         "Lowest" is when you run Composer update with ``--prefer-lowest``

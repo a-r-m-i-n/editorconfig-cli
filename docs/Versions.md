@@ -7,6 +7,11 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 2.0.0
+
+- tbw;
+
+
 ### 1.8.1
 
 - [TASK] Add +x flag to bin/ec binary

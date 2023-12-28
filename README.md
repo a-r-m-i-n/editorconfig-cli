@@ -14,8 +14,12 @@ Written by **Armin Vieweg**  <<https://v.ieweg.de>>
 
 ## Requirements
 
-- PHP 7.4, 8.0, 8.1 or 8.2
+- PHP 8.2 or 8.3
 - Enabled PHP extensions: iconv, json
+
+If you are looking for older PHP version support, you can check out and use those tags:
+
+* [PHP 7.4, 8.0, 8.1 or 8.2](https://github.com/a-r-m-i-n/editorconfig-cli/tree/1.x) (Branch 1.x)
 
 
 ## Installation
@@ -86,7 +90,7 @@ $ vendor/bin/ec [options] [--] [<names>...]
 
 PHAR style:
 ```
-$ php ec-1.8.1.phar [options] [--] [<names>...]
+$ php ec-2.0.0.phar [options] [--] [<names>...]
 ```
 
 ### Scanning

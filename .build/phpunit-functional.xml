@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="true" colors="true" processIsolation="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="true" colors="true" processIsolation="false" stopOnError="false" stopOnFailure="false" stopOnIncomplete="false" stopOnSkipped="false" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd">
   <testsuites>
     <testsuite name="Functional">
       <directory>../tests/Functional</directory>
@@ -11,12 +11,14 @@
       <html outputDirectory="reports/coverage-functional" lowUpperBound="50" highLowerBound="90"/>
       <text outputFile="reports/coverage-functional.txt" showUncoveredFiles="false" showOnlySummary="true"/>
     </report>
-    <include>
-      <directory suffix=".php">../src</directory>
-    </include>
   </coverage>
   <logging>
     <junit outputFile="reports/phpunit-functional-results.xml"/>
     <testdoxText outputFile="reports/phpunit-functional-results.txt"/>
   </logging>
+  <source>
+    <include>
+      <directory suffix=".php">../src</directory>
+    </include>
+  </source>
 </phpunit>

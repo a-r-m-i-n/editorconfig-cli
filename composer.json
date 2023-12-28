@@ -2,7 +2,7 @@
     "name": "armin/editorconfig-cli",
     "description": "EditorConfigCLI is a free CLI tool (written in PHP) to validate and auto-fix text files based on given .editorconfig declarations.",
     "type": "library",
-    "version": "1.8.1",
+    "version": "dev-2.0.0",
     "license": "MIT",
     "authors": [
         {
@@ -17,20 +17,20 @@
         "source": "https://github.com/a-r-m-i-n/editorconfig-cli"
     },
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.2",
         "ext-json": "*",
         "ext-iconv": "*",
-        "symfony/console": "^4 || ^5 || ^6",
-        "symfony/finder": "^4.4 || ^5 || ^6",
+        "symfony/console": "^4 || ^5 || ^6 || ^7",
+        "symfony/finder": "^4.4 || ^5 || ^6 || ^7",
         "idiosyncratic/editorconfig": "^0.1.1",
-        "symfony/mime": "^4 || ^5 || ^6"
+        "symfony/mime": "^4 || ^5 || ^6 || ^7"
     },
     "require-dev": {
-        "seld/phar-utils": "^1.1",
-        "phpstan/phpstan": "1.4.0",
-        "jangregor/phpstan-prophecy": "1.0.0",
-        "friendsofphp/php-cs-fixer": "3.4.0",
-        "phpunit/phpunit": "^9.6.8 || ^10.1"
+        "seld/phar-utils": "^1.2",
+        "phpstan/phpstan": "^1.10",
+        "jangregor/phpstan-prophecy": "^1.0",
+        "friendsofphp/php-cs-fixer": "^3.42",
+        "phpunit/phpunit": "^10.5"
     },
     "bin": [
         "bin/ec"
