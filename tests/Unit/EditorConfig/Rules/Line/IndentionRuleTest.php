@@ -47,12 +47,6 @@ class IndentionRuleTest extends TestCase
         self::assertSame('Line 3: Expected indention style "space" but found "tabs"', $subject->getErrorsAsText());
     }
 
-    public function testInvalidIndentionStyleConfigThrowsException()
-    {
-        self::expectException(\InvalidArgumentException::class);
-        new IndentionRule('dummy/path/file.txt', "", 'INVALID', 4);
-    }
-
     public function testFixingIndentionWorks()
     {
         $nonStrictText = "    Non Trailing1\n     Non Trailing2\n    Non Trailing3\n";

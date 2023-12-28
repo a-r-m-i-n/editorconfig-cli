@@ -3,6 +3,7 @@ namespace Armin\EditorconfigCli\Tests\Functional\EditorConfig;
 
 use Armin\EditorconfigCli\Application;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class CommandGitOnlyTest extends TestCase
@@ -13,7 +14,7 @@ class CommandGitOnlyTest extends TestCase
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['-d' => getcwd(), '--no-progress' => true, '--git-only' => true]);
+        $commandTester->execute(['-d' => getcwd(), '--no-progress' => true, '--git-only' => true], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
 
         self::assertSame(0, $commandTester->getStatusCode(), $commandTester->getDisplay());
         self::assertStringContainsString('Get files from git binary', $commandTester->getDisplay());

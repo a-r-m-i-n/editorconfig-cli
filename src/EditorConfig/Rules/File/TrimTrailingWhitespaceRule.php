@@ -36,9 +36,6 @@ class TrimTrailingWhitespaceRule extends Rule
 
     public function fixContent(string $content): string
     {
-        if ('' === $content) {
-            return $content;
-        }
         $trim = rtrim($content);
         if ($this->insertFinalNewLine) {
             $trim .= LineEndingUtility::detectLineEnding($content, false) ?: "\n";

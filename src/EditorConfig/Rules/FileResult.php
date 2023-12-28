@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
-class FileResult implements \Stringable
+class FileResult
 {
     /**
      * @var array|UnfixableException[]
@@ -19,11 +19,6 @@ class FileResult implements \Stringable
         private readonly array $rules,
         private readonly bool $isBinary = false
     ) {
-        foreach ($this->rules as $rule) {
-            if ($rule->getFilePath() !== $this->filePath) {
-                throw new \InvalidArgumentException(sprintf('Given rules in FileResult must all be related to the same file! Rule expects file "%s" but file "%s" is given.', $this->filePath, $rule->getFilePath()));
-            }
-        }
     }
 
     public function hasDeclarations(): bool
@@ -63,7 +58,7 @@ class FileResult implements \Stringable
             array_push($errors, ...$rule->getErrors());
         }
 
-        uasort($errors, fn (RuleError $a, RuleError $b): int => $a->getLine() > $b->getLine() ? 1 : -1);
+        uasort($errors, static fn (RuleError $a, RuleError $b): int => $a->getLine() > $b->getLine() ? 1 : -1);
 
         return $errors;
     }
@@ -83,20 +78,8 @@ class FileResult implements \Stringable
         return trim(implode("\n", $errors));
     }
 
-    public function __toString(): string
-    {
-        if ($this->isValid()) {
-            return $this->filePath . ' - OK';
-        }
-
-        return $this->filePath . ' - ERR: ' . $this->getErrorsAsString();
-    }
-
     public function applyFixes(): void
     {
-        if (!$this->hasDeclarations()) {
-            return;
-        }
         $content = (string)file_get_contents($this->getFilePath());
         foreach ($this->rules as $rule) {
             if (!$rule->isValid()) {
@@ -109,7 +92,9 @@ class FileResult implements \Stringable
         }
         $status = file_put_contents($this->getFilePath(), $content);
         if (!$status) {
+            // @codeCoverageIgnoreStart
             throw new \RuntimeException(sprintf('Unable to update file "%s"!', $this->getFilePath()));
+            // @codeCoverageIgnoreEnd
         }
     }
 

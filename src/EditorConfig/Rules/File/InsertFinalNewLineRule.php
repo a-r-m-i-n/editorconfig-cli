@@ -35,10 +35,6 @@ class InsertFinalNewLineRule extends Rule
 
     public function fixContent(string $content): string
     {
-        if ('' === $content) {
-            return $content;
-        }
-
         return rtrim($content) . $this->newLineFormat;
     }
 }

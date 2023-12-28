@@ -17,10 +17,6 @@ class EndOfLineRule extends Rule
         $this->endOfLine = strtolower($endOfLine);
         $this->expectedEndOfLine = LineEndingUtility::convertReadableToActualChars($this->endOfLine) ?? '';
 
-        if ('' === $this->expectedEndOfLine) {
-            throw new \InvalidArgumentException(sprintf('Unknown end of line value "%s" given in .editorconfig', $endOfLine), 1621325385);
-        }
-
         parent::__construct($filePath, $fileContent);
     }
 

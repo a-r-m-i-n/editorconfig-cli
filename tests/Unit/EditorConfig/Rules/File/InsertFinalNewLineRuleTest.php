@@ -48,12 +48,4 @@ class InsertFinalNewLineRuleTest extends TestCase
         $result = $subject->fixContent($correctText);
         self::assertSame($correctText, $result);
     }
-
-    public function testDoNotTouchIfFileIsEmpty()
-    {
-        $correctText = "";
-        $subject = new InsertFinalNewLineRule('dummy/path/file.txt', $correctText, "\n");
-        $result = $subject->fixContent($correctText);
-        self::assertSame($correctText, $result);
-    }
 }

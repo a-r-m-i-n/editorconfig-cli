@@ -19,9 +19,7 @@ class IndentionRule extends Rule
         private readonly bool $strict = false
     ) {
         $this->style = strtolower($style);
-        if (!in_array($this->style, ['space', 'tab'], true)) {
-            throw new \InvalidArgumentException(sprintf('Unknown indention style value "%s" given in .editorconfig', $style), 1621325864);
-        }
+
         parent::__construct($filePath, $fileContent);
     }
 

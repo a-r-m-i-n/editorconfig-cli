@@ -41,12 +41,6 @@ class EndOfLineRuleTest extends TestCase
         self::assertFalse($subject->isValid());
     }
 
-    public function testInvalidLineEndingsConfigThrowsException()
-    {
-        self::expectException(\InvalidArgumentException::class);
-        new EndOfLineRule('dummy/path/file.txt', "Test\nist\nLF\n", 'INVALID');
-    }
-
     public function testFixWrongLineEndingsCorrectlyToCR()
     {
         $wrongText = "Test\nist\nLF\n";

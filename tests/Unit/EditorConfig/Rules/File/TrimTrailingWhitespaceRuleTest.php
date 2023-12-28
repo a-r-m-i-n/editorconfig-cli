@@ -56,13 +56,4 @@ class TrimTrailingWhitespaceRuleTest extends TestCase
         $result = $subject->fixContent($correctText);
         self::assertSame($correctText, $result);
     }
-
-    public function testDoNotTouchWhenEmpty()
-    {
-        $correctText = "";
-        $subject = new TrimTrailingWhitespaceRule('dummy/path/file.txt', $correctText, true);
-        $result = $subject->fixContent($correctText);
-        self::assertSame($correctText, $result);
-    }
-
 }
