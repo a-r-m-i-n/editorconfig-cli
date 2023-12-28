@@ -1,9 +1,11 @@
-# armin/editorconfig-cli
+# Editorconfig Checker for CLI
 
 [![Code Checks](https://github.com/a-r-m-i-n/editorconfig-cli/actions/workflows/code-checks.yml/badge.svg)](https://github.com/a-r-m-i-n/editorconfig-cli/actions/workflows/code-checks.yml)
 
-EditorConfigCLI is a free CLI tool (written in PHP) to **validate and auto-fix** text files based on given **.editorconfig** declarations.
-This allows you to automatically ensure EditorConfig declarations during your CI and development processes.
+EditorConfigCLI (binary called ``ec``) is a free command-line-interface tool (written in PHP) to **validate and auto-fix** text files
+based on given **.editorconfig** declarations.
+
+This allows you to **automatically** ensure .editorconfig declarations during your **CI and development processes**.
 
 **armin/editorconfig-cli** is released under [MIT license](LICENSE).
 
@@ -140,7 +142,7 @@ The ``ec`` binary supports the following options:
 | ``--git-only``             | ``-g``   | Ignores all excludes and scans for all files known to Git. Requires git binary to be present.                                                                                       |
 | ``--git-only-cmd``         |          | Allows you to modify the git command (incl. binary) to get file list. Default: ``git ls-files``                                                                                     |
 | ``--finder-config``        |          | Allows to define a PHP file providing a custom Finder instance. [Read more](docs/CustomFinderInstance.md)                                                                           |
-| ``--skip``                 | ``-s``   | Disables rules by name. Multiple and comma-separated values are allowed.                                                                                                            |
+| ``--skip``                 | ``-s``   | Disables rules by name. Multiple and comma-separated values are allowed. See [rules list](#rules-list) below.                                                                       |
 | ``--strict``               |          | When set, given indention size is forced during scan and fixing. This might conflict with more detailed indention rules, checked by other linters and style-fixers in your project. |
 | ``--compact``              | ``-c``   | Only shows only files with issues, not the issues itself.                                                                                                                           |
 | ``--uncovered``            | ``-u``   | Lists all files which are not covered by .editorconfig.                                                                                                                             |
@@ -149,6 +151,20 @@ The ``ec`` binary supports the following options:
 | ``--no-error-on-exit``     |          | By default ``ec`` returns code 2 when issues or code 1 when warnings occurred. With this option set return code is always 0.                                                        |
 
 **Tip:** The "usage" section on ``ec``'s help page shows some examples.
+
+
+### Rules list
+
+The following rules are being executed by default and could get disabled using the ``--skip`` (``-s``) option:
+
+* ``charset``
+* ``end_of_line``
+* ``indent_size``
+* ``indent_style``
+* ``tab_width``
+* ``insert_final_newline``
+* ``max_line_length``
+* ``trim_trailing_whitespace``
 
 
 ## Support and Contribution
