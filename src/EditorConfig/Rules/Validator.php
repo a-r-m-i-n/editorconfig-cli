@@ -61,7 +61,7 @@ class Validator
         if (!$size) {
             $size = 4;
         }
-        if ($style && $size) {
+        if ($style) {
             $rules[] = new IndentionRule($filePath, $file->getContents(), $style, $size, $strictMode);
         }
 

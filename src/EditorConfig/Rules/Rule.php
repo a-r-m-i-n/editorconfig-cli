@@ -69,6 +69,9 @@ abstract class Rule implements RuleInterface
         return implode("\n", $errors);
     }
 
+    /**
+     * @param int|string|null ...$arguments
+     */
     public function addError(?int $line, string $message, ...$arguments): void
     {
         $this->errors[] = new RuleError(vsprintf($message, $arguments), $line);

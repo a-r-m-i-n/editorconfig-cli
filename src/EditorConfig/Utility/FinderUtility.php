@@ -65,7 +65,7 @@ class FinderUtility
                     }, $item);
                 }
 
-                $iterator[] = new SplFileInfo($workingDir . '/' . $item, $item, $item);
+                $iterator[] = new SplFileInfo($workingDir . '/' . $item, $item ?? '', $item ?? '');
             }
             $finder->append($iterator);
         } else {
