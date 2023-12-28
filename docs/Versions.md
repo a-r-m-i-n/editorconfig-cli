@@ -9,8 +9,15 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ### 2.0.0
 
-- tbw;
-
+- [DOCS] Update screenshot in README
+- [TEST] Improve functional test code coverage
+- **[TASK][!!!] Do not support Symfony v4 components (#23)**
+- [BUGFIX] Fix verbosity in functional tests
+- [TASK] Improve application usages and .editorconfig test exclusions
+- [TASK] Apply PHP 8.2 adjustments
+- [TASK] Apply phpstan fixes
+- [TASK] Apply php-cs-fixer fixes
+- **[TASK][!!!] Drop PHP 7.4, 8.0 and 8.1 support, ensure PHP 8.3 support (#17)**
 
 ### 1.8.1
 
