@@ -4,27 +4,21 @@ declare(strict_types = 1);
 
 namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
-class FileResult
+class FileResult implements \Stringable
 {
-    private string $filePath;
-
-    /**
-     * @var array|Rule[]
-     */
-    private array $rules;
-
-    private bool $isBinary;
-
     /**
      * @var array|UnfixableException[]
      */
     private array $unfixableExceptions = [];
 
-    public function __construct(string $filePath, array $rules, bool $isBinary = false)
-    {
-        $this->rules = $rules;
-        $this->filePath = $filePath;
-        $this->isBinary = $isBinary;
+    /**
+     * @param Rule[] $rules
+     */
+    public function __construct(
+        private readonly string $filePath,
+        private readonly array $rules,
+        private readonly bool $isBinary = false
+    ) {
         foreach ($this->rules as $rule) {
             if ($rule->getFilePath() !== $this->filePath) {
                 throw new \InvalidArgumentException(sprintf('Given rules in FileResult must all be related to the same file! Rule expects file "%s" but file "%s" is given.', $this->filePath, $rule->getFilePath()));
@@ -69,9 +63,7 @@ class FileResult
             array_push($errors, ...$rule->getErrors());
         }
 
-        uasort($errors, function (RuleError $a, RuleError $b): int {
-            return $a->getLine() > $b->getLine() ? 1 : -1;
-        });
+        uasort($errors, fn (RuleError $a, RuleError $b): int => $a->getLine() > $b->getLine() ? 1 : -1);
 
         return $errors;
     }

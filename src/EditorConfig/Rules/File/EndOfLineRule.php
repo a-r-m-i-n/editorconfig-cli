@@ -9,8 +9,8 @@ use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class EndOfLineRule extends Rule
 {
-    private string $endOfLine;
-    private string $expectedEndOfLine;
+    private readonly string $endOfLine;
+    private readonly string $expectedEndOfLine;
 
     public function __construct(string $filePath, string $fileContent, string $endOfLine)
     {

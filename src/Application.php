@@ -25,7 +25,7 @@ use Symfony\Component\Finder\Finder;
 
 class Application extends SingleCommandApplication
 {
-    private Scanner $scanner;
+    private readonly Scanner $scanner;
 
     private string $version;
 
@@ -69,7 +69,7 @@ class Application extends SingleCommandApplication
             ->addOption('uncovered', 'u', InputOption::VALUE_NONE, 'When set, all files which are not covered by .editorconfig get listed')
             ->addOption('no-progress', '', InputOption::VALUE_NONE, 'When set, no progress indicator is displayed')
             ->addOption('no-error-on-exit', '', InputOption::VALUE_NONE, 'When set, the CLI tool will always return code 0, also when issues have been found')
-            ->setCode([$this, 'executing'])
+            ->setCode($this->executing(...))
         ;
     }
 
@@ -134,7 +134,7 @@ class Application extends SingleCommandApplication
         /** @var string|null $gitOnlyCommand */
         $gitOnlyCommand = $input->getOption('git-only-cmd');
 
-        $finder = $finder ?? FinderUtility::createByFinderOptions($finderOptions, $gitOnlyEnabled ? $gitOnlyCommand : null);
+        $finder ??= FinderUtility::createByFinderOptions($finderOptions, $gitOnlyEnabled ? $gitOnlyCommand : null);
 
         // Check amount of files to scan and ask for confirmation
         if ($finderConfigPath) {

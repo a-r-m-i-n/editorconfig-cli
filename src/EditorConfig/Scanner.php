@@ -15,16 +15,8 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class Scanner
 {
-    private ?string $rootPath;
-
-    /**
-     * @var array|string[]
-     */
-    private array $skippingRules;
-
-    private EditorConfig $editorConfig;
-
-    private Validator $validator;
+    private readonly EditorConfig $editorConfig;
+    private readonly Validator $validator;
 
     /**
      * @var array|string[]
@@ -36,12 +28,17 @@ class Scanner
      */
     private array $unavailableFiles = [];
 
-    public function __construct(EditorConfig $editorConfig = null, Validator $validator = null, string $rootPath = null, array $skippingRules = [])
-    {
+    /**
+     * @param string[] $skippingRules
+     */
+    public function __construct(
+        EditorConfig $editorConfig = null,
+        Validator $validator = null,
+        private ?string $rootPath = null,
+        private array $skippingRules = []
+    ) {
         $this->editorConfig = $editorConfig ?? new EditorConfig();
         $this->validator = $validator ?? new Validator();
-        $this->rootPath = $rootPath;
-        $this->skippingRules = $skippingRules;
     }
 
     public function setRootPath(?string $rootPath): void

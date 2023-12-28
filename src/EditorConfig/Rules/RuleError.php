@@ -4,16 +4,12 @@ declare(strict_types = 1);
 
 namespace Armin\EditorconfigCli\EditorConfig\Rules;
 
-class RuleError
+readonly class RuleError implements \Stringable
 {
-    private string $message;
-
-    private ?int $line;
-
-    public function __construct(string $message, int $line = null)
-    {
-        $this->message = $message;
-        $this->line = $line;
+    public function __construct(
+        private string $message,
+        private ?int $line = null
+    ) {
     }
 
     public function getLine(): int

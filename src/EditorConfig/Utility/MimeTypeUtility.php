@@ -16,24 +16,24 @@ class MimeTypeUtility
     public static function isCommonTextType(string $filePath): bool
     {
         $mimeType = self::guessMimeType($filePath);
-        if (0 === strpos($mimeType, 'text/')) {
+        if (str_starts_with($mimeType, 'text/')) {
             return true;
         }
 
-        if (0 === strpos($mimeType, 'application/')) {
-            if ('script' === substr($mimeType, -strlen('script'))) {
+        if (str_starts_with($mimeType, 'application/')) {
+            if (str_ends_with($mimeType, 'script')) {
                 return true;
             }
-            if ('json' === substr($mimeType, -strlen('json'))) {
+            if (str_ends_with($mimeType, 'json')) {
                 return true;
             }
-            if ('yaml' === substr($mimeType, -strlen('yaml'))) {
+            if (str_ends_with($mimeType, 'yaml')) {
                 return true;
             }
-            if ('xml' === substr($mimeType, -strlen('xml'))) {
+            if (str_ends_with($mimeType, 'xml')) {
                 return true;
             }
-            if ('sql' === substr($mimeType, -strlen('sql'))) {
+            if (str_ends_with($mimeType, 'sql')) {
                 return true;
             }
         }
@@ -44,19 +44,19 @@ class MimeTypeUtility
     public static function isCommonBinaryType(string $filePath): bool
     {
         $mimeType = self::guessMimeType($filePath);
-        if (0 === strpos($mimeType, 'font/')) {
+        if (str_starts_with($mimeType, 'font/')) {
             return true;
         }
-        if ('image/svg' !== $mimeType && 0 === strpos($mimeType, 'image/')) {
+        if ('image/svg' !== $mimeType && str_starts_with($mimeType, 'image/')) {
             return true;
         }
-        if (0 === strpos($mimeType, 'audio/')) {
+        if (str_starts_with($mimeType, 'audio/')) {
             return true;
         }
-        if (0 === strpos($mimeType, 'video/')) {
+        if (str_starts_with($mimeType, 'video/')) {
             return true;
         }
-        if (0 === strpos($mimeType, 'application/vnd.')) {
+        if (str_starts_with($mimeType, 'application/vnd.')) {
             return true;
         }
         if ('application/pdf' === $mimeType) {
@@ -83,14 +83,14 @@ class MimeTypeUtility
         if ('application/wasm' === $mimeType) {
             return true;
         }
-        if (0 === strpos($mimeType, 'application/')) {
-            if ('-compressed' === substr($mimeType, -strlen('-compressed'))) {
+        if (str_starts_with($mimeType, 'application/')) {
+            if (str_ends_with($mimeType, '-compressed')) {
                 return true;
             }
-            if ('-ttf' === substr($mimeType, -strlen('-ttf'))) {
+            if (str_ends_with($mimeType, '-ttf')) {
                 return true;
             }
-            if ('-archive' === substr($mimeType, -strlen('-archive'))) {
+            if (str_ends_with($mimeType, '-archive')) {
                 return true;
             }
         }

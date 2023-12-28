@@ -57,7 +57,7 @@ class Validator
         if ($this->hasRuleSet(Rule::TAB_WIDTH)) {
             $width = $editorConfig[Rule::TAB_WIDTH]->getValue();
         }
-        $size = $size ?? $width;
+        $size ??= $width;
         if (!$size) {
             $size = 4;
         }

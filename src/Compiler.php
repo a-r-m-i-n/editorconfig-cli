@@ -35,9 +35,7 @@ class Compiler
         $phar->startBuffering();
 
         // Sort files by real path
-        $finderSort = function (\SplFileInfo $a, \SplFileInfo $b) {
-            return strcmp(str_replace('\\', '/', $a->getRealPath()), str_replace('\\', '/', $b->getRealPath()));
-        };
+        $finderSort = fn (\SplFileInfo $a, \SplFileInfo $b) => strcmp(str_replace('\\', '/', $a->getRealPath()), str_replace('\\', '/', $b->getRealPath()));
 
         $finder = new Finder();
         $finder->files()

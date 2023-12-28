@@ -15,8 +15,6 @@ abstract class Rule implements RuleInterface
     public const MAX_LINE_LENGTH = 'max_line_length';
     public const TRIM_TRAILING_WHITESPACE = 'trim_trailing_whitespace';
 
-    protected string $filePath;
-
     /**
      * @var array|RuleError[]
      */
@@ -36,9 +34,10 @@ abstract class Rule implements RuleInterface
         ];
     }
 
-    public function __construct(string $filePath, string $fileContent = null)
-    {
-        $this->filePath = $filePath;
+    public function __construct(
+        protected string $filePath,
+        string $fileContent = null
+    ) {
         $this->validate($fileContent ?? (string)file_get_contents($this->filePath));
     }
 

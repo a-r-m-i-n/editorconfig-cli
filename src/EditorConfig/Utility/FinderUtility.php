@@ -57,12 +57,10 @@ class FinderUtility
             $iterator = [];
             foreach ($result as $item) {
                 // Check for quotepath, containing octal values for special chars
-                if ('"' === substr($item, 0, 1) && '"' === substr($item, -1)) {
+                if (str_starts_with($item, '"') && str_ends_with($item, '"')) {
                     $item = substr($item, 1, -1);
                     // Convert octal values to special chars
-                    $item = preg_replace_callback('/\\\\(\d{3})/', static function ($matches) {
-                        return chr((int)octdec($matches[1]));
-                    }, $item);
+                    $item = preg_replace_callback('/\\\\(\d{3})/', static fn ($matches) => chr((int)octdec((string)$matches[1])), $item);
                 }
 
                 $iterator[] = new SplFileInfo($workingDir . '/' . $item, $item ?? '', $item ?? '');
@@ -93,7 +91,7 @@ class FinderUtility
             $finder = require $finderConfigPath;
             if (!is_object($finder) || !$finder instanceof Finder) {
                 if (is_object($finder)) {
-                    $returnType = 'instance of ' . get_class($finder);
+                    $returnType = 'instance of ' . $finder::class;
                 } else {
                     $returnType = gettype($finder);
                 }

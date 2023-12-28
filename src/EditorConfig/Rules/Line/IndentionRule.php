@@ -9,18 +9,19 @@ use Armin\EditorconfigCli\EditorConfig\Utility\LineEndingUtility;
 
 class IndentionRule extends Rule
 {
-    private string $style;
-    private ?int $size;
-    private bool $strict;
+    private readonly string $style;
 
-    public function __construct(string $filePath, string $fileContent, string $style, ?int $size, bool $strict = false)
-    {
+    public function __construct(
+        string $filePath,
+        string $fileContent,
+        string $style,
+        private readonly ?int $size,
+        private readonly bool $strict = false
+    ) {
         $this->style = strtolower($style);
         if (!in_array($this->style, ['space', 'tab'], true)) {
             throw new \InvalidArgumentException(sprintf('Unknown indention style value "%s" given in .editorconfig', $style), 1621325864);
         }
-        $this->size = $size;
-        $this->strict = $strict;
         parent::__construct($filePath, $fileContent);
     }
 
@@ -52,7 +53,7 @@ class IndentionRule extends Rule
                 $this->addError($lineCount, 'Expected indention style "tab" but found "spaces"');
                 $lineValid = false;
             }
-            if ('space' === $this->style && false !== strpos($whitespaces, "\t")) {
+            if ('space' === $this->style && str_contains($whitespaces, "\t")) {
                 $this->addError($lineCount, 'Expected indention style "space" but found "tabs"');
                 $lineValid = false;
             }
