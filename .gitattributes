@@ -1,6 +1,7 @@
 /.build export-ignore
 /.ddev export-ignore
 /.github export-ignore
+/src/Compiler.php export-ignore
 /tests export-ignore
 /.editorconfig export-ignore
 /.gitattributes export-ignore
