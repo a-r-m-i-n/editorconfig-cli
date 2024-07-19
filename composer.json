@@ -27,9 +27,9 @@
     },
     "require-dev": {
         "seld/phar-utils": "^1.2",
-        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan": "^1.11",
         "jangregor/phpstan-prophecy": "^1.0",
-        "friendsofphp/php-cs-fixer": "^3.42",
+        "friendsofphp/php-cs-fixer": "^3.59",
         "phpunit/phpunit": "^10.5"
     },
     "bin": [
