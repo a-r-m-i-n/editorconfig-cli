@@ -8,6 +8,9 @@ interface RuleInterface
 {
     public function isValid(): bool;
 
+    /**
+     * @return RuleError[]
+     */
     public function getErrors(): array;
 
     public function fixContent(string $content): string;

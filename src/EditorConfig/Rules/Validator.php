@@ -19,15 +19,19 @@ use Symfony\Component\Finder\SplFileInfo;
 class Validator
 {
     /**
-     * @var array|Declaration[]
+     * @var Declaration[]
      */
     private array $editorConfig;
 
     /**
-     * @var array|string[]
+     * @var string[]
      */
     private array $skippingRules;
 
+    /**
+     * @param array<string, mixed> $editorConfig
+     * @param string[]             $skippingRules
+     */
     public function createValidatedFileResult(SplFileInfo $file, array $editorConfig, bool $strictMode = false, array $skippingRules = []): FileResult
     {
         $this->editorConfig = $editorConfig;
@@ -65,30 +69,30 @@ class Validator
             $rules[] = new IndentionRule($filePath, $file->getContents(), $style, $size, $strictMode);
         }
 
-        if (isset($editorConfig['trim_trailing_whitespace']) && $editorConfig['trim_trailing_whitespace'] instanceof TrimTrailingWhitespace && $editorConfig['trim_trailing_whitespace']->getValue()) {
+        if (isset($editorConfig[Rule::TRIM_TRAILING_WHITESPACE]) && $editorConfig[Rule::TRIM_TRAILING_WHITESPACE] instanceof TrimTrailingWhitespace && $editorConfig[Rule::TRIM_TRAILING_WHITESPACE]->getValue()) {
             $rules[] = new Line\TrimTrailingWhitespaceRule($filePath, $file->getContents());
         }
 
         // File rules
-        if (isset($editorConfig['charset']) && $editorConfig['charset'] instanceof Charset) {
-            $rules[] = new CharsetRule($filePath, $file->getContents(), strtolower($editorConfig['charset']->getStringValue()));
+        if (isset($editorConfig[Rule::CHARSET]) && $editorConfig[Rule::CHARSET] instanceof Charset) {
+            $rules[] = new CharsetRule($filePath, $file->getContents(), strtolower($editorConfig[Rule::CHARSET]->getStringValue()));
         }
 
         $eofRule = null;
         if ($this->hasRuleSet(Rule::END_OF_LINE)) {
-            $rules[] = $eofRule = new EndOfLineRule($filePath, $file->getContents(), $editorConfig['end_of_line']->getStringValue());
+            $rules[] = $eofRule = new EndOfLineRule($filePath, $file->getContents(), $editorConfig[Rule::END_OF_LINE]->getStringValue());
         }
 
         $insertFinalNewLine = null;
         if ($this->hasRuleSet(Rule::INSERT_FINAL_NEWLINE) && $insertFinalNewLine = $editorConfig[Rule::INSERT_FINAL_NEWLINE]->getValue()) {
-            $rules[] = new InsertFinalNewLineRule($filePath, $file->getContents(), $eofRule ? $eofRule->getEndOfLine() : null);
+            $rules[] = new InsertFinalNewLineRule($filePath, $file->getContents(), $eofRule?->getEndOfLine());
         }
         if ($this->hasRuleSet(Rule::TRIM_TRAILING_WHITESPACE)) {
             $rules[] = new TrimTrailingWhitespaceRule($filePath, $file->getContents(), $insertFinalNewLine ?? false);
         }
 
-        if ($this->hasRuleSet(Rule::MAX_LINE_LENGTH) && 'off' !== $editorConfig['max_line_length']->getValue()) {
-            $maxLineLength = (int)$editorConfig['max_line_length']->getValue();
+        if ($this->hasRuleSet(Rule::MAX_LINE_LENGTH) && 'off' !== $editorConfig[Rule::MAX_LINE_LENGTH]->getValue()) {
+            $maxLineLength = (int)$editorConfig[Rule::MAX_LINE_LENGTH]->getValue();
             if ($maxLineLength > 0) {
                 $rules[] = new MaxLineLengthRule($filePath, $file->getContents(), $maxLineLength);
             }

@@ -16,10 +16,13 @@ abstract class Rule implements RuleInterface
     public const TRIM_TRAILING_WHITESPACE = 'trim_trailing_whitespace';
 
     /**
-     * @var array|RuleError[]
+     * @var RuleError[]
      */
     protected array $errors = [];
 
+    /**
+     * @return string[]
+     */
     public static function getDefinitions(): array
     {
         return [
@@ -48,6 +51,9 @@ abstract class Rule implements RuleInterface
         return $this->filePath;
     }
 
+    /**
+     * @return RuleError[]
+     */
     public function getErrors(): array
     {
         return $this->errors;

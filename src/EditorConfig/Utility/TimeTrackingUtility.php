@@ -7,9 +7,9 @@ namespace Armin\EditorconfigCli\EditorConfig\Utility;
 class TimeTrackingUtility
 {
     /**
-     * @var array
+     * @var array{time: float, message: string}[]
      */
-    private static $recordedSteps = [];
+    private static array $recordedSteps = [];
 
     public static function reset(): void
     {
@@ -29,12 +29,19 @@ class TimeTrackingUtility
         $start = reset(self::$recordedSteps);
         $end = end(self::$recordedSteps);
 
+        if (!is_array($start) || !is_array($end)) {
+            return 0.0;
+        }
+
         $start = $start['time'];
         $end = $end['time'];
 
         return round(($end - $start), 3);
     }
 
+    /**
+     * @return array<int, string>
+     */
     public static function getRecordedSteps(): array
     {
         $output = [];

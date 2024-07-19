@@ -79,7 +79,7 @@ class Application extends SingleCommandApplication
         $dir = $input->getOption('dir');
         $this->scanner->setRootPath($dir);
 
-        /** @var array|null $skip */
+        /** @var string[]|null $skip */
         $skip = $input->getOption('skip');
         $this->scanner->setSkippingRules($this->parseSkippingRules($skip));
     }

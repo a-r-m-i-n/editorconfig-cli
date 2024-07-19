@@ -8,4 +8,3 @@ parameters:
     excludePaths:
         - ../src/Compatibility
         - ../src/Compiler.php
-    checkMissingIterableValueType: false

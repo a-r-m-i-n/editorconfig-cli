@@ -9,10 +9,15 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class FinderUtility
 {
+    /**
+     * @var string[]
+     */
     private static array $currentExcludes = [];
 
     /**
      * Creates new Symfony Finder instance based on given config.
+     *
+     * @param array<string, mixed> $finderOptions
      */
     public static function createByFinderOptions(array $finderOptions, ?string $gitOnly = null): Finder
     {
@@ -25,6 +30,8 @@ class FinderUtility
 
     /**
      * Using finderOptions array to build Finder instance.
+     *
+     * @param array<string, mixed> $finderOptions
      */
     protected static function buildFinderByCliArguments(array $finderOptions): Finder
     {
@@ -76,6 +83,8 @@ class FinderUtility
     /**
      * Requires given PHP file (in isolated closure scope) and expect a Symfony Finder instance to be returned.
      * Also, the passed $finderOptions will be available in code of required PHP file (scoped and as global variable).
+     *
+     * @param array<string, mixed> $finderOptions
      */
     public static function loadCustomFinderInstance(
         string $finderConfigPath,
@@ -105,6 +114,9 @@ class FinderUtility
         return $closure($finderConfigPath);
     }
 
+    /**
+     * @return string[]
+     */
     public static function getCurrentExcludes(): array
     {
         return self::$currentExcludes;
