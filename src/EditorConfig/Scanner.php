@@ -32,8 +32,8 @@ class Scanner
      * @param string[] $skippingRules
      */
     public function __construct(
-        EditorConfig $editorConfig = null,
-        Validator $validator = null,
+        ?EditorConfig $editorConfig = null,
+        ?Validator $validator = null,
         private ?string $rootPath = null,
         private array $skippingRules = []
     ) {
@@ -85,7 +85,7 @@ class Scanner
      *
      * @return array|FileResult[]
      */
-    public function scan(Finder $finderInstance, bool $strict = false, callable $tickCallback = null, bool $collectBinaryFiles = false): array
+    public function scan(Finder $finderInstance, bool $strict = false, ?callable $tickCallback = null, bool $collectBinaryFiles = false): array
     {
         $results = [];
         foreach ($finderInstance as $file) {

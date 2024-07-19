@@ -12,7 +12,7 @@ class MaxLineLengthRule extends Rule
 {
     public function __construct(
         string $filePath,
-        string $fileContent = null,
+        ?string $fileContent = null,
         private readonly ?int $maxLineLength = null
     ) {
         parent::__construct($filePath, $fileContent);

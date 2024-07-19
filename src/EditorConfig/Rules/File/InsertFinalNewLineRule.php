@@ -11,7 +11,7 @@ class InsertFinalNewLineRule extends Rule
 {
     private readonly string $newLineFormat;
 
-    public function __construct(string $filePath, string $fileContent, string $newLineFormat = null)
+    public function __construct(string $filePath, string $fileContent, ?string $newLineFormat = null)
     {
         if (null === $newLineFormat) {
             $newLineFormat = LineEndingUtility::detectLineEnding($fileContent, false);

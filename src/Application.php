@@ -31,7 +31,7 @@ class Application extends SingleCommandApplication
 
     private bool $isVerbose = false;
 
-    public function __construct(string $name = 'ec', Scanner $scanner = null)
+    public function __construct(string $name = 'ec', ?Scanner $scanner = null)
     {
         TimeTrackingUtility::reset();
         TimeTrackingUtility::addStep('Start');
@@ -358,7 +358,7 @@ class Application extends SingleCommandApplication
      *
      * @return array|string[]
      */
-    private function parseSkippingRules(array $skippingRules = null): array
+    private function parseSkippingRules(?array $skippingRules = null): array
     {
         if (!$skippingRules) {
             return [];

@@ -36,7 +36,7 @@ abstract class Rule implements RuleInterface
 
     public function __construct(
         protected string $filePath,
-        string $fileContent = null
+        ?string $fileContent = null
     ) {
         $this->validate($fileContent ?? (string)file_get_contents($this->filePath));
     }
