@@ -7,6 +7,14 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 2.0.1
+
+- [TASK] Remove "checkMissingIterableValueType" option and add missing iteration value types
+- [TASK] Fix code styles
+- [TASK] Update dependencies
+- [TASK] Exclude Compiler class from dist archives (**thanks to Elias Häußler**)
+- [TASK] Exclude development-only files from dist archives (**thanks to Elias Häußler**)
+
 ### 2.0.0
 
 - [DOCS] Update screenshot in README
