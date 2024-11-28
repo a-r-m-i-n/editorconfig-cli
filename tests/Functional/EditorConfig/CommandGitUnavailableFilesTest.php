@@ -18,7 +18,7 @@ TXT;
 
     public function setUp(): void
     {
-        $this->workspacePath = sys_get_temp_dir() . '/current_editorconfig_cli_test';
+        $this->workspacePath = realpath(sys_get_temp_dir()) . '/current_editorconfig_cli_test';
 
         parent::setUp();
 

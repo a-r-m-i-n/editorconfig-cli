@@ -120,7 +120,6 @@ class Application extends SingleCommandApplication
 
         $finderConfigPath = null;
         if (!empty($input->getOption('finder-config'))) {
-            /** @var string $finderConfigPath */
             $finderConfigPath = $input->getOption('finder-config');
             $finderConfigPath = $realPath . '/' . $finderConfigPath;
             $finder = FinderUtility::loadCustomFinderInstance($finderConfigPath, $finderOptions);
