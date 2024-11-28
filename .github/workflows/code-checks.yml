@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Setup PHP
       uses: "shivammathur/setup-php@v2"
@@ -34,7 +34,7 @@ jobs:
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.dependencies }}
@@ -42,7 +42,7 @@ jobs:
           ${{ runner.os }}-php-
 
     - name: Composer install
-      uses: "ramsey/composer-install@v1"
+      uses: ramsey/composer-install@v3
       with:
         dependency-versions: "${{ matrix.dependencies }}"
         composer-options: "${{ matrix.composer-options }}"
@@ -54,7 +54,7 @@ jobs:
       run: composer run-script test-with-coverage
 
     - name: Upload test reports artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: test-reports-${{ matrix.php }}-${{ matrix.dependencies }}
         path: |
