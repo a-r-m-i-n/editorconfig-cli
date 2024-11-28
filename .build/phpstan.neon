@@ -6,5 +6,4 @@ parameters:
     paths:
         - ../src
     excludePaths:
-        - ../src/Compatibility
         - ../src/Compiler.php

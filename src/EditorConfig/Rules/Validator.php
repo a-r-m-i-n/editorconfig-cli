@@ -19,7 +19,7 @@ use Symfony\Component\Finder\SplFileInfo;
 class Validator
 {
     /**
-     * @var Declaration[]
+     * @var array<string, Declaration>
      */
     private array $editorConfig;
 
@@ -108,7 +108,6 @@ class Validator
     {
         return !in_array($ruleName, $this->skippingRules, true)
             && isset($this->editorConfig[$ruleName])
-            && $this->editorConfig[$ruleName] instanceof Declaration
             && ($this->editorConfig[$ruleName]->getValue() || $this->editorConfig[$ruleName]->getStringValue());
     }
 }
