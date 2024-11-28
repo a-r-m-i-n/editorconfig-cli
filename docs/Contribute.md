@@ -70,6 +70,8 @@ Also, each build will run on the following combinations of PHP version and Compo
 - PHP 8.2, Highest
 - PHP 8.3, Lowest
 - PHP 8.3, Highest
+- PHP 8.4, Lowest
+- PHP 8.4, Highest
 
 *Note:* "Highest" is the default behaviour of Composer.
         "Lowest" is when you run Composer update with ``--prefer-lowest``

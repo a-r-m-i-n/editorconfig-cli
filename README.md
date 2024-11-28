@@ -14,7 +14,7 @@ Written by **Armin Vieweg**  <<https://v.ieweg.de>>
 
 ## Requirements
 
-- PHP 8.2 or 8.3
+- PHP 8.2, 8.3 or 8.4
 - Enabled PHP extensions: iconv, json
 
 If you are looking for older PHP version support, you can check out and use those tags:
