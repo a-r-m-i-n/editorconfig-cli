@@ -7,6 +7,17 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 2.1.0
+
+- [TASK] Update dependencies
+- [BUGFIX] Improve output when indention in strict mode is wrong
+- [TASK] Update copyright notice in LICENSE
+- [DEVOPS] Remove unnecessary docker-compose.web.yaml
+- [DEVOPS] Update GitHub actions (**thanks to Elias Häußler**)
+- [DEVOPS] Enable parallel runs in PHP-CS-Fixer (**thanks to Elias Häußler**)
+- [DEVOPS] Add PHP 8.4 to test matrix (**thanks to Elias Häußler**)
+- [DEVOPS] Update to PHPStan v2 (**thanks to Elias Häußler**)
+
 ### 2.0.1
 
 - [TASK] Remove "checkMissingIterableValueType" option and add missing iteration value types
