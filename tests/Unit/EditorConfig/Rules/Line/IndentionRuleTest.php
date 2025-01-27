@@ -24,8 +24,18 @@ class IndentionRuleTest extends TestCase
     {
         $subject = new IndentionRule('dummy/path/file.txt', "    Non Trailing\n    Non Trailing\n    Non Trailing\n", 'space', 4, true);
         self::assertTrue($subject->isValid());
-        $subject = new IndentionRule('dummy/path/file.txt', "    Non Trailing\n     Non Trailing\n    Non Trailing\n", 'space', 4, true);
+        $subject = new IndentionRule('dummy/path/file.txt', "   Non Trailing\n     Non Trailing\n    Non Trailing\n", 'space', 4, true);
         self::assertFalse($subject->isValid());
+        self::assertCount(2, $subject->getErrors());
+        self::assertSame('Expected 0 or 4 spaces, found 3', $subject->getErrors()[0]->getMessage());
+        self::assertSame('Expected 4 or 8 spaces, found 5', $subject->getErrors()[1]->getMessage());
+
+
+        $subject = new IndentionRule('dummy/path/file.txt', "Non Trailing\n Non Trailing\n  Non Trailing\n   Non Trailing\n    Non Trailing\n", 'space', 2, true);
+        self::assertFalse($subject->isValid());
+        self::assertCount(2, $subject->getErrors());
+        self::assertSame('Expected 0 or 2 spaces, found 1', $subject->getErrors()[0]->getMessage());
+        self::assertSame('Expected 2 or 4 spaces, found 3', $subject->getErrors()[1]->getMessage());
     }
 
     public function testDetectWrongIndentionsCorrectlyWhenUppercase()

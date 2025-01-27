@@ -23,7 +23,7 @@ TXT;
         'invalid.txt' => self::LF . "	This line has tabs. It should be spaces.
    And this line has spaces, but only 3 instead of 4.
   And this line also has spaces, but only 2 instead of 4.
-
+     And this line has spaces, but 5 instead of 4 or 8.
 Also this line, has more chars as the allowed 80 chars. Also this line, has more chars as the allowed 80 chars. (123 chars)
 
 This line has trailing spaces ->   " . "
@@ -35,7 +35,8 @@ This line has trailing tabs ->		" . "
     protected $expectedResults = [
         'invalid.txt' => self::CRLF . "    This line has tabs. It should be spaces." . self::CRLF .
 "And this line has spaces, but only 3 instead of 4." . self::CRLF .
-"And this line also has spaces, but only 2 instead of 4." . self::CRLF . self::CRLF .
+"And this line also has spaces, but only 2 instead of 4." . self::CRLF .
+"    And this line has spaces, but 5 instead of 4 or 8." . self::CRLF .
 "Also this line, has more chars as the allowed 80 chars. Also this line, has more chars as the allowed 80 chars. (123 chars)" . self::CRLF . self::CRLF .
 "This line has trailing spaces ->" . self::CRLF .
 "This line has trailing tabs ->" . self::CRLF,
@@ -49,17 +50,18 @@ This line has trailing tabs ->		" . "
         $commandTester->execute(['-d' => $this->workspacePath, '--no-progress' => true, '--strict' => true]);
 
         self::assertSame(2, $commandTester->getStatusCode());
-        self::assertStringContainsString(DIRECTORY_SEPARATOR . 'invalid.txt [9]', $commandTester->getDisplay());
+        self::assertStringContainsString(DIRECTORY_SEPARATOR . 'invalid.txt [10]', $commandTester->getDisplay());
         self::assertStringContainsString('This file has invalid encoding given! Expected: "latin1", Given: "utf-8"', $commandTester->getDisplay());
         self::assertStringContainsString('This file has line ending "lf" given, but "crlf" is expected', $commandTester->getDisplay());
         self::assertStringContainsString('This file has trailing whitespaces', $commandTester->getDisplay());
         self::assertStringContainsString('Line 2: Expected indention style "space" but found "tabs"', $commandTester->getDisplay());
-        self::assertStringContainsString('Line 3: Expected 0 spaces, found 3', $commandTester->getDisplay());
-        self::assertStringContainsString('Line 4: Expected 0 spaces, found 2', $commandTester->getDisplay());
+        self::assertStringContainsString('Line 3: Expected 0 or 4 spaces, found 3', $commandTester->getDisplay());
+        self::assertStringContainsString('Line 4: Expected 0 or 4 spaces, found 2', $commandTester->getDisplay());
+        self::assertStringContainsString('Line 5: Expected 4 or 8 spaces, found 5', $commandTester->getDisplay());
         self::assertStringContainsString('Line 6: Max line length (80 chars) exceeded by 123 chars', $commandTester->getDisplay());
         self::assertStringContainsString('Line 8: Trailing whitespaces found', $commandTester->getDisplay());
         self::assertStringContainsString('Line 9: Trailing whitespaces found', $commandTester->getDisplay());
-        self::assertStringContainsString('Found 9 issues in 1 file', $commandTester->getDisplay());
+        self::assertStringContainsString('Found 10 issues in 1 file', $commandTester->getDisplay());
 
         $commandTester = new CommandTester($command);
         $commandTester->execute(['-d' => $this->workspacePath, '--no-progress' => true, '--strict' => true, '--fix' => true]);

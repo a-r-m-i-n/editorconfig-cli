@@ -56,12 +56,19 @@ class IndentionRule extends Rule
                 $lineValid = false;
             }
 
-            if ($lineValid && 'space' === $this->style) {
+            if (!$lineValid || !$this->strict) {
+                continue;
+            }
+
+            // Strict indention checks
+            if ('space' === $this->style) {
                 $tooMuchSpaces = strlen($whitespaces) % $this->size;
-                if ($this->strict && $tooMuchSpaces > 0) {
-                    $expected = strlen($whitespaces) - $tooMuchSpaces;
-                    $actual = $expected + $tooMuchSpaces;
-                    $this->addError($lineCount, 'Expected %d spaces, found %d', $expected, $actual);
+                if ($tooMuchSpaces > 0) {
+                    $expectedMin = (int)floor(strlen($whitespaces) / $this->size) * $this->size;
+                    $expectedMax = (int)ceil(strlen($whitespaces) / $this->size) * $this->size;
+
+                    $actual = $expectedMin + $tooMuchSpaces;
+                    $this->addError($lineCount, 'Expected %d or %d spaces, found %d', $expectedMin, $expectedMax, $actual);
                 }
             }
         }

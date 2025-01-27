@@ -58,8 +58,8 @@ TXT,
         self::assertStringContainsString('This file has line ending "lf" given, but "crlf" is expected', $commandTester->getDisplay());
         self::assertStringContainsString('This file has trailing whitespaces', $commandTester->getDisplay());
         self::assertStringContainsString('Line 2: Expected indention style "space" but found "tabs"', $commandTester->getDisplay());
-        self::assertStringContainsString('Line 3: Expected 0 spaces, found 3', $commandTester->getDisplay());
-        self::assertStringContainsString('Line 4: Expected 0 spaces, found 2', $commandTester->getDisplay());
+        self::assertStringContainsString('Line 3: Expected 0 or 4 spaces, found 3', $commandTester->getDisplay());
+        self::assertStringContainsString('Line 4: Expected 0 or 4 spaces, found 2', $commandTester->getDisplay());
         self::assertStringContainsString('Line 6: Max line length (80 chars) exceeded by 123 chars', $commandTester->getDisplay());
         self::assertStringContainsString('Line 8: Trailing whitespaces found', $commandTester->getDisplay());
         self::assertStringContainsString('Line 9: Trailing whitespaces found', $commandTester->getDisplay());
