@@ -4,7 +4,7 @@
 if (PHP_SAPI !== 'cli') {
     echo 'Warning: editorconfig-cli should be invoked via the CLI version of PHP, not the ' . PHP_SAPI . ' SAPI' . PHP_EOL;
 }
-$phpRequirement = '7.3.0';
+$phpRequirement = '8.2.0';
 if (!version_compare(PHP_VERSION, $phpRequirement)) {
     echo 'Your PHP version ' . PHP_VERSION . ' does not match the minimum requirement of version ' .
          $phpRequirement . '!'. PHP_EOL;
