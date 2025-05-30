@@ -13,11 +13,9 @@ use Armin\EditorconfigCli\EditorConfig\Utility\TimeTrackingUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\VersionUtility;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\SingleCommandApplication;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -84,7 +82,7 @@ class Application extends SingleCommandApplication
         $this->scanner->setSkippingRules($this->parseSkippingRules($skip));
     }
 
-    protected function executing(Input $input, Output $output): int
+    protected function executing(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->getFormatter()->setStyle('debug', new OutputFormatterStyle('blue'));
