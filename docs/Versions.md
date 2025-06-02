@@ -7,6 +7,11 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 2.1.1
+
+- [BUGFIX] Assure compatibility with Symfony v7.3 (**thanks to Elias Häußler**)
+- [BUGFIX] Set minimum required PHP version in "ec" binary
+
 ### 2.1.0
 
 - [TASK] Update dependencies
