@@ -5,7 +5,8 @@ declare(strict_types = 1);
 namespace Armin\EditorconfigCli\EditorConfig\Utility;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Component\Finder\Iterator\FilenameFilterIterator;
+use Symfony\Component\Finder\SplFileInfo as FinderSplFileInfo;
 
 class FinderUtility
 {
@@ -22,7 +23,7 @@ class FinderUtility
     public static function createByFinderOptions(array $finderOptions, ?string $gitOnly = null): Finder
     {
         if (!empty($gitOnly)) {
-            return self::buildGitOnlyFinder($finderOptions['path'], $gitOnly);
+            return self::buildGitOnlyFinder($finderOptions['path'], $gitOnly, $finderOptions['names']);
         }
 
         return self::buildFinderByCliArguments($finderOptions);
@@ -51,33 +52,53 @@ class FinderUtility
     /**
      * Calling local git binary to identify files known to Git.
      * Used, when --git-only (-g) is set.
+     *
+     * @param string[] $names
      */
-    protected static function buildGitOnlyFinder(string $workingDir, string $gitOnlyCommand): Finder
+    protected static function buildGitOnlyFinder(string $workingDir, string $gitOnlyCommand, array $names): Finder
     {
         exec('cd ' . $workingDir . ' && ' . $gitOnlyCommand . ' 2>&1', $result, $returnCode);
         if (0 !== $returnCode) {
             throw new \RuntimeException('Git binary returned error code ' . $returnCode . ' with the following output:' . PHP_EOL . PHP_EOL . implode(PHP_EOL, $result), $returnCode);
         }
 
-        $finder = new Finder();
-        if (!empty($result)) {
-            $iterator = [];
-            foreach ($result as $item) {
-                // Check for quotepath, containing octal values for special chars
-                if (str_starts_with($item, '"') && str_ends_with($item, '"')) {
-                    $item = substr($item, 1, -1);
-                    // Convert octal values to special chars
-                    $item = preg_replace_callback('/\\\\(\d{3})/', static fn ($matches) => chr((int)octdec((string)$matches[1])), $item);
-                }
+        $files = [];
 
-                $iterator[] = new SplFileInfo($workingDir . '/' . $item, $item ?? '', $item ?? '');
+        foreach ($result as $item) {
+            // Check for quotepath, containing octal values for special chars
+            if (str_starts_with($item, '"') && str_ends_with($item, '"')) {
+                $item = substr($item, 1, -1);
+                // Convert octal values to special chars
+                $item = preg_replace_callback(
+                    '/\\\\(\d{3})/',
+                    static fn ($matches) => chr((int)octdec((string)$matches[1])),
+                    $item
+                );
             }
-            $finder->append($iterator);
-        } else {
-            $finder->append([]);
+
+            if (!is_string($item) || empty($item)) {
+                continue;
+            }
+
+            $files[] = new FinderSplFileInfo(
+                $workingDir . '/' . $item,
+                dirname($item),
+                $item
+            );
         }
 
-        return $finder->files()->ignoreVCS(true);
+        $iterator = new \ArrayIterator($files);
+
+        if (!empty($names)) {
+            $iterator = new FilenameFilterIterator($iterator, $names, []);
+        }
+
+        $finder = new Finder();
+        $finder->files()->ignoreVCS(true);
+
+        $finder->append($iterator);
+
+        return $finder;
     }
 
     /**

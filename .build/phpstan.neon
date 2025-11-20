@@ -9,3 +9,4 @@ parameters:
         - ../tests/Unit
     excludePaths:
         - ../src/Compiler.php
+        - ../src/EditorConfig/Utility/FinderUtility.php

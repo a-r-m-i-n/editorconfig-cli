@@ -43,7 +43,7 @@ class Application extends SingleCommandApplication
             ->setDescription("CLI tool to validate and auto-fix text files, based on given .editorconfig declarations.\n  Version:    <comment>" . VersionUtility::getApplicationVersionFromComposerJson() . '</comment>' . "\n  Written by: <comment>Armin Vieweg <https://v.ieweg.de></comment>")
             ->addUsage('')
             ->addUsage('--fix')
-            ->addUsage('*.js *.css')
+            ->addUsage('"*.js" "*.css"')
             ->addUsage('-n --no-progress')
             ->addUsage('-e"dist" -e".build"')
             ->addUsage('-s charset,eol -s trim')
@@ -144,7 +144,8 @@ class Application extends SingleCommandApplication
         }
         if (!$finderConfigPath && $this->isVerbose) {
             if ($gitOnlyEnabled && $gitOnlyCommand) {
-                $io->writeln('<debug>Names and (auto-) excludes disabled, because of set git-only mode.</debug>');
+                $io->writeln('<debug>(Auto-) excludes disabled, because of set git-only mode.</debug>');
+                $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
             } else {
                 $io->writeln('<debug>Names: ' . implode(', ', (array)$input->getArgument('names')) . '</debug>');
                 $io->writeln('<debug>Excluded: ' . (count(FinderUtility::getCurrentExcludes()) > 0 ? implode(', ', FinderUtility::getCurrentExcludes()) : '-') . '</debug>');

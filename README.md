@@ -104,7 +104,7 @@ EditorConfigCLI supports **three different modes to find files** to check for:
    *Note:* No dotted files and directories are getting scanned (e.g. ``.ddev/`` or ``.htaccess``).
    Also, files covered by root ``.gitignore`` file, will be automatically excluded from scan.
 
-2. **Using local Git binary**, to get all files known Git. CLI args and options are ignored, then. (``--git-only``)
+2. **Using local Git binary**, to get all files known Git. Most CLI args and options are ignored, then. You can still filter files known to Git using `<names>` argument. (``--git-only``)
 
 3. **Using a custom finder instance**, which you can provide via a separate PHP file (``--finder-config``).
 
@@ -132,8 +132,20 @@ Name(s) of file names to get checked. Wildcards allowed. Default: ``['*']``
 With this you can only scan certain file types, e.g.
 
 ```
-$ vendor/bin/ec *.css *.js *.html
+$ vendor/bin/ec "*.json" "*.yml" "*.yaml" "*.md"
 ```
+
+This also works, when `--git-only` mode is used. Then, all files known to Git are filtered.
+It is especially useful, when you want to apply `--strict` mode only to certain file types (like json, yaml or markdown).
+
+#### Wildcard Expansion Notice
+
+Shells like Bash, Zsh, and PowerShell may expand wildcards (`*`) before the tool receives them,
+passing the list of matching files instead of the literal pattern.
+
+To pass a literal `*`, quote or escape it (e.g. `"*.json"` or `\*.json`).
+
+Use `-v` (verbose) to see the actual arguments received by the EditorConfigCLI.
 
 
 ### Options
@@ -150,9 +162,9 @@ The ``ec`` binary supports the following options:
 | ``--finder-config``        |          | Allows to define a PHP file providing a custom Finder instance. [Read more](docs/CustomFinderInstance.md)                                                                           |
 | ``--skip``                 | ``-s``   | Disables rules by name. Multiple and comma-separated values are allowed. See [rules list](#rules-list) below.                                                                       |
 | ``--strict``               |          | When set, given indention size is forced during scan and fixing. This might conflict with more detailed indention rules, checked by other linters and style-fixers in your project. |
-| ``--compact``              | ``-c``   | Only shows only files with issues, not the issues itself.                                                                                                                           |
+| ``--compact``              | ``-c``   | Only shows files with issues, not the issues itself.                                                                                                                                |
 | ``--uncovered``            | ``-u``   | Lists all files which are not covered by .editorconfig.                                                                                                                             |
-| ``--verbose``              | ``-v``   | Shows additional informations, like detailed info about internal time tracking and which binary files have been skipped.                                                            |
+| ``--verbose``              | ``-v``   | Shows additional information, like detailed info about internal time tracking and which binary files have been skipped.                                                             |
 | ``--no-interaction``       | ``-n``   | Do not ask for confirmation, if more than 500 files found and continue scanning. Always returns error code 3, when not confirming.                                                  |
 | ``--no-error-on-exit``     |          | By default ``ec`` returns code 2 when issues or code 1 when warnings occurred. With this option set return code is always 0.                                                        |
 
