@@ -13,5 +13,8 @@ interface RuleInterface
      */
     public function getErrors(): array;
 
+    /**
+     * @throws UnfixableException
+     */
     public function fixContent(string $content): string;
 }

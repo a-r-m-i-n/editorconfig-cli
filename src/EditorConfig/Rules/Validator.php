@@ -61,10 +61,11 @@ class Validator
         if ($this->hasRuleSet(Rule::TAB_WIDTH)) {
             $width = $editorConfig[Rule::TAB_WIDTH]->getValue();
         }
-        $size ??= $width;
-        if (!$size) {
-            $size = 4;
+
+        if ('tab' === $style) {
+            $size ??= $width;
         }
+
         if ($style) {
             $rules[] = new IndentionRule($filePath, $file->getContents(), $style, $size, $strictMode);
         }

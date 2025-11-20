@@ -120,6 +120,8 @@ Currently, two rules do not support auto-fixing:
 
 You get a notice for this in result output, when such issues occur.
 
+Also, when an indention issue has been detected, but `indent_size` is not set, a notice will appear, because it is required to apply auto-fixing.
+
 
 ## CLI
 
