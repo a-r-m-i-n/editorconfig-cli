@@ -16,7 +16,7 @@ return (new PhpCsFixer\Config())
         '@PSR2' => true,
         '@DoctrineAnnotation' => true,
         '@Symfony' => true,
-        '@PHP74Migration' => true,
+        '@PHP7x4Migration' => true,
         'no_leading_import_slash' => true,
         'no_trailing_comma_in_singleline' => true,
         'no_singleline_whitespace_before_semicolons' => true,
