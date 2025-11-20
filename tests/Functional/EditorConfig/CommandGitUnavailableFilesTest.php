@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
+
 namespace Armin\EditorconfigCli\Tests\Functional\EditorConfig;
 
 use Armin\EditorconfigCli\Application;
@@ -8,13 +11,13 @@ class CommandGitUnavailableFilesTest extends AbstractTestCase
 {
     private const GIT_BINARY = 'git';
 
-    protected $editorConfig = <<<TXT
-root = true
+    protected string $editorConfig = <<<TXT
+        root = true
 
-[*]
-insert_final_newline = true
+        [*]
+        insert_final_newline = true
 
-TXT;
+        TXT;
 
     public function setUp(): void
     {
@@ -23,13 +26,13 @@ TXT;
         parent::setUp();
 
         // Copy test files
-        copy(__DIR__ . '/../../Fixtures/image.jpg', $this->workspacePath . '/' . 'image.jpg');
-        copy(__DIR__ . '/../../Fixtures/document.pdf', $this->workspacePath . '/' . 'document.pdf');
-        copy(__DIR__ . '/../../Fixtures/kreis-weiß.svg', $this->workspacePath . '/' . 'kreis-weiß.svg');
+        copy(__DIR__ . '/../../Fixtures/image.jpg', $this->workspacePath . '/image.jpg');
+        copy(__DIR__ . '/../../Fixtures/document.pdf', $this->workspacePath . '/document.pdf');
+        copy(__DIR__ . '/../../Fixtures/kreis-weiß.svg', $this->workspacePath . '/kreis-weiß.svg');
 
         // Set up Git repository for testing
         exec('cd ' . $this->workspacePath . ' && ' . self::GIT_BINARY . ' init', $result, $returnCode);
-        if ($returnCode !== 0) {
+        if (0 !== $returnCode) {
             throw new \RuntimeException('Unable to create test git repository!');
         }
 
@@ -43,16 +46,16 @@ TXT;
         exec('rm -f ' . $this->workspacePath . '/document.pdf');
     }
 
-    public function testUnavailableFiles()
+    public function testUnavailableFiles(): void
     {
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['-d' => $this->workspacePath, '--no-progress' => true, '--git-only' => true]);
 
-        self::assertSame(1, $commandTester->getStatusCode());
-        self::assertStringContainsString('[WARNING] Found 2 unavailable files not being scanned!', $commandTester->getDisplay());
-        self::assertStringContainsString('* ' . $this->workspacePath . '/document.pdf', $commandTester->getDisplay());
-        self::assertStringContainsString('* ' . $this->workspacePath . '/image.jpg', $commandTester->getDisplay());
+        $this->assertSame(1, $commandTester->getStatusCode());
+        $this->assertStringContainsString('[WARNING] Found 2 unavailable files not being scanned!', $commandTester->getDisplay());
+        $this->assertStringContainsString('* ' . $this->workspacePath . '/document.pdf', $commandTester->getDisplay());
+        $this->assertStringContainsString('* ' . $this->workspacePath . '/image.jpg', $commandTester->getDisplay());
     }
 }

@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
+
 namespace Armin\EditorconfigCli\Tests\Functional\EditorConfig;
 
 use Armin\EditorconfigCli\Application;
@@ -6,20 +9,19 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CommandValidCaseTest extends AbstractTestCase
 {
-    protected $editorConfig = <<<TXT
-root = true
+    protected string $editorConfig = <<<TXT
+        root = true
 
-[*]
-insert_final_newline = true
-TXT;
+        [*]
+        insert_final_newline = true
+        TXT;
 
-    protected $files = [
+    protected array $files = [
         'valid.txt' => <<<TXT
-This is valid text
+            This is valid text
 
-TXT,
+            TXT,
     ];
-
 
     public function setUp(): void
     {
@@ -27,16 +29,15 @@ TXT,
         copy('docs/images/editorconfig-logo.png', $this->workspacePath . '/image.png');
     }
 
-
-    public function testValidCase()
+    public function testValidCase(): void
     {
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['-d' => $this->workspacePath, '--no-progress' => true, '-s' => ['charset']]);
 
-        self::assertSame(0, $commandTester->getStatusCode(), $commandTester->getDisplay());
-        self::assertStringContainsString('Done. No issues found.', $commandTester->getDisplay());
-        self::assertStringContainsString('Duration: ', $commandTester->getDisplay());
+        $this->assertSame(0, $commandTester->getStatusCode(), $commandTester->getDisplay());
+        $this->assertStringContainsString('Done. No issues found.', $commandTester->getDisplay());
+        $this->assertStringContainsString('Duration: ', $commandTester->getDisplay());
     }
 }

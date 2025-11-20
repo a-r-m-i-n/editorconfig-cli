@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
+
 namespace Armin\EditorconfigCli\Tests\Functional\EditorConfig;
 
 use PHPUnit\Framework\TestCase;
@@ -17,18 +20,17 @@ abstract class AbstractTestCase extends TestCase
      * @var string On this location (relativ to current working dir) the given files and
      *             .editorconfig are created during set up.
      */
-    protected $workspacePath = '.build/.cache/current_test';
+    protected string $workspacePath = '.build/.cache/current_test';
 
     /**
      * @var string .editorconfig content
      */
-    protected $editorConfig = '';
+    protected string $editorConfig = '';
 
     /**
-     * @var string[] Key is filename, value is file content
+     * @var array<string, string> Key is filename, value is file content
      */
-    protected $files = [];
-
+    protected array $files = [];
 
     public function setUp(): void
     {
@@ -56,7 +58,7 @@ abstract class AbstractTestCase extends TestCase
         exec('rm -f ' . $this->workspacePath . '/* ' . $this->workspacePath . '/.editorconfig');
     }
 
-    protected function appendContentToEditorConfig(string $contentToAppend)
+    protected function appendContentToEditorConfig(string $contentToAppend): void
     {
         $this->editorConfig .= PHP_EOL . $contentToAppend;
         file_put_contents($this->workspacePath . '/.editorconfig', $this->editorConfig);

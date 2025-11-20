@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
+
 namespace Armin\EditorconfigCli\Tests\Functional\EditorConfig;
 
 use Armin\EditorconfigCli\Application;
@@ -6,40 +9,40 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CommandWorkingDirTest extends AbstractTestCase
 {
-    protected $editorConfig = <<<TXT
-root = true
+    protected string $editorConfig = <<<TXT
+        root = true
 
-[*]
-insert_final_newline = true
-TXT;
+        [*]
+        insert_final_newline = true
+        TXT;
 
-    protected $files = [
+    protected array $files = [
         'valid.txt' => <<<TXT
-This is valid text
+            This is valid text
 
-TXT,
+            TXT,
     ];
 
-    public function testUsingCwdWhenDirIsNull()
+    public function testUsingCwdWhenDirIsNull(): void
     {
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['-d' => null, '--no-progress' => true]);
 
-        self::assertSame(0, $commandTester->getStatusCode(), $commandTester->getDisplay());
-        self::assertStringContainsString('Searching in directory ' . getcwd(), $commandTester->getDisplay());
-        self::assertStringContainsString('Done. No issues found.', $commandTester->getDisplay());
+        $this->assertSame(0, $commandTester->getStatusCode(), $commandTester->getDisplay());
+        $this->assertStringContainsString('Searching in directory ' . getcwd(), $commandTester->getDisplay());
+        $this->assertStringContainsString('Done. No issues found.', $commandTester->getDisplay());
     }
 
-    public function testThrowErrorWhenDirectoryIsNotExisting()
+    public function testThrowErrorWhenDirectoryIsNotExisting(): void
     {
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['-d' => 'invalid-dir', '--no-progress' => true]);
 
-        self::assertSame(1, $commandTester->getStatusCode(), $commandTester->getDisplay());
-        self::assertStringContainsString('[ERROR] Invalid working directory "invalid-dir" given!', $commandTester->getDisplay());
+        $this->assertSame(1, $commandTester->getStatusCode(), $commandTester->getDisplay());
+        $this->assertStringContainsString('[ERROR] Invalid working directory "invalid-dir" given!', $commandTester->getDisplay());
     }
 }

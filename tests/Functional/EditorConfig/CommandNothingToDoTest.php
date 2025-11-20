@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
+
 namespace Armin\EditorconfigCli\Tests\Functional\EditorConfig;
 
 use Armin\EditorconfigCli\Application;
@@ -6,24 +9,23 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CommandNothingToDoTest extends AbstractTestCase
 {
-    protected $editorConfig = <<<TXT
-root = true
+    protected string $editorConfig = <<<TXT
+        root = true
 
-[*]
-insert_final_newline = true
-TXT;
+        [*]
+        insert_final_newline = true
+        TXT;
 
-    protected $files = [];
+    protected array $files = [];
 
-
-    public function testValidCase()
+    public function testValidCase(): void
     {
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['-d' => $this->workspacePath]);
 
-        self::assertSame(0, $commandTester->getStatusCode());
-        self::assertStringContainsString('Nothing to do here.', $commandTester->getDisplay());
+        $this->assertSame(0, $commandTester->getStatusCode());
+        $this->assertStringContainsString('Nothing to do here.', $commandTester->getDisplay());
     }
 }

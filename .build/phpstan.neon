@@ -5,5 +5,7 @@ parameters:
     level: 8
     paths:
         - ../src
+        - ../tests/Functional
+        - ../tests/Unit
     excludePaths:
         - ../src/Compiler.php

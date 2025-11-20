@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
+
 namespace Armin\EditorconfigCli\Tests\Unit\EditorConfig\Rules\Line;
 
 use Armin\EditorconfigCli\EditorConfig\Rules\Line\TrimTrailingWhitespaceRule;
@@ -6,28 +9,27 @@ use PHPUnit\Framework\TestCase;
 
 class TrimTrailingWhitespaceRuleTest extends TestCase
 {
-
-    public function testDetectTrailingWhitespacesCorrectly()
+    public function testDetectTrailingWhitespacesCorrectly(): void
     {
         $subject = new TrimTrailingWhitespaceRule('dummy/path/file.txt', "Non Trailing\n Non Trailing\nNon Trailing\n");
-        self::assertTrue($subject->isValid());
+        $this->assertTrue($subject->isValid());
         $subject = new TrimTrailingWhitespaceRule('dummy/path/file.txt', "Trailing \n Trailing  \nTrailing\t\nNon Trailing\n");
-        self::assertFalse($subject->isValid());
+        $this->assertFalse($subject->isValid());
     }
 
-    public function testFixingTrailingWhitespacesWorks()
+    public function testFixingTrailingWhitespacesWorks(): void
     {
         $wrongText = "Trailing \n Trailing  \nTrailing\t\nNon Trailing\n";
         $subject = new TrimTrailingWhitespaceRule('dummy/path/file.txt', $wrongText);
         $result = $subject->fixContent($wrongText);
-        self::assertSame("Trailing\n Trailing\nTrailing\nNon Trailing\n", $result);
+        $this->assertSame("Trailing\n Trailing\nTrailing\nNon Trailing\n", $result);
     }
 
-    public function testDoNotTouchCorrectTexts()
+    public function testDoNotTouchCorrectTexts(): void
     {
         $correctText = "Non Trailing\n Non Trailing\nNon Trailing\n";
         $subject = new TrimTrailingWhitespaceRule('dummy/path/file.txt', $correctText);
         $result = $subject->fixContent($correctText);
-        self::assertSame($correctText, $result);
+        $this->assertSame($correctText, $result);
     }
 }

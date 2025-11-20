@@ -1,4 +1,7 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
+
 namespace Armin\EditorconfigCli\Tests\Functional\EditorConfig;
 
 use Armin\EditorconfigCli\Application;
@@ -7,29 +10,28 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class CommandNoErrorOnExitTest extends AbstractTestCase
 {
-    protected $editorConfig = <<<TXT
-root = true
+    protected string $editorConfig = <<<TXT
+        root = true
 
-[*]
-insert_final_newline = true
-TXT;
+        [*]
+        insert_final_newline = true
+        TXT;
 
-    protected $files = [
+    protected array $files = [
         'invalid.txt' => <<<TXT
-Missing new line in this file.
-TXT,
+            Missing new line in this file.
+            TXT,
     ];
 
-
-    public function testNoErrorOnExit()
+    public function testNoErrorOnExit(): void
     {
         $command = new Application();
         $command->setAutoExit(false);
         $commandTester = new CommandTester($command);
         $commandTester->execute(['-d' => $this->workspacePath, '--no-error-on-exit' => true], ['verbosity' => OutputInterface::VERBOSITY_VERBOSE]);
 
-        self::assertSame(0, $commandTester->getStatusCode());
-        self::assertStringContainsString('Bypassing error code 2', $commandTester->getDisplay());
-        self::assertStringContainsString('Found 1 issue in 1 file', $commandTester->getDisplay());
+        $this->assertSame(0, $commandTester->getStatusCode());
+        $this->assertStringContainsString('Bypassing error code 2', $commandTester->getDisplay());
+        $this->assertStringContainsString('Found 1 issue in 1 file', $commandTester->getDisplay());
     }
 }
