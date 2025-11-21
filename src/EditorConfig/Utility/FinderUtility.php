@@ -36,7 +36,7 @@ class FinderUtility
      */
     protected static function buildFinderByCliArguments(array $finderOptions): Finder
     {
-        self::$currentExcludes = $finderOptions['exclude'];
+        self::$currentExcludes = ArrayUtility::flattenSeparatedValues($finderOptions['exclude']);
 
         $finder = new Finder();
 

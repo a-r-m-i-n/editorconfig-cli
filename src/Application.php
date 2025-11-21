@@ -7,6 +7,7 @@ namespace Armin\EditorconfigCli;
 use Armin\EditorconfigCli\EditorConfig\Rules\FileResult;
 use Armin\EditorconfigCli\EditorConfig\Rules\Rule;
 use Armin\EditorconfigCli\EditorConfig\Scanner;
+use Armin\EditorconfigCli\EditorConfig\Utility\ArrayUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\FinderUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\StringFormatUtility;
 use Armin\EditorconfigCli\EditorConfig\Utility\TimeTrackingUtility;
@@ -352,7 +353,7 @@ class Application extends SingleCommandApplication
     }
 
     /**
-     * @param array<int, string>|null $skippingRules Strings in array may contain comma-separated values
+     * @param array<int, string|null>|null $skippingRules Strings in array may contain comma-separated values
      *
      * @return array|string[]
      */
@@ -362,13 +363,7 @@ class Application extends SingleCommandApplication
             return [];
         }
 
-        $flattenSkipRules = [];
-        foreach ($skippingRules as $skipRule) {
-            foreach (explode(',', $skipRule) as $flatRule) {
-                $flattenSkipRules[] = trim($flatRule);
-            }
-        }
-        $skippingRules = $flattenSkipRules;
+        $skippingRules = ArrayUtility::flattenSeparatedValues($skippingRules);
 
         foreach ($skippingRules as $index => $skipRule) {
             $replacements = [
