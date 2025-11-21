@@ -2,7 +2,7 @@
     "name": "armin/editorconfig-cli",
     "description": "EditorConfigCLI is a free CLI tool (written in PHP) to validate and auto-fix text files based on given .editorconfig declarations.",
     "type": "library",
-    "version": "2.1.1",
+    "version": "2.2.0",
     "license": "MIT",
     "authors": [
         {

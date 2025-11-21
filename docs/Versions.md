@@ -7,6 +7,18 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 2.2.0
+
+- [DEVOPS] Add PHP 8.5 to Github action "code-checks"
+- [DEVOPS] Update minimum required versions of dev-dependencies
+- [DOCS] Improve README
+- [TASK] Do not throw exception, when passing --skip or --exclude option without values given
+- **[FEATURE] Allow <names> argument to filter files, also in --git-only mode**
+- [TASK] Refactor tests
+- [DEVOPS] Fix deprecated rule in PHPCS fixer config
+- [TASK] Update dependencies
+- [BUGFIX] Fix detection of wrong indention (**thanks to Mike Street for reporting**)
+
 ### 2.1.1
 
 - [BUGFIX] Assure compatibility with Symfony v7.3 (**thanks to Elias Häußler**)
