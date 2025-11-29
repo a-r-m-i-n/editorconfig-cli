@@ -7,6 +7,11 @@ Link to releases: https://github.com/a-r-m-i-n/editorconfig-cli/releases
 
 ## Versions
 
+### 2.2.1
+
+- [TASK] Add support for Symfony 8.x
+- [TASK] Update dependencies
+
 ### 2.2.0
 
 - [DEVOPS] Add PHP 8.5 to Github action "code-checks"
